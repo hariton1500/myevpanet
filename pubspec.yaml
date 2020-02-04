@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   path_provider:
-  scoped_model: ^1.0.1
+  scoped_model:
   flutter_svg:
   flutter_masked_text:
   mask_text_input_formatter:
