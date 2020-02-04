@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class AppDrawer extends StatelessWidget {
 
   @override
@@ -77,17 +79,15 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _createUserListItem() {
-    Map _users = new Map();
-
 
     return ListView.builder(
-        itemCount: _users.length,
+        itemCount: users.length,
         itemBuilder: (BuildContext context, int index) {
-          String key = _users.keys.elementAt(index);
+          int key = users.keys.elementAt(index);
           return new Row(
             children: <Widget>[
               new Text('${key} : '),
-              new Text(_users[key])
+              new Text(users[key]['id'])
             ],
           );
         }
