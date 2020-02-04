@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/support_screen/support.dart';
-//import 'package:myevpanet/url_screen/webview_screen.dart';
+import 'package:myevpanet/widgets/drawer.dart';
+
+import '../main.dart';
+
 
 class MainScreenWidget extends StatefulWidget {
   
@@ -52,6 +55,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   Widget build(BuildContext context) {
     //var _model = ScopedModel.of<MainModel>(context);
     return Scaffold(
+        drawer: AppDrawer(),
         appBar: AppBar(
           title: Text("Информация об абоненте"),
           elevation: 1.0,
@@ -62,12 +66,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             )
           ],
         ),
-        drawer: Drawer(
-          child: Container(
-            color: Colors.blue,
-            child: Text("Учетные записи"),
-          ),
-        ),
+
         body: Column(
           children: <Widget>[
             Container(
