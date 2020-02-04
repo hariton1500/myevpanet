@@ -17,8 +17,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   
   @override
   void initState() {
-    super.initState();
+    print('MainScreen initState()');
+    print('Start getData');
     getData();
+    super.initState();
+    print('End getData');
   }
   void getData() async {
     await UserInfo().getUserData();
@@ -50,7 +53,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //var _model = ScopedModel.of<MainModel>(context);
     return Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
@@ -78,7 +80,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Text('ID:' + userInfo["id"].toString()),
+                          Text('ID: ${userInfo['id'].toString()}'),
                           Text('Тарифный план: ' + userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
                         ],
                 )

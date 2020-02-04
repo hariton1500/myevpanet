@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:myevpanet/main.dart';
+import 'package:myevpanet/main_screen/main_widget.dart';
 
 class AppDrawer extends StatelessWidget {
 
@@ -10,12 +10,14 @@ class AppDrawer extends StatelessWidget {
         child: ListView(
           //shrinkWrap: true,
           padding: EdgeInsets.zero,
-          children: idList()
-          ),
+          children:
+            //DrawerHeader(child: Text('Список ваших учетных записей:')),
+            idList(context)
+        ),
     );
   }
 
-  Widget _createHeader(context) {
+  /*Widget _createHeader(context) {
     return DrawerHeader(
         margin: EdgeInsets.zero,
         padding: EdgeInsets.zero,
@@ -23,7 +25,7 @@ class AppDrawer extends StatelessWidget {
           color: Theme
               .of(context)
               .primaryColor,
-/*            image: DecorationImage(
+              /*image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('path/to/header_background.png'))*/
         ),
@@ -43,9 +45,9 @@ class AppDrawer extends StatelessWidget {
             ]
         )
     );
-  }
+  }*/
 
-  Widget _createDrawerItem(
+  /*Widget _createDrawerItem(
       {IconData icon, String text, GestureTapCallback onTap}) {
     return ListTile(
       title: Row(
@@ -59,22 +61,23 @@ class AppDrawer extends StatelessWidget {
       ),
       onTap: onTap,
     );
-  }
+  }*/
 
-
-  List<Widget> idList() {
+  List<Widget> idList(context) {
     List<Widget> list = [];
+    list.add(DrawerHeader(child: Text('Список ваших учетных записей:')));
     for (var item in users.keys) {
       list.add(
-        Row(
-          children: <Widget>[
-            Text('${users[item]['id']}'),
-            Text('${users[item]['name']}')
-          ],
+        ListTile(
+          leading: Text('${users[item]['id']}'),
+          title: Text('${users[item]['name']}'),
+          onTap: () {
+            currentGuidIndex = item;
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+          }
         )
       );
     }
     return list;
   } 
-
 }

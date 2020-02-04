@@ -53,9 +53,7 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
 
   Future<int> whereToGo() async {
-    //var _model = ScopedModel.of<MainModel>(context);
     final file = await FileStorage('key.dat').localFile;
-    //if (data.then(c).toString() == 'ERROR') {
     if (file.existsSync()) {
       print('Key file is exists');
       devKey = file.readAsStringSync(encoding: utf8);
@@ -78,6 +76,8 @@ class _SplashWidgetState extends State<SplashWidget> {
               print('Ok');
             } else {
               print('Not ok!');
+              print('Trying to read from file instead');
+              await UserInfo().readFromFile();
             }
             currentGuidIndex++;
           }

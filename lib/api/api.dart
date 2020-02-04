@@ -130,7 +130,7 @@ class UserInfo {
     print('Requesting uri: $_url');
     var result = await RestAPI().getData(_url);
     print('Got from server: $result');
-    print('Checking if Answer is String and >38 symbols');
+    print('Checking if Answer is String and >38 symbols and no Exceptions meet');
     bool _checked = true;
     if (result.toString().contains('Exception')) {
       _checked = false;
