@@ -24,7 +24,7 @@ class AppDrawer extends StatelessWidget {
             title: Text('0.0.1'),
             onTap: () {},
           ),
-      //    _createUserListItem(),
+              _createUserListItem(),
         ],
       ),
     );
@@ -35,21 +35,29 @@ class AppDrawer extends StatelessWidget {
         margin: EdgeInsets.zero,
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme
+              .of(context)
+              .primaryColor,
 /*            image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage('path/to/header_background.png'))*/
         ),
-        child: Stack(children: <Widget>[
-          Positioned(
-              bottom: 12.0,
-              left: 16.0,
-              child: Text("Flutter Step-by-Step",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500))),
-        ]));
+        child: Stack(
+            children: <Widget>[
+              Positioned(
+                  bottom: 12.0,
+                  left: 16.0,
+                  child: Text("Flutter Step-by-Step",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500
+                      )
+                  )
+              ),
+            ]
+        )
+    );
   }
 
   Widget _createDrawerItem(
@@ -68,34 +76,22 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-//  Widget _createUserListItem() {
-//
-//
-//    return new ListView.builder(
-//      // ignore: missing_return
-//      itemBuilder:  (BuildContext context, int index) {
-//          new Text('${users.values.toList()[index].name}');
-//        }
-////      itemCount: users.length,
-////      itemBuilder: (BuildContext context, int index) {
-////        String key = users.keys.elementAt(index);
-////        return new Column(
-////          children: <Widget>[
-////            new ListTile(
-////              title: new Text("$key"),
-////              //subtitle: new Text("${users[key]}"),
-////            ),
-////            new Divider(
-////              height: 2.0,
-////            ),
-////          ],
-////        );
-////      },
-//
-//
-//      );
-//    }
+  Widget _createUserListItem() {
+    Map _users = new Map();
 
 
+    return ListView.builder(
+        itemCount: _users.length,
+        itemBuilder: (BuildContext context, int index) {
+          String key = _users.keys.elementAt(index);
+          return new Row(
+            children: <Widget>[
+              new Text('${key} : '),
+              new Text(_users[key])
+            ],
+          );
+        }
+    );
   }
 
+}

@@ -6,7 +6,6 @@ import 'package:myevpanet/widgets/drawer.dart';
 
 import '../main.dart';
 
-
 class MainScreenWidget extends StatefulWidget {
   
   MainScreenWidget({Key key, this.title}) : super(key: key);

@@ -29,7 +29,7 @@ class App extends StatelessWidget {
           headline: TextStyle(color: Color(0xFF212121)),
           body2: TextStyle(color: Color(0xFF757575)),
           subtitle: TextStyle(color: Color(0xFF757575)),
-          subhead: TextStyle(color: Color(0xFF757575)),
+          subhead: TextStyle(color: Color(0xFF000000)),
         ),
       ),
       debugShowCheckedModeBanner: false,
