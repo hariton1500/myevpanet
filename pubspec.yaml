@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  path_provider: ^1.5.1
+  path_provider:
   scoped_model: ^1.0.1
   flutter_svg:
   flutter_masked_text:
