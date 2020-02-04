@@ -4,8 +4,6 @@ import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/support_screen/support.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 
-import '../main.dart';
-
 class MainScreenWidget extends StatefulWidget {
   
   MainScreenWidget({Key key, this.title}) : super(key: key);

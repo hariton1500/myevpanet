@@ -1,34 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import 'package:myevpanet/main.dart';
 
 class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          _createHeader(context),
-          _createDrawerItem(icon: Icons.contacts, text: 'Contacts',),
-          _createDrawerItem(icon: Icons.event, text: 'Events',),
-          _createDrawerItem(icon: Icons.note, text: 'Notes',),
-          Divider(),
-          _createDrawerItem(icon: Icons.collections_bookmark, text: 'Steps'),
-          _createDrawerItem(icon: Icons.face, text: 'Authors'),
-          _createDrawerItem(
-              icon: Icons.account_box, text: 'Flutter Documentation'),
-          _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),
-          Divider(),
-          _createDrawerItem(icon: Icons.bug_report, text: 'Report an issue'),
-          ListTile(
-            title: Text('0.0.1'),
-            onTap: () {},
+        child: ListView(
+          //shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          children: idList()
           ),
-              _createUserListItem(),
-        ],
-      ),
     );
   }
 
@@ -78,20 +61,20 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Widget _createUserListItem() {
 
-    return ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (BuildContext context, int index) {
-          int key = users.keys.elementAt(index);
-          return new Row(
-            children: <Widget>[
-              new Text('${key} : '),
-              new Text(users[key]['id'])
-            ],
-          );
-        }
-    );
-  }
+  List<Widget> idList() {
+    List<Widget> list = [];
+    for (var item in users.keys) {
+      list.add(
+        Row(
+          children: <Widget>[
+            Text('${users[item]['id']}'),
+            Text('${users[item]['name']}')
+          ],
+        )
+      );
+    }
+    return list;
+  } 
 
 }
