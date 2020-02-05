@@ -26,6 +26,7 @@ dependencies:
   mask_text_input_formatter:
   http:
   webview_flutter:
+  flutter_spinkit:
 
 
   # The following adds the Cupertino Icons font to your application.

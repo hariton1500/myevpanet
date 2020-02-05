@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'package:scoped_model/scoped_model.dart';
 //import 'package:myevpanet/scoped_models/main_model.dart';
@@ -15,9 +16,9 @@ class LoginWidget extends StatefulWidget {
   State<StatefulWidget> createState() => LoginWidgetState();
 }
 
-class LoginWidgetState extends State {
+class LoginWidgetState extends State with SingleTickerProviderStateMixin{
   final String assetName = 'images/evpanet_auth_logo.svg';
-
+  bool isLoading = false;
   Widget _buildLogoTop(){
     return Padding(
         padding: const EdgeInsets.only(
@@ -113,6 +114,14 @@ class LoginWidgetState extends State {
                   _buildPasswordField(),
                   new Padding(padding: EdgeInsets.all(16.0),
                     child: _buildSubmitButton(),
+                  ),
+                  Center(
+                    child:
+                      isLoading ? SpinKitCubeGrid(
+                        size: 51.0,
+                        color: Colors.blue,
+                        controller: AnimationController(vsync: this, duration: const Duration(seconds: 3)),
+                        ) : Stack()
                   )
                 ],
               )
@@ -168,6 +177,13 @@ class LoginWidgetState extends State {
         print(guids);
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
         _guidsfile.writeAsString(result.toString(), mode: FileMode.write, encoding: utf8);
+        currentGuidIndex = 0;
+        for (var guid in guids) {
+          var usersRequest = await UserInfo().getUserInfoFromServer();
+          print('$usersRequest');
+          currentGuidIndex++;
+        }
+        currentGuidIndex = 0;
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
       }
       //_url = 'https://evpanet.com/api/apk/login/user';

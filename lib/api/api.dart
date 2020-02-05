@@ -61,6 +61,8 @@ class Network {
       }
     } on SocketException catch (e) {
       return e.toString();
+    } on HandshakeException catch (e) {
+      return e.toString();
     }
       // 5
   }
