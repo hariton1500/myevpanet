@@ -112,17 +112,14 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
                   _buildLogoTop(),
                   _buildEmailField(),
                   _buildPasswordField(),
+                  isLoading ? SpinKitCubeGrid(
+                    size: 51.0,
+                    color: Colors.blue,
+                    controller: AnimationController(vsync: this, duration: const Duration(seconds: 1)),
+                    ) : Text(''),
                   new Padding(padding: EdgeInsets.all(16.0),
                     child: _buildSubmitButton(),
                   ),
-                  Center(
-                    child:
-                      isLoading ? SpinKitCubeGrid(
-                        size: 51.0,
-                        color: Colors.blue,
-                        controller: AnimationController(vsync: this, duration: const Duration(seconds: 3)),
-                        ) : Stack()
-                  )
                 ],
               )
           ),
@@ -153,7 +150,6 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       _url += '?reg&t=$phone&id=$id';
       _url += '&devid=$devKey';
 
-      //new Center(child: new CircularProgressIndicator());
       var result = await RestAPI().getData(_url);
       print(result);
       bool _checks = true;
@@ -171,6 +167,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         _checks = false;
       }
       if (_checks) {
+        setState(() => isLoading = true);
         print('Got good GUID(s)');
         guids = json.decode(result);
         //save guids to file
@@ -184,6 +181,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
           currentGuidIndex++;
         }
         currentGuidIndex = 0;
+        setState(() => isLoading = false);
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
       }
       //_url = 'https://evpanet.com/api/apk/login/user';
