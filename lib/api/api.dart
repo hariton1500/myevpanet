@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:myevpanet/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
 class FileStorage {
   String filename;
@@ -60,8 +62,26 @@ class Network {
         print(response.statusCode);
       }
     } on SocketException catch (e) {
+      Fluttertoast.showToast(
+        msg: "Нет подключения к сети",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
       return e.toString();
     } on HandshakeException catch (e) {
+      Fluttertoast.showToast(
+        msg: "Нет подключения к сети",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
       return e.toString();
     }
       // 5

@@ -10,6 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 //import 'package:scoped_model/scoped_model.dart';
 //import 'package:myevpanet/scoped_models/main_model.dart';
 import 'package:myevpanet/api/api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -204,6 +205,15 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       bool _checks = true;
       if (result.toString().contains('00000000-0000-0000-C000-000000000046')) {
         print('Auth failed. No such users.');
+        Fluttertoast.showToast(
+        msg: "Такой пользователь не найден",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+        );
         _checks = false;
       }
       print(result.toString().length);
@@ -238,6 +248,16 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       //print(newres);
       //print('Go to Main Screen');
       //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+    } else {
+      Fluttertoast.showToast(
+        msg: "Введены некорректные данные",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
     }
   }
 }
