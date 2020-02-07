@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/main.dart';
 import 'dart:async';
 import 'dart:io';
@@ -20,7 +21,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     print('SplashScreen initState');
     super.initState();
     Future<int> goto = whereToGo();
-    Timer(Duration(seconds: 3), (){goGo(goto);});
+    Timer(Duration(seconds: 5), (){goGo(goto);});
   }
   Future<void> goGo(Future<int> index) async {
     if (await index == 1) {
@@ -31,10 +32,64 @@ class _SplashWidgetState extends State<SplashWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Image.asset("images/evpanetsplash.png"),
-      color: Colors.white,
-      alignment: Alignment.center,
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 3,
+                child: Container(
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(24.0),
+                              child: Image.asset("assets/images/splash_logo.png"),
+                          )
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SpinKitThreeBounce(
+                      color: Colors.white,
+                      size: 50.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                    ),
+                    Text(
+                      "Загрузка...",
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Colors.white
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 

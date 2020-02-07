@@ -17,17 +17,17 @@ class LoginWidget extends StatefulWidget {
 }
 
 class LoginWidgetState extends State with SingleTickerProviderStateMixin{
-  final String assetName = 'images/evpanet_auth_logo.svg';
+  final String assetName = 'assets/images/evpanet_auth_logo.svg';
   bool isLoading = false;
   Widget _buildLogoTop(){
     return Padding(
         padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 32,
+            left: 24,
+            right: 24,
+            top: 24,
             bottom: 16
         ),
-        child: SvgPicture.asset(assetName)
+        child: SvgPicture.asset(assetName, color: Colors.blue,)
     );
   }
 
@@ -74,7 +74,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
     return
       RaisedButton(
         onPressed: authButtonPressed,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColorDark,
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Row(
@@ -100,31 +100,80 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    //var _model = ScopedModel.of<MainModel>(context);
-    return
-      Scaffold(
-        body:
-          Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  _buildLogoTop(),
-                  _buildEmailField(),
-                  _buildPasswordField(),
-                  isLoading ? SpinKitCubeGrid(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Авторизация"),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(color: Colors.white),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 4,
+                child: Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 24.0,
+                      right: 24.0
+                    ),
+
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            _buildLogoTop(),
+                            _buildEmailField(),
+                            _buildPasswordField(),
+                            new Padding(padding: EdgeInsets.all(16.0),
+                              child: _buildSubmitButton(),
+                            ),
+                        ],
+                      )
+                  )
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                  isLoading ? SpinKitThreeBounce(
                     size: 51.0,
                     color: Colors.blue,
-                    controller: AnimationController(vsync: this, duration: const Duration(seconds: 1)),
-                    ) : Text(''),
-                  new Padding(padding: EdgeInsets.all(16.0),
-                    child: _buildSubmitButton(),
-                  ),
-                ],
+                    controller: AnimationController(vsync: this, duration: const Duration(seconds: 3)),
+                    ) : 
+                    Text(
+                      "",
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          color: Colors.white
+                      ),
+                    ),
+                  ],
+                ),
               )
-          ),
-      );
+            ],
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Тут колбасим открытие новой страницы с возможностью оставить заявку на подключение (Используем новый API).
+        },
+        label: Text('Оставить заявку'),
+        icon: Icon(Icons.person_add),
+        backgroundColor: Theme.of(context).accentColor,
+      ),
+    );
   }
+
 
   void authButtonPressed() async {
 
