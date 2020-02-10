@@ -36,28 +36,36 @@ class AppDrawer extends StatelessWidget {
       ),
     );
     for (var item in users.keys) {
-      list.add(
-        ListTile(
-            title: Text('${users[item]['name']}'),
-            subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            leading: CircleAvatar(
-              backgroundColor:
-              Theme.of(context).platform == TargetPlatform.iOS
-                  ? Colors.white
-                  : Colors.blue,
-              child: Text(
-                '${users[item]['name'].substring(0,1)}',
-                style: TextStyle(fontSize: 18.0, color: Colors.white),
-              ),
+      if (users[item]['id'] != userInfo['id']) {
+        list.add(
+            Column(
+              children: <Widget>[
+                ListTile(
+                    title: Text('${users[item]['name']}'),
+                    subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    leading: CircleAvatar(
+                      backgroundColor:
+                      Theme.of(context).platform == TargetPlatform.iOS
+                          ? Colors.white
+                          : Colors.blue,
+                      child: Text(
+                        '${users[item]['name'].substring(0,1)}',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ),
+                    isThreeLine: true,
+                    onTap: () {
+                      currentGuidIndex = item;
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                    }
+
+                ),
+                Divider(),
+              ],
             ),
-            isThreeLine: true,
-          onTap: () {
-            currentGuidIndex = item;
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
-          }
-        )
-      );
+        );
+      }
     }
     return list;
   } 
