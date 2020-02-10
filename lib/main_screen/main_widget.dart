@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/support_screen/support.dart';
@@ -56,13 +57,13 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
-          title: Text("Информация об абоненте"),
+          title: Text("Информация"),
           elevation: 1.0,
           actions: <Widget>[
-            Padding(
-              child: Icon(Icons.search),
-              padding: const EdgeInsets.only(right: 10.0),
-            )
+            //Padding(
+              //child: Icon(Icons.search),
+              //padding: const EdgeInsets.only(right: 10.0),
+            //)
           ],
         ),
 
@@ -72,16 +73,54 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
               color: Colors.blue,
               height: 250.0,
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(40.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Text('ID: ${userInfo['id'].toString()}'),
-                          Text('Тарифный план: ' + userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
+                          SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Stack(
+                              children: <Widget>[
+                                SizedBox(
+                                  child: CircularProgressIndicator(
+                                    value: 1,
+                                    valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
+                                    strokeWidth: 50.0,
+                                  ),
+                                  height: 50.0,
+                                  width: 50.0,
+                                ),
+                                SizedBox(
+                                  child: CircularProgressIndicator(
+                                    value: 0.2,
+                                    valueColor: new AlwaysStoppedAnimation(Colors.white70),
+                                    strokeWidth: 50.0,
+                                  ),
+                                  height: 50.0,
+                                  width: 50.0,
+                                ),
+                                SizedBox(
+                                   child: Column(
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text("25"),
+                                        Text("дней"),
+                                      ],
+                                   ),
+                                  height: 100.0,
+                                  width: 100.0,
+                                )
+                              ],
+                            ),
+                          )
+//                          Text('ID: ${userInfo['id'].toString()}'),
+//                          Text('Тарифный план: ' + userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
                         ],
                 )
                     ),
@@ -95,6 +134,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   children: ListTile.divideTiles(
                       context: context,
                       tiles: [
+                        ListTile(
+                          title: Text("ID"),
+                          subtitle: Text(userInfo["id"]?.toString()),
+                        ),
+                        ListTile(
+                          title: Text("Тарифный план"),
+                          subtitle: Text(userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
+                        ),
                         ListTile(
                           title: Text("Ф.И.О."),
                           subtitle: Text(userInfo["name"]),

@@ -17,66 +17,55 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  /*Widget _createHeader(context) {
-    return DrawerHeader(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        decoration: BoxDecoration(
-          color: Theme
-              .of(context)
-              .primaryColor,
-              /*image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage('path/to/header_background.png'))*/
-        ),
-        child: Stack(
-            children: <Widget>[
-              Positioned(
-                  bottom: 12.0,
-                  left: 16.0,
-                  child: Text("Flutter Step-by-Step",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w500
-                      )
-                  )
-              ),
-            ]
-        )
-    );
-  }*/
-
-  /*Widget _createDrawerItem(
-      {IconData icon, String text, GestureTapCallback onTap}) {
-    return ListTile(
-      title: Row(
-        children: <Widget>[
-          Icon(icon),
-          Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(text),
-          )
-        ],
-      ),
-      onTap: onTap,
-    );
-  }*/
-
   List<Widget> idList(context) {
     List<Widget> list = [];
-    list.add(DrawerHeader(child: Text('Список ваших учетных записей:')));
+    list.add(
+      UserAccountsDrawerHeader(
+        accountName: Text('${userInfo['name']}'),
+        accountEmail: Text('${userInfo['login']}'),
+        currentAccountPicture: CircleAvatar(
+          backgroundColor:
+          Theme.of(context).platform == TargetPlatform.iOS
+              ? Colors.blue
+              : Colors.white,
+          child: Text(
+            '${userInfo['name'].substring(0,1)}',
+            style: TextStyle(fontSize: 40.0),
+          ),
+        ),
+      ),
+    );
     for (var item in users.keys) {
-      list.add(
-        ListTile(
-          leading: Text('${users[item]['id']}'),
-          title: Text('${users[item]['name']}'),
-          onTap: () {
-            currentGuidIndex = item;
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
-          }
-        )
-      );
+      if (users[item]['id'] != userInfo['id']) {
+        list.add(
+            Column(
+              children: <Widget>[
+                ListTile(
+                    title: Text('${users[item]['name']}'),
+                    subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    leading: CircleAvatar(
+                      backgroundColor:
+                      Theme.of(context).platform == TargetPlatform.iOS
+                          ? Colors.white
+                          : Colors.blue,
+                      child: Text(
+                        '${users[item]['name'].substring(0,1)}',
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
+                    ),
+                    isThreeLine: true,
+                    onTap: () {
+                      currentGuidIndex = item;
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                    }
+
+                ),
+                Divider(),
+              ],
+            ),
+        );
+      }
     }
     return list;
   } 
