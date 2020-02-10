@@ -102,67 +102,81 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text("Авторизация"),
       ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(color: Colors.white),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                flex: 4,
-                child: Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: 24.0,
-                      right: 24.0
-                    ),
-
-                      child: Column(
+      body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(color: Colors.white),
+                      ),
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            _buildLogoTop(),
-                            _buildEmailField(),
-                            _buildPasswordField(),
-                            new Padding(padding: EdgeInsets.all(16.0),
-                              child: _buildSubmitButton(),
+                        children: <Widget>[
+                          Expanded(
+                            flex: 4,
+                            child: Container(
+                                child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 24.0,
+                                        right: 24.0
+                                    ),
+
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        _buildLogoTop(),
+                                        _buildEmailField(),
+                                        _buildPasswordField(),
+                                        new Padding(padding: EdgeInsets.all(16.0),
+                                          child: _buildSubmitButton(),
+                                        ),
+                                      ],
+                                    )
+                                )
                             ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                isLoading ? SpinKitThreeBounce(
+                                  size: 51.0,
+                                  color: Colors.blue,
+                                  controller: AnimationController(vsync: this, duration: const Duration(seconds: 3)),
+                                ) :
+                                Text(
+                                  "",
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                      color: Colors.white
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       )
-                  )
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                  isLoading ? SpinKitThreeBounce(
-                    size: 51.0,
-                    color: Colors.blue,
-                    controller: AnimationController(vsync: this, duration: const Duration(seconds: 3)),
-                    ) : 
-                    Text(
-                      "",
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                          color: Colors.white
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+              ],
+            ),
           )
-        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

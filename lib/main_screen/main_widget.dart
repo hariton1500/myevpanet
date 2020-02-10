@@ -56,13 +56,13 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
-          title: Text("Информация об абоненте"),
+          title: Text("Информация"),
           elevation: 1.0,
           actions: <Widget>[
-            Padding(
-              child: Icon(Icons.search),
-              padding: const EdgeInsets.only(right: 10.0),
-            )
+            //Padding(
+              //child: Icon(Icons.search),
+              //padding: const EdgeInsets.only(right: 10.0),
+            //)
           ],
         ),
 
