@@ -39,7 +39,7 @@ class AppDrawer extends StatelessWidget {
       list.add(
         ListTile(
             title: Text('${users[item]['name']}'),
-            subtitle: Text('${users[item]['id']}'),
+            subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
             trailing: Icon(Icons.keyboard_arrow_right),
             leading: CircleAvatar(
               backgroundColor:
