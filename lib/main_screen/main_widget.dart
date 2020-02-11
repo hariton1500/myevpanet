@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
@@ -97,7 +100,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                 ),
                                 SizedBox(
                                   child: CircularProgressIndicator(
-                                    value: 0.2,
+                                    value: SecToDate(userInfo['packet_secs']) / 30,
                                     valueColor: new AlwaysStoppedAnimation(Colors.white70),
                                     strokeWidth: 50.0,
                                   ),
@@ -109,8 +112,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                      mainAxisAlignment: MainAxisAlignment.center,
                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        Text("25"),
-                                        Text("дней"),
+                                        Text("${(SecToDate(userInfo['packet_secs'])).truncate()} д."),
+                                        Text("${((SecToDate(userInfo['packet_secs']) - (SecToDate(userInfo['packet_secs'])).truncate()) * 24).round()} ч."),
                                       ],
                                    ),
                                   height: 100.0,
@@ -167,6 +170,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     );
   }
 
+  double SecToDate(secsLeft) {
+    return secsLeft / 60 / 60 / 24;
+  }
 
 }
 
