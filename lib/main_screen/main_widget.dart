@@ -75,58 +75,155 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           children: <Widget>[
             Container(
               color: Colors.blue,
-              height: 250.0,
+              height: 230.0,
               child: Padding(
-                padding: EdgeInsets.all(40.0),
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Expanded(
-                      child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 50,
-                            width: 50,
-                            child: Stack(
-                              children: <Widget>[
-                                SizedBox(
-                                  child: CircularProgressIndicator(
-                                    value: 1,
-                                    valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
-                                    strokeWidth: 50.0,
-                                  ),
-                                  height: 50.0,
-                                  width: 50.0,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: 10.0
+                        ),
+                          child: Row(
+                            //crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(
+                                    right: 40.0
                                 ),
-                                SizedBox(
-                                  child: CircularProgressIndicator(
-                                    value: 0.2,
-                                    valueColor: new AlwaysStoppedAnimation(Colors.white70),
-                                    strokeWidth: 50.0,
-                                  ),
-                                  height: 50.0,
-                                  width: 50.0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Текущий тарифный план",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                        userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + " р.)",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                   child: Column(
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text("25"),
-                                        Text("дней"),
-                                      ],
-                                   ),
-                                  height: 100.0,
-                                  width: 100.0,
-                                )
-                              ],
-                            ),
-                          )
+                              ),
+                              SizedBox(
+                                height: 65,
+                                width: 65,
+                                child: Stack(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      child: CircularProgressIndicator(
+                                        value: 1,
+                                        valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
+                                        strokeWidth: 65.0,
+                                      ),
+                                      height: 65.0,
+                                      width: 65.0,
+                                    ),
+                                    SizedBox(
+                                      child: CircularProgressIndicator(
+                                        value: 0.2,
+                                        valueColor: new AlwaysStoppedAnimation(Colors.white70),
+                                        strokeWidth: 65.0,
+                                      ),
+                                      height: 65.0,
+                                      width: 65.0,
+                                    ),
+                                    SizedBox(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            "Осталось",
+                                            style: TextStyle(
+                                              color: Colors.indigo,
+                                            ),
+                                          ),
+                                          Stack(
+                                            children: <Widget>[
+                                              // Stroked text as border.
+                                              Text(
+                                                "25",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                    foreground: Paint()
+                                                      ..style = PaintingStyle.stroke
+                                                      ..color = Colors.white70
+                                                      ..strokeWidth = 2
+                                                ),
+                                              ),
+                                              Text(
+                                                "25",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                  color: Colors.pink,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            "дней",
+                                            style: TextStyle(
+                                              color: Colors.indigo,
+                                            ),),
+                                        ],
+                                      ),
+                                      height: 100.0,
+                                      width: 100.0,
+                                    )
+                                  ],
+                                ),
+                              )
 //                          Text('ID: ${userInfo['id'].toString()}'),
 //                          Text('Тарифный план: ' + userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
+                            ],
+                          )
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(top: 20.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: 10.0),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 6.0,
+                                right: 4.0
+                              ),
+                              child: Text("На Вашем счету: ",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+
+                            ),
+                          Text(
+                              userInfo["extra_account"]?.toString() + " р.",
+                              style: TextStyle(
+                                color: double.parse(userInfo["extra_account"]) < 0 ? Colors.pink : Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          ),
+
                         ],
-                )
+                        ),
+                      ),
                     ),
                   ],
                 ),
