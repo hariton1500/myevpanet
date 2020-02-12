@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/support_screen/support.dart';
@@ -51,6 +52,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   void payButtonPressed() {
 
   }
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -163,10 +166,39 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 )
             ),
           ],
-        )
+        ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesome.info_circle),
+            title: Text('Информация'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesome.ruble),
+            title: Text('Тарифы'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MaterialCommunityIcons.cogs),
+            title: Text('Настройки'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(MaterialCommunityIcons.face_agent),
+            title: Text('Техподдержка'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
 }
 
