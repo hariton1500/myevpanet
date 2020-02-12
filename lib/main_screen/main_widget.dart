@@ -127,7 +127,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                 flex: 1,
                                 child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: 20.0
+//                                      top: 20.0
                                   ),
                                   child: SizedBox(
 /*                                  height: 165,
@@ -138,24 +138,24 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                           child: CircularProgressIndicator(
                                             value: 1,
                                             valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
-                                            strokeWidth: 65.0,
+                                            strokeWidth: 5.0,
                                           ),
-                                          height: 65.0,
-                                          width: 65.0,
+                                          height: 95.0,
+                                          width: 95.0,
                                         ),
                                         SizedBox(
                                           child: CircularProgressIndicator(
                                             value: 0.2,
                                             valueColor: new AlwaysStoppedAnimation(Colors.white70),
-                                            strokeWidth: 65.0,
+                                            strokeWidth: 5.0,
                                           ),
-                                          height: 65.0,
-                                          width: 65.0,
+                                          height: 95.0,
+                                          width: 95.0,
                                         ),
                                         SizedBox(
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: <Widget>[
                                               Column(
                                                 children: <Widget>[
@@ -200,8 +200,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
                                             ],
                                           ),
-                                          height: 120.0,
-                                          width: 120.0,
+                                          height: 100.0,
+                                          width: 100.0,
                                         )
                                       ],
                                     ),
@@ -280,7 +280,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                       )
                   )
                       :
-                  "",
+                  Container(),
                 ],
               )
 
@@ -298,8 +298,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                           title: Text("Тарифный план"),
                           subtitle: Text(userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
                         ),
-
-
                         ListTile(
                           title: Text("Ф.И.О."),
                           subtitle: Text(userInfo["name"]),
