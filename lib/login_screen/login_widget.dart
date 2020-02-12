@@ -6,9 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-//import 'package:path_provider/path_provider.dart';
-//import 'package:scoped_model/scoped_model.dart';
-//import 'package:myevpanet/scoped_models/main_model.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

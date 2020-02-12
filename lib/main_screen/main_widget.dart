@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
@@ -192,6 +193,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  double SecToDate(secsLeft) {
+    return secsLeft / 60 / 60 / 24;
   }
 
   void _onItemTapped(int index) {
