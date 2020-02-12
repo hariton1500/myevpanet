@@ -51,7 +51,7 @@ class FileStorage {
 
 class Network {
   Future getData(String url) async {
-    print('Calling uri: $url');
+    if (verbose == 1) print('Calling uri: $url');
     // 4
     try {
       Response response = await get(url);
@@ -59,7 +59,7 @@ class Network {
         // 6
         return response.body;
       } else {
-        print(response.statusCode);
+        if (verbose == 1) print(response.statusCode);
       }
     } on SocketException catch (e) {
       Fluttertoast.showToast(
@@ -89,7 +89,7 @@ class Network {
 
   Future postData(String url, int number, int uid, int devid) async {
     var _body = {'number': '+79780481885', 'uid': '20', 'devid': '234234'};
-    print('Calling uri: $url body: $_body');
+    if (verbose == 1) print('Calling uri: $url body: $_body');
     // 4
     Response response = await post(url, body: _body);
     // 5
@@ -97,7 +97,7 @@ class Network {
       // 6
       return response.body;
     } else {
-      print('Error. Status is: ${response.statusCode}');
+      if (verbose == 1) print('Error. Status is: ${response.statusCode}');
     }
   }
 
@@ -119,18 +119,18 @@ class RestAPI {
 }
 class UserInfo {
   void f(k, v) {
-    print('$k, $v');
+    if (verbose == 1) print('$k, $v');
   }
   Future<bool> readFromFile() async {
-    print('Check existing of file ${guids[currentGuidIndex]}.dat');
+    if (verbose == 1) print('Check existing of file ${guids[currentGuidIndex]}.dat');
     final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
     if (_file.existsSync()) {
-      print('file is exists. Start reading.');
+      if (verbose == 1) print('file is exists. Start reading.');
       var res = _file.readAsStringSync(encoding: utf8);
-      print('Show what readed:\n$res');
-      print('Start json parsing');
+      if (verbose == 1) print('Show what readed:\n$res');
+      if (verbose == 1) print('Start json parsing');
       var parsed = json.decode(res);
-      print('Type of parsing result variable is: ${parsed.runtimeType}');
+      //print('Type of parsing result variable is: ${parsed.runtimeType}');
       if (parsed.runtimeType.toString().contains('List')) {
         userInfo = parsed[0];
         users[currentGuidIndex] = userInfo;
@@ -140,19 +140,19 @@ class UserInfo {
         return false;
       }
     } else {
-      print('file is not exists!');
+      if (verbose == 1) print('file is not exists!');
       return false;
     }
   }
 
   Future<bool> getUserInfoFromServer() async {
-    print('Start request from Server.');
+    if (verbose == 1) print('Start request from Server.');
     String _url = 'https://app.evpanet.com/?get=userinfo';
     _url += '&guid=${guids[currentGuidIndex]}&devid=$devKey';
-    print('Requesting uri: $_url');
+    if (verbose == 1) print('Requesting uri: $_url');
     var result = await RestAPI().getData(_url);
-    print('Got from server: $result');
-    print('Checking if Answer is String and >38 symbols and no Exceptions meet');
+    if (verbose == 1) print('Got from server: $result');
+    if (verbose == 1) print('Checking if Answer is String and >38 symbols and no Exceptions meet');
     bool _checked = true;
     if (result.toString().contains('Exception')) {
       _checked = false;
@@ -164,19 +164,19 @@ class UserInfo {
       _checked = false;
     }
     if (_checked) {
-      print('Yes. Start parsing.');
+      if (verbose == 1) print('Yes. Start parsing.');
       var parsed = json.decode(result);
-      print('Parsing result is: $parsed');
-      print('Type os result variable is: ${parsed.runtimeType}');
+      if (verbose == 1) print('Parsing result is: $parsed');
+      if (verbose == 1) print('Type os result variable is: ${parsed.runtimeType}');
       if (parsed.runtimeType.toString().contains('List')) {
         userInfo = parsed[0];
         users[currentGuidIndex] = userInfo;
         userInfo.forEach(f);
-        print('Type is List. Saving to file');
+        if (verbose == 1) print('Type is List. Saving to file');
         final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
         _file.writeAsString(result);
         for (var item in parsed) {
-          print('$item\n${item.runtimeType}');
+          if (verbose == 1) print('$item\n${item.runtimeType}');
         }
       }
       return true;
