@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:myevpanet/main_screen/radio.dart';
 
 Widget blueZone_1(Map userInfo) {
   return
@@ -235,17 +234,12 @@ Widget blueZone_2(Map userInfo) {
 }
 
 Widget blueZoneT(Map userInfo) {
-
-  var tarifs = json.decode(userInfo["allowed_tarifs"]);
-
-  return
-    Text('${tarifs}');
-
-
+  /*allowed_tarifs, [{id: C0BBF38B06F025C1AC3AAB01E5C2B5A1, name: Интернет 25 Мбит, sum: 350, speed: 25600, speed2: 25600, enable: 1}, {id: CBF84BB4A6540716BC9111FE6B8DA88E, name: Интернет 50 Мбит, sum: 450, speed: 51200, speed2: 51200, enable: 1}, {id: 173466D4E27465492586BB71D48A7416, name: Интернет 100 Мбит, sum: 550, speed: 102400, speed2: 102400, enable: 1}, {id: 130C6C7E3E14BE113C0101925CD363E5, name: Интернет 24 часа 25 Мбит, sum: 50, speed: 25600, speed2: 25600, enable: 1}, {id: C906EBF11687DFB84BA7B40122E66A0A, name: Интернет 48 часов 25 Мбит, sum: 70, speed: 25600, speed2: 25600, enable: 1}]*/
+  //print(_tarifs[1]['id']);
+  return RadioGroup();
 }
 
 Widget blueZoneS(Map userInfo) {
-
 
 
   return

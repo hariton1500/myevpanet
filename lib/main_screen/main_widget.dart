@@ -33,13 +33,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   }
 
   int _selectedIndex = 0;
+  String _title = 'Информация';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
-          title: _selectedIndex == 0 ? Text("Информация") : _selectedIndex == 1 ? Text("Тарифы") : _selectedIndex == 2 ? Text("Настройки") : /*SupportScreen(),*/Text("Техподдержка"),
+          title: Text('$_title'),
           //elevation: 2.0,
           actions: <Widget>[
             //Padding(
@@ -87,9 +88,18 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      switch (index) {
+        case 0: _title = 'Информация';
+        break;
+        case 1: _title = 'Тарифы';
+        break;
+        case 2: _title = 'Настройки';
+        break;
+        case 3: _title = 'Техподдержка';
+        break;
+      }
     });
   }
-
 }
 
 
