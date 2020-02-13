@@ -11,6 +11,7 @@ Widget blueZone_1(Map userInfo) {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
+              flex: 1,
               child: Container(
                 padding: EdgeInsets.only(
                     top: 10.0
@@ -54,88 +55,7 @@ Widget blueZone_1(Map userInfo) {
                       ),
                       Expanded(
                         flex: 1,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                          //top: 20.0
-                          ),
-                          child: SizedBox(
-                          /*height: 165,
-                          width: 165,*/
-                            child: Stack(
-                              children: <Widget>[
-                                SizedBox(
-                                  child: CircularProgressIndicator(
-                                    value: 1,
-                                    valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
-                                    strokeWidth: 5.0,
-                                  ),
-                                  height: 95.0,
-                                  width: 95.0,
-                                ),
-                                SizedBox(
-                                  child: CircularProgressIndicator(
-                                    value: secToDate(userInfo['packet_secs'])/30,
-                                    valueColor: new AlwaysStoppedAnimation(Colors.white70),
-                                    strokeWidth: 5.0,
-                                  ),
-                                  height: 95.0,
-                                  width: 95.0,
-                                ),
-                                SizedBox(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          Text(
-                                            "Осталось",
-                                            style: TextStyle(
-                                              color: Colors.indigo,
-                                            ),
-                                          ),
-                                          Stack(
-                                            children: <Widget>[
-                                              // Stroked text as border.
-                                              Text(
-                                                "${secToDate(userInfo['packet_secs']).truncate()}",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25,
-                                                    foreground: Paint()
-                                                      ..style = PaintingStyle.stroke
-                                                      ..color = Colors.white70
-                                                      ..strokeWidth = 2
-                                                ),
-                                              ),
-                                              Text(
-                                                "",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 25,
-                                                  color: Colors.pink,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            "дней",
-                                            style: TextStyle(
-                                              color: Colors.indigo,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                  height: 100.0,
-                                  width: 100.0,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                          child: Container(),
                       ),
                     //Text('ID: ${userInfo['id'].toString()}'),
                     //Text('Тарифный план: ' + userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
@@ -144,37 +64,132 @@ Widget blueZone_1(Map userInfo) {
               ),
             ),
             Expanded(
+              flex: 2,
               child: Container(
                 padding: EdgeInsets.only(top: 10.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 6.0,
-                        right: 4.0
-                      ),
-                      child: Text("На Вашем счету: ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                    Expanded(
+                    flex: 1,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                        //top: 20.0
+                        ),
+                          child: SizedBox(
+                        /*height: 165,
+                          width: 165,*/
+                            child: Stack(
+                              children: <Widget>[
+                                SizedBox(
+                                  child: CircularProgressIndicator(
+                                value: 1,
+                                valueColor: new AlwaysStoppedAnimation(Colors.white),
+                                strokeWidth: 7.0,
+                              ),
+                              height: 100.0,
+                              width: 100.0,
+                            ),
+                              SizedBox(
+                                child: CircularProgressIndicator(
+                                value: secToDate(userInfo['packet_secs'])/30,
+                                //value: 0.875,
+                                valueColor: new AlwaysStoppedAnimation(Colors.lightBlueAccent),
+                                strokeWidth: 5.0,
+                              ),
+                              height: 100.0,
+                              width: 100.0,
+                            ),
+                              SizedBox(
+                                child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Осталось",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Stack(
+                                        children: <Widget>[
+                                          // Stroked text as border.
+                                          Text(
+                                            "${secToDate(userInfo['packet_secs']).truncate()}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25,
+                                                foreground: Paint()
+                                                  ..style = PaintingStyle.stroke
+                                                  ..color = Colors.white70
+                                                  ..strokeWidth = 1
+                                            ),
+                                          ),
+                                          Text(
+                                            "${secToDate(userInfo['packet_secs']).truncate()}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 25,
+                                              color: Colors.lightGreenAccent,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "дней",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                ],
+                              ),
+                              height: 100.0,
+                              width: 100.0,
+                            )
+                          ],
                         ),
                       ),
+                    ),),
+                    Expanded(
+                      flex: 2,
+                      child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              bottom: 6.0,
+                              right: 4.0
+                          ),
+                          child: Text("На Вашем счету: ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          userInfo["extra_account"].toString() + " р.",
+                          style: TextStyle(
+                            color: double.parse(userInfo["extra_account"]) < 0 ? Colors.pink : Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  Text(
-                      userInfo["extra_account"].toString() + " р.",
-                      style: TextStyle(
-                        color: double.parse(userInfo["extra_account"]) < 0 ? Colors.pink : Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                  ),
-                ],
+                    ),
+                    //Text("${ 1 - secToDate(userInfo['packet_secs']/30)}"),
+                  ],
                 ),
+
               ),
             ),
           ],

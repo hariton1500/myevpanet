@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/blue_part.dart';
 import 'package:myevpanet/main_screen/white_part.dart';
-import 'package:myevpanet/support_screen/support.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 
 class MainScreenWidget extends StatefulWidget {
@@ -41,7 +39,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
-          title: Text("Информация"),
+          title: _selectedIndex == 0 ? Text("Информация") : _selectedIndex == 1 ? Text("Тарифы") : _selectedIndex == 2 ? Text("Настройки") : /*SupportScreen(),*/Text("Техподдержка"),
           elevation: 1.0,
           actions: <Widget>[
             //Padding(
