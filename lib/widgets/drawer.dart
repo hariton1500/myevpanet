@@ -45,10 +45,7 @@ class AppDrawer extends StatelessWidget {
                     subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
                     trailing: Icon(Icons.keyboard_arrow_right),
                     leading: CircleAvatar(
-                      backgroundColor:
-                      Theme.of(context).platform == TargetPlatform.iOS
-                          ? Colors.white
-                          : Colors.blue,
+                      backgroundColor: Colors.blue,
                       child: Text(
                         '${users[item]['name'].substring(0,1)}',
                         style: TextStyle(fontSize: 18.0, color: Colors.white),
