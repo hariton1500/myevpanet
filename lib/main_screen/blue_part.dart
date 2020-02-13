@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 Widget blueZone_1(Map userInfo) {
@@ -6,7 +8,12 @@ Widget blueZone_1(Map userInfo) {
       color: Colors.blue,
       height: 230.0,
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.only(
+          top: 10.0,
+          right: 20.0,
+          left: 20.0,
+          bottom: 20.0
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -228,11 +235,19 @@ Widget blueZone_2(Map userInfo) {
 }
 
 Widget blueZoneT(Map userInfo) {
+
+  var tarifs = json.decode(userInfo["allowed_tarifs"]);
+
   return
-    Text('здесь нужна форма выбора тарифов');
+    Text('${tarifs}');
+
+
 }
 
 Widget blueZoneS(Map userInfo) {
+
+
+
   return
     Text('здесь нужна форма с настройками');
 }
@@ -275,4 +290,46 @@ void sendMessagePressed() {
 
 double secToDate(secsLeft) {
   return secsLeft / 60 / 60 / 24;
+}
+
+
+class LabeledRadio extends StatelessWidget {
+  const LabeledRadio({
+    this.label,
+    this.padding,
+    this.groupValue,
+    this.value,
+    this.onChanged,
+  });
+
+  final String label;
+  final EdgeInsets padding;
+  final bool groupValue;
+  final bool value;
+  final Function onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        if (value != groupValue)
+          onChanged(value);
+      },
+      child: Padding(
+        padding: padding,
+        child: Row(
+          children: <Widget>[
+            Radio<bool>(
+              groupValue: groupValue,
+              value: value,
+              onChanged: (bool newValue) {
+                onChanged(newValue);
+              },
+            ),
+            Text(label),
+          ],
+        ),
+      ),
+    );
+  }
 }

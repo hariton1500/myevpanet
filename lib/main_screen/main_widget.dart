@@ -40,7 +40,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         drawer: AppDrawer(),
         appBar: AppBar(
           title: _selectedIndex == 0 ? Text("Информация") : _selectedIndex == 1 ? Text("Тарифы") : _selectedIndex == 2 ? Text("Настройки") : /*SupportScreen(),*/Text("Техподдержка"),
-          elevation: 1.0,
+          //elevation: 2.0,
           actions: <Widget>[
             //Padding(
               //child: Icon(Icons.search),
