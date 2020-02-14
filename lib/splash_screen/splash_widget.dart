@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/main.dart';
 import 'dart:async';
 import 'dart:io';
@@ -20,6 +21,7 @@ class _SplashWidgetState extends State<SplashWidget> {
   initState() {
     print('SplashScreen initState');
     super.initState();
+    fbHelper = FirebaseHelper();
     Future<int> goto = whereToGo();
     Timer(Duration(seconds: 5), (){goGo(goto);});
   }

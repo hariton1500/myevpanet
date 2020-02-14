@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:myevpanet/helpers/firebase_helper.dart';
 //import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/splash_screen/splash_widget.dart';
 //тест репозитория
@@ -9,7 +10,7 @@ String devKey;
 int currentGuidIndex = 0;
 Map userInfo;
 var users = Map();
-
+FirebaseHelper fbHelper;
 void main() {
   runApp(App());
 }
