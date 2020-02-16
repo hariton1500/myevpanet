@@ -114,7 +114,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     if (file.existsSync()) {
       print('Key file is exists');
       devKey = file.readAsStringSync(encoding: utf8);
-      if (devKey.toString().length == 7) {
+      if (devKey.toString().length > 7) {
         print('Device key is: $devKey');
         //guidlist.dat file check
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
@@ -146,16 +146,22 @@ class _SplashWidgetState extends State<SplashWidget> {
         }
       } else {
         print('Key File has wrong key. Creating new one...');
-        file.writeAsStringSync(getRandom().toString(), mode: FileMode.write, encoding: utf8);
+        String _token = await FirebaseHelper().getAppToken();
+        print(_token);
+        file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
+        //file.writeAsStringSync(getRandom().toString(), mode: FileMode.write, encoding: utf8);
         print('New Key File created and saved');
         print('Go to Login Screen');
         return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
       }
     } else {
       print('Key file is not exists');
-      devKey = getRandom().toString();
-      print('New Key is: $devKey');
-      file.writeAsStringSync(devKey, mode: FileMode.write, encoding: utf8);
+      //devKey = getRandom().toString();
+      //print('New Key is: $devKey');
+      String _token = await FirebaseHelper().getAppToken();
+      print(_token);
+      //file.writeAsStringSync(devKey, mode: FileMode.write, encoding: utf8);
+      file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
       print('Key File created and saved');
       print('Go to Login Screen');
       return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));

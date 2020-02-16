@@ -61,6 +61,11 @@ class FirebaseHelper{
       },
     );
   }
+
+  Future<String> getAppToken() async{
+    return await _fcm.getToken();
+  }
+
   Future saveDeviceToken(String json) async{
     //String uid = 'jeff1e7t';
     // FirebaseUser user = await _auth.currentUser();

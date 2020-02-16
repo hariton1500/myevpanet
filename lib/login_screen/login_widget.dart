@@ -239,7 +239,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       if (_checks) {
         setState(() => isLoading = true);
         print('Got good GUID(s)');
-        fbHelper.saveDeviceToken(result);
+        //fbHelper.saveDeviceToken(result);
         guids = json.decode(result);
         //save guids to file
         print(guids);
