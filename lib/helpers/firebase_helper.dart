@@ -67,15 +67,17 @@ class FirebaseHelper{
 
     // Get the token for this device
     String fcmToken = await _fcm.getToken();
-
     // Save it to Firestore
     if (fcmToken != null) {
+      print('fcmToken:');
+      print(fcmToken);
       var tokens = _db
           .collection('users')
       //.document(uid)
       //.collection('tokens')
           .document(fcmToken);
-
+      //print('tokens.get():');
+      //print(await tokens.get());
       await tokens.setData({
         'token': fcmToken,
         //'createdAt': FieldValue.serverTimestamp(), // optional
