@@ -21,7 +21,6 @@ dependencies:
     sdk: flutter
   path_provider:
   flutter_svg:
-  flutter_masked_text:
   mask_text_input_formatter:
   http:
   webview_flutter:
@@ -29,7 +28,6 @@ dependencies:
   fluttertoast:
   flutter_icons:
   firebase_core: ^0.4.0
-  cloud_firestore: ^0.12.5
   firebase_messaging: ^5.0.2
 
 

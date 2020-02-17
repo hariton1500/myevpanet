@@ -1,9 +1,8 @@
-
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
-//import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/splash_screen/splash_widget.dart';
-//тест репозитория
+
 int verbose = 0;
 List guids;
 String devKey;

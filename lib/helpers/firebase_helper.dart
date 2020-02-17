@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseHelper{
 
 
-  final Firestore _db = Firestore.instance;
+  //final Firestore _db = Firestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   FirebaseHelper(){
@@ -66,7 +66,7 @@ class FirebaseHelper{
     return await _fcm.getToken();
   }
 
-  Future saveDeviceToken(String json) async{
+  /*Future saveDeviceToken(String json) async{
     //String uid = 'jeff1e7t';
     // FirebaseUser user = await _auth.currentUser();
 
@@ -89,6 +89,6 @@ class FirebaseHelper{
         'guids': json // optional
       });
     }
-  }
+  }*/
 
 }
