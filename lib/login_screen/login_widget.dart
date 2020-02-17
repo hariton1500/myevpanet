@@ -248,7 +248,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         currentGuidIndex = 0;
         for (var guid in guids) {
           var usersRequest = await UserInfo().getUserInfoFromServer();
-          print('$usersRequest');
+          print('$guid: $usersRequest');
           currentGuidIndex++;
         }
         currentGuidIndex = 0;

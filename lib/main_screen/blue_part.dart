@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myevpanet/api/api.dart';
+import 'package:myevpanet/main.dart';
 import 'package:myevpanet/main_screen/radio.dart';
+import 'package:myevpanet/main_screen/setups.dart';
+
+String sendText;
 
 Widget blueZone_1(Map userInfo) {
   return
@@ -234,19 +239,15 @@ Widget blueZone_2(Map userInfo) {
 }
 
 Widget blueZoneT(Map userInfo) {
-  /*allowed_tarifs, [{id: C0BBF38B06F025C1AC3AAB01E5C2B5A1, name: Интернет 25 Мбит, sum: 350, speed: 25600, speed2: 25600, enable: 1}, {id: CBF84BB4A6540716BC9111FE6B8DA88E, name: Интернет 50 Мбит, sum: 450, speed: 51200, speed2: 51200, enable: 1}, {id: 173466D4E27465492586BB71D48A7416, name: Интернет 100 Мбит, sum: 550, speed: 102400, speed2: 102400, enable: 1}, {id: 130C6C7E3E14BE113C0101925CD363E5, name: Интернет 24 часа 25 Мбит, sum: 50, speed: 25600, speed2: 25600, enable: 1}, {id: C906EBF11687DFB84BA7B40122E66A0A, name: Интернет 48 часов 25 Мбит, sum: 70, speed: 25600, speed2: 25600, enable: 1}]*/
-  //print(_tarifs[1]['id']);
   return RadioGroup();
 }
 
 Widget blueZoneS(Map userInfo) {
-
-
-  return
-    Text('здесь нужна форма с настройками');
+  return SetupGroup();
 }
 
 Widget blueZoneM() {
+  print(userInfo.toString());
   return
     Padding(
       padding: EdgeInsets.all(16.0),
@@ -261,6 +262,7 @@ Widget blueZoneM() {
               maxLines: 4,
               //inputFormatters: [phone],
               keyboardType: TextInputType.multiline,
+              onChanged: (String text) {sendText = text;},
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Введите текст сообщения'
@@ -278,52 +280,16 @@ Widget blueZoneM() {
     );
 }
 
-void sendMessagePressed() {
-
+void sendMessagePressed() async{
+  String _url = 'https://app.evpanet.com/?set=add_request';
+  _url += '&guid=${guids[currentGuidIndex]}';
+  _url += '&devid=$devKey';
+  _url += '&comment=$sendText';
+  print('Sending [$sendText] to support by URL: $_url');
+  dynamic answer = await RestAPI().getData(_url);
+  print('$answer');
 }
 
 double secToDate(secsLeft) {
   return secsLeft / 60 / 60 / 24;
-}
-
-
-class LabeledRadio extends StatelessWidget {
-  const LabeledRadio({
-    this.label,
-    this.padding,
-    this.groupValue,
-    this.value,
-    this.onChanged,
-  });
-
-  final String label;
-  final EdgeInsets padding;
-  final bool groupValue;
-  final bool value;
-  final Function onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (value != groupValue)
-          onChanged(value);
-      },
-      child: Padding(
-        padding: padding,
-        child: Row(
-          children: <Widget>[
-            Radio<bool>(
-              groupValue: groupValue,
-              value: value,
-              onChanged: (bool newValue) {
-                onChanged(newValue);
-              },
-            ),
-            Text(label),
-          ],
-        ),
-      ),
-    );
-  }
 }

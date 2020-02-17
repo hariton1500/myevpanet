@@ -159,9 +159,9 @@ class _SplashWidgetState extends State<SplashWidget> {
       //devKey = getRandom().toString();
       //print('New Key is: $devKey');
       String _token = await FirebaseHelper().getAppToken();
-      print(_token);
+      print(_token == null ? '' : _token);
       //file.writeAsStringSync(devKey, mode: FileMode.write, encoding: utf8);
-      file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
+      file.writeAsStringSync(_token == null ? '' : _token, mode: FileMode.write, encoding: utf8);
       print('Key File created and saved');
       print('Go to Login Screen');
       return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
