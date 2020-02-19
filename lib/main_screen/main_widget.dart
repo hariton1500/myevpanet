@@ -6,7 +6,7 @@ import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/blue_part.dart';
 import 'package:myevpanet/main_screen/white_part.dart';
 import 'package:myevpanet/widgets/drawer.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 class MainScreenWidget extends StatefulWidget {
   
   MainScreenWidget({Key key, this.title}) : super(key: key);
@@ -17,6 +17,37 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
+
+  List<Widget> idList(context) {
+    List<Widget> list = [];
+    for (var item in users.keys) {
+        list.add(
+          Column(
+            children: <Widget>[
+              ListTile(
+                  title: Text('${users[item]['name']}'),
+                  subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Text(
+                      '${users[item]['name'].substring(0,1)}',
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    ),
+                  ),
+                  isThreeLine: true,
+                  onTap: () {
+                    currentGuidIndex = item;
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                  }
+              ),
+            ],
+          ),
+        );
+    }
+    return list;
+  }
+
 
   @override
   void initState() {
@@ -33,8 +64,19 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     if (verbose == 5) print('Main Screen: Show UserInfo:\n$userInfo');
   }
 
+  ///////////////////////////////////
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+
+    return result;
+  }
+
   int _selectedIndex = 0;
   String _title = 'Информация';
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +93,37 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           ],
         ),
 
-        body: Column(
-          children: <Widget>[
-            _selectedIndex == 0 ? blueZone_1(userInfo) : _selectedIndex == 1 ? blueZoneT(userInfo) : _selectedIndex == 2 ? blueZoneS(userInfo) : /*SupportScreen(),*/blueZoneM(),
-            _selectedIndex == 0 ? blueZone_2(userInfo) : Container(),
-            _selectedIndex == 0 ? whiteZone(userInfo, context) : Container()
-          ],
-        ),
+        body: Column(children: [
+          CarouselSlider(
+            items: users.keys,
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 2.0,
+            onPageChanged: (index) {
+              setState(() {
+                _current = index;
+              });
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: map<Widget>(
+              idList, /// что ему тут не нравится?
+                  (index, url) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? Color.fromRGBO(0, 0, 0, 0.9)
+                          : Color.fromRGBO(0, 0, 0, 0.4)),
+                );
+              },
+            ),
+          ),
+        ]),
 
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

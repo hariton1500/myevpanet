@@ -29,7 +29,7 @@ dependencies:
   flutter_icons:
   firebase_core:
   firebase_messaging:
-
+  carousel_slider:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
