@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
-import 'package:myevpanet/main_screen/blue_part.dart';
-import 'package:myevpanet/main_screen/white_part.dart';
+//import 'package:myevpanet/main_screen/blue_part.dart';
+//import 'package:myevpanet/main_screen/white_part.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 class MainScreenWidget extends StatefulWidget {
@@ -18,10 +18,30 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
-  List<Widget> idList(context) {
-    List<Widget> list = [];
+  List<Widget> idListPoints() {
+    List<Widget> _list = [];
     for (var item in users.keys) {
-        list.add(
+      _list.add(
+        Container(
+          width: 8.0,
+          height: 8.0,
+          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _current == item
+                  ? Color.fromRGBO(0, 0, 0, 0.9)
+                  : Color.fromRGBO(0, 0, 0, 0.4)
+          ),
+        )
+      );
+    }
+    return _list;
+  }
+
+  List<Widget> idList() {
+    List<Widget> _list = [];
+    for (var item in users.keys) {
+        _list.add(
           Column(
             children: <Widget>[
               ListTile(
@@ -38,14 +58,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   isThreeLine: true,
                   onTap: () {
                     currentGuidIndex = item;
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
                   }
               ),
             ],
           ),
         );
     }
-    return list;
+    return _list;
   }
 
 
@@ -92,11 +112,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             //)
           ],
         ),
-
-        body: Column(children: [
+        body: Column(
+          children: [
           CarouselSlider(
-            items: users.keys,
-            autoPlay: true,
+            items: idList(),
+            autoPlay: false,
             enlargeCenterPage: true,
             aspectRatio: 2.0,
             onPageChanged: (index) {
@@ -107,24 +127,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: map<Widget>(
-              idList, /// что ему тут не нравится?
-                  (index, url) {
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _current == index
-                          ? Color.fromRGBO(0, 0, 0, 0.9)
-                          : Color.fromRGBO(0, 0, 0, 0.4)),
-                );
-              },
-            ),
+            children: idListPoints()
           ),
-        ]),
-
+          ]
+        ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[

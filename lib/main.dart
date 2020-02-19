@@ -1,4 +1,3 @@
-import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/splash_screen/splash_widget.dart';
