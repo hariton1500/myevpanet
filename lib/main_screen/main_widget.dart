@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
-//import 'package:myevpanet/main_screen/blue_part.dart';
-//import 'package:myevpanet/main_screen/white_part.dart';
+import 'package:myevpanet/main_screen/setups.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 class MainScreenWidget extends StatefulWidget {
   
   MainScreenWidget({Key key, this.title}) : super(key: key);
@@ -57,7 +57,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   ),
                   isThreeLine: true,
                   onTap: () {
-                    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SetupGroup()));
                   }
               ),
             ],
@@ -113,23 +113,23 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         ),
         body: Column(
           children: [
-          CarouselSlider(
-            items: idList(),
-            autoPlay: false,
-            enlargeCenterPage: true,
-            aspectRatio: 2.0,
-            onPageChanged: (index) {
-              setState(() {
-                currentGuidIndex = index;
-                userInfo = users[currentGuidIndex];
-                _current = index;
-              });
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: idListPoints()
-          ),
+            CarouselSlider(
+              items: idList(),
+              autoPlay: false,
+              enlargeCenterPage: true,
+              aspectRatio: 2.0,
+              onPageChanged: (index) {
+                setState(() {
+                  currentGuidIndex = index;
+                  userInfo = users[currentGuidIndex];
+                  _current = index;
+                });
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: idListPoints()
+            ),
           ]
         ),
         bottomNavigationBar: BottomNavigationBar(

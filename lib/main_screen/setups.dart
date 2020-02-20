@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main.dart';
+import 'package:myevpanet/main_screen/radio.dart';
 
 class SetupGroup extends StatefulWidget {
   @override
@@ -50,6 +51,7 @@ class SetupGroupWidget extends State {
     //tList.add(Text('Сделайте выбор из доступных тарифов:'));
     tList.add(
       SwitchListTile(
+        dense: true,
         value: autoState,
         title: Text('Автоактивация пакета'),
         onChanged: (bool state) {onSetupAutoChange(state);},
@@ -57,19 +59,33 @@ class SetupGroupWidget extends State {
     );
     tList.add(
       SwitchListTile(
+        dense: true,
         value: parentState,
         title: Text('Родительский контроль'),
         onChanged: (bool state) {onSetupParentChange(state);},
       )
     );
+    tList.add(
+      Text('Тарифы')
+    );
+    tList.add(
+      RadioGroup()
+    );
     return tList;
   }
-
+  @override
   Widget build(BuildContext context) {
     return
-      //Толян тут украшай как желаешь....
-      Column(
-        children: _list(),
+      Scaffold(
+        appBar: AppBar(
+          title: Text('Настройки'),
+        ),
+        //Толян тут украшай как желаешь....
+        body:
+
+          Column(
+            children: _list()
+          )
       );
   }
 }
