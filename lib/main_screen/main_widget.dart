@@ -57,7 +57,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   ),
                   isThreeLine: true,
                   onTap: () {
-                    currentGuidIndex = item;
                     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
                   }
               ),
@@ -71,17 +70,17 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   @override
   void initState() {
-    if (verbose == 1) print('MainScreen initState()');
-    if (verbose == 1) print('Start getData');
+    if (verbose >= 1) print('MainScreen initState()');
+    if (verbose >= 1) print('Start getData');
     getData();
     super.initState();
     fbHelper.configure(this.context);
-    if (verbose == 1) print('End getData');
+    if (verbose >= 1) print('End getData');
   }
   void getData() async {
     await UserInfo().getUserData();
     setState(() {});
-    if (verbose == 5) print('Main Screen: Show UserInfo:\n$userInfo');
+    if (verbose >= 5) print('Main Screen: Show UserInfo:\n$userInfo');
   }
 
   ///////////////////////////////////
@@ -121,6 +120,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             aspectRatio: 2.0,
             onPageChanged: (index) {
               setState(() {
+                currentGuidIndex = index;
+                userInfo = users[currentGuidIndex];
                 _current = index;
               });
             },
