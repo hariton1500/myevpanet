@@ -1,12 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+//import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 //import 'package:myevpanet/main_screen/blue_part.dart';
 //import 'package:myevpanet/main_screen/white_part.dart';
-import 'package:myevpanet/widgets/drawer.dart';
+//import 'package:myevpanet/widgets/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+
 class MainScreenWidget extends StatefulWidget {
   
   MainScreenWidget({Key key, this.title}) : super(key: key);
@@ -42,7 +46,37 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     List<Widget> _list = [];
     for (var item in users.keys) {
         _list.add(
-          Column(
+            Container(
+                margin: EdgeInsets.all(10.0),
+/*                decoration: BoxDecoration(
+                    color: Colors.orange,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(10.0)
+               ),*/
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Color.fromRGBO(52, 79, 100, 1.0)),
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromRGBO(184, 202, 220, 1.0),
+                        blurRadius: 10
+                      )
+                    ],
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [
+                          0.2,
+                          1.0,
+                        ],
+                        colors: [Color.fromRGBO(68, 98, 124, 1), Color.fromRGBO(10, 33, 51, 1)]
+                    )
+                  ),
+                )
+            )
+        );
+/*          Column(
             children: <Widget>[
               ListTile(
                   title: Text('${users[item]['name']}'),
@@ -61,8 +95,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   }
               ),
             ],
-          ),
-        );
+          ),*/
+
     }
     return _list;
   }
@@ -100,39 +134,76 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: AppDrawer(),
-        appBar: AppBar(
-          title: Text('$_title'),
-          //elevation: 2.0,
-          actions: <Widget>[
-            //Padding(
-              //child: Icon(Icons.search),
-              //padding: const EdgeInsets.only(right: 10.0),
-            //)
-          ],
-        ),
-        body: Column(
-          children: [
-          CarouselSlider(
-            items: idList(),
-            autoPlay: false,
-            enlargeCenterPage: true,
-            aspectRatio: 2.0,
-            onPageChanged: (index) {
-              setState(() {
-                currentGuidIndex = index;
-                userInfo = users[currentGuidIndex];
-                _current = index;
-              });
-            },
+        //drawer: AppDrawer(),
+        backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(70.0), // here the desired height
+
+              child: AppBar(
+                  brightness: Brightness.dark,
+                  backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(7.0),
+                    ),
+                    Text(
+                      "Информация",
+                      style: TextStyle(
+                          color: Color.fromRGBO(72, 95, 113, 1.0),
+                          fontSize: 24.0
+                      ),
+                    ),
+                    Text(
+                      "Subtitle",
+                      style: TextStyle(
+                          color: Color.fromRGBO(146, 152, 166, 1.0),
+                          fontSize: 14.0
+                      ),
+                    )
+                  ],
+                ),
+                elevation: 0.0,
+/*            leading: new Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: new CircleAvatar(
+                backgroundImage: new NetworkImage(userPicUrl),
+              ),
+            ),*/
+                actions: <Widget>[new Icon(Icons.more_vert)],
+              ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: idListPoints()
-          ),
-          ]
+        //),
+        body: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              child: Column(
+                children: [
+                  CarouselSlider(
+                    items: idList(),
+                    autoPlay: false,
+                    enlargeCenterPage: true,
+                    aspectRatio: 1.9,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentGuidIndex = index;
+                        userInfo = users[currentGuidIndex];
+                        _current = index;
+                      });
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: idListPoints()
+                  ),
+                  ]
+                ),
+            ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
+/*        bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -155,11 +226,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.amber[800],
           onTap: _onItemTapped,
-        ),
+        ),*/
     );
   }
 
-  void _onItemTapped(int index) {
+/*  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       switch (index) {
@@ -173,7 +244,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         break;
       }
     });
-  }
+  }*/
 }
 
 
