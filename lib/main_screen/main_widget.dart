@@ -2,13 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-//import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
 //import 'package:myevpanet/main_screen/blue_part.dart';
 //import 'package:myevpanet/main_screen/white_part.dart';
 //import 'package:myevpanet/widgets/drawer.dart';
+import 'package:myevpanet/main_screen/setups.dart';
+import 'package:myevpanet/widgets/drawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
 
 
 class MainScreenWidget extends StatefulWidget {
@@ -95,8 +98,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   }
               ),
             ],
-          ),*/
-
+          ),
+        );
     }
     return _list;
   }
@@ -203,7 +206,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 ),
             ),
         ),
-/*        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

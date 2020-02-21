@@ -39,6 +39,7 @@ class RadioGroupWidget extends State {
       if (double.tryParse(userInfo['extra_account']) >= item['sum']) {
         tList.add(
           RadioListTile(
+            dense: true,
             title: Text('${item['name']} (${item['sum']} руб.)'),
             value: item['id'],
             groupValue: id,
