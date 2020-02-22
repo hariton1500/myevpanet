@@ -11,6 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:myevpanet/support_screen/support.dart';
 
 
 class MainScreenWidget extends StatefulWidget {
@@ -54,15 +55,15 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         _list.add(
             Container(
               padding: EdgeInsets.only(
-                  top: 15.0,
-                  left: 10.0,
-                  right: 10.0,
-                  bottom: 20.0
+                  top: 0.0,
+                  left: 5.0,
+                  right: 5.0,
+                  bottom: 0.0
               ),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.0, color: Color.fromRGBO(52, 79, 100, 1.0)),
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(20.0),
                     boxShadow: [
                       BoxShadow(
                         color: Color.fromRGBO(184, 202, 220, 1.0),
@@ -85,7 +86,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                     )
                   ),
                   child: Container(
-                    padding: EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -359,13 +360,16 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
               ),
             ),*/
                 actions: <Widget>[
-                  new Container(
-                    padding: EdgeInsets.all(10.0),
-                      child: Icon(
-                        MaterialCommunityIcons.face_agent,
-                        color: Color.fromRGBO(72, 95, 113, 1.0),
-                        size: 32.0,
-                      )
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.all(10.0),
+                        child: Icon(
+                          MaterialCommunityIcons.face_agent,
+                          color: Color.fromRGBO(72, 95, 113, 1.0),
+                          size: 32.0,
+                        )
+                    ),
+                    onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
                   )
                 ],
               ),
