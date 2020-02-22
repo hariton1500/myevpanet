@@ -33,22 +33,22 @@ class RadioGroupWidget extends State {
   List<Widget> _list() {
     List<Widget> tList = [];
     bool _availableTarifChoice = false;
-    tList.add(Text('Текущий тариф: ${initialTarif['name']} (${initialTarif['sum']} руб.)'));
-    tList.add(Text('Сделайте выбор из доступных тарифов:'));
+    //tList.add(Text('Текущий тариф: ${initialTarif['name']} (${initialTarif['sum']} руб.)'));
+    //tList.add(Text('Сделайте выбор из доступных тарифов:'));
     for (var item in _tarifs) {
-      if (double.tryParse(userInfo['extra_account']) >= item['sum']) {
+      //if (double.tryParse(userInfo['extra_account']) >= item['sum']) {
         tList.add(
           RadioListTile(
             dense: true,
             title: Text('${item['name']} (${item['sum']} руб.)'),
             value: item['id'],
             groupValue: id,
-            onChanged: (val) => onRadioChange(val),
+            onChanged: double.tryParse(userInfo['extra_account']) >= item['sum'] ? (val) => onRadioChange(val) : null,
             selected: item['sum'] == userInfo['tarif_sum'] ? true : false,
           )
         );
         _availableTarifChoice = true;
-      }
+      //}
     }
     tList.add(
       _availableTarifChoice ?

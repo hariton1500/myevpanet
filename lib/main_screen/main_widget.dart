@@ -11,6 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:myevpanet/main_screen/setups.dart';
 import 'package:myevpanet/support_screen/support.dart';
 
 
@@ -53,7 +54,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     var textScaleFactor1 = MediaQuery.of(context).textScaleFactor;
     for (var item in users.keys) {
         _list.add(
-            Container(
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SetupGroup()));
+            },
+            child: Container(
               padding: EdgeInsets.only(
                   top: 0.0,
                   left: 5.0,
@@ -130,11 +135,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Padding(
-                                      padding: EdgeInsets.only(top: 5.0),
+                                      padding: EdgeInsets.only(top: 2.0),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
-                                          bottom: 6.0,
+                                          bottom: 3.0,
                                           right: 4.0
                                       ),
                                       child: Text("Доступный баланс",
@@ -174,7 +179,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.only(
-                                  top: 10.0
+                                  top: 8.0
                                 ),
                                   child: Text(
                                     //textScaleFactor1.toString(),
@@ -252,6 +257,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
                 )
             )
+          )
         );
 /*          Column(
             children: <Widget>[
