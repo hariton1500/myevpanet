@@ -178,6 +178,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Тут колбасим открытие новой страницы с возможностью оставить заявку на подключение (Используем новый API).
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
         },
         label: Text('Оставить заявку'),
         icon: Icon(Icons.person_add),

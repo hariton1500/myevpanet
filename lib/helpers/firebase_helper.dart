@@ -53,11 +53,11 @@ class FirebaseHelper{
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        // TODO optional
+        // optional
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        // TODO optional
+        // optional
       },
     );
   }

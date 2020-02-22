@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:auto_size_text/auto_size_text.dart';
+//import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -51,7 +51,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   List<Widget> idList() {
     List<Widget> _list = [];
 
-    var textScaleFactor1 = MediaQuery.of(context).textScaleFactor;
+    //var textScaleFactor1 = MediaQuery.of(context).textScaleFactor;
     for (var item in users.keys) {
         _list.add(
           GestureDetector(
@@ -323,6 +323,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
     MediaQueryData queryData;
     queryData = MediaQuery.of(context);
+    Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
         //drawer: AppDrawer(),
@@ -383,7 +384,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         //),
         body: SingleChildScrollView(
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height),
+              constraints: currentOrientation == Orientation.portrait ? BoxConstraints(maxHeight: MediaQuery.of(context).size.height) : BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
               child: Column(
                 children: [
                   Container(
