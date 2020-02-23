@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-//import 'package:auto_size_text/auto_size_text.dart';
+import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,8 +26,7 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
-
-
+ // генерируем точки
   List<Widget> idListPoints() {
     List<Widget> _list = [];
     for (var item in users.keys) {
@@ -47,11 +46,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     }
     return _list;
   }
-
+ // список тёмных плашек
   List<Widget> idList() {
     List<Widget> _list = [];
 
-    //var textScaleFactor1 = MediaQuery.of(context).textScaleFactor;
     for (var item in users.keys) {
         _list.add(
           GestureDetector(
@@ -91,7 +89,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                     )
                   ),
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(ResponsiveFlutter.of(context).moderateScale(20)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -112,7 +110,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         'ID: ' + users[item]['id'].toString(),
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 24,
+                                          fontSize: ResponsiveFlutter.of(context).fontSize(2.4),
                                           fontWeight: FontWeight.bold,
                                           shadows: [
                                             Shadow(
@@ -145,7 +143,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                       child: Text("Доступный баланс",
                                         style: TextStyle(
                                           color: Color.fromRGBO(144, 198, 124, 1),
-                                          fontSize: 16,
+                                          fontSize: ResponsiveFlutter.of(context).fontSize(1.6),
                                         ),
                                       ),
                                     ),
@@ -154,7 +152,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                       //userInfo["extra_account"],
                                       style: TextStyle(
                                         color: double.parse(userInfo["extra_account"]) < 0 ? Color.fromRGBO(255, 81, 105, 1) : Colors.white,
-                                        fontSize: 32,
+                                        fontSize: ResponsiveFlutter.of(context).fontSize(3.2),
                                         fontWeight: FontWeight.bold,
                                         shadows: [
                                           Shadow(
@@ -179,14 +177,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.only(
-                                  top: 8.0
+                                  top: 0.0
                                 ),
                                   child: Text(
                                     //textScaleFactor1.toString(),
                                     '${users[item]['name']}',
                                     textAlign: TextAlign.right,
                                     style: TextStyle(
-                                      fontSize: 24.0,
+                                      fontSize: ResponsiveFlutter.of(context).fontSize(3),
                                       color: Color.fromRGBO(166, 187, 204, 1),
                                       shadows: [
                                         Shadow(
@@ -215,6 +213,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                     Text(
                                         'Окончание действия пакета',
                                         style: TextStyle(
+                                          fontSize: ResponsiveFlutter.of(context).fontSize(1.4),
                                           color: Colors.white,
                                           shadows: [
                                             Shadow(
@@ -228,7 +227,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                     Text(
                                         userInfo["packet_end"],
                                         style: TextStyle(
-                                          fontSize: 18.0,
+                                          fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           shadows: [
@@ -297,6 +296,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     Intl.defaultLocale = 'ru_RU';
     initializeDateFormatting();
     //dateFormat = new DateFormat.yMMMMd('cs');
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+      statusBarIconBrightness: Brightness.dark, // status bar icons' color
+      systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icons' color
+    ));
+
   }
   void getData() async {
     await UserInfo().getUserData();
@@ -314,8 +321,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return result;
   }
 
-  //int _selectedIndex = 0;
-  //String _title = 'Информация';
   int _current = 0;
 
   @override
@@ -332,7 +337,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(70.0), // here the desired height
               child: AppBar(
-                  brightness: Brightness.dark,
+                  brightness: Brightness.light,
                   backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
                 title: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -421,7 +426,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                     child: Text(
                       'Детали учётной записи',
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
                         color: Color.fromRGBO(72, 95, 113, 1.0),
                         fontWeight: FontWeight.bold
                       ),
