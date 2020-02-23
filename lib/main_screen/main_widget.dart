@@ -66,7 +66,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(width: 1.0, color: Color.fromRGBO(52, 79, 100, 1.0)),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(ResponsiveFlutter.of(context).moderateScale(8)),
                     boxShadow: [
                       BoxShadow(
                         color: Color.fromRGBO(184, 202, 220, 1.0),
