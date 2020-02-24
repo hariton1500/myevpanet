@@ -328,94 +328,96 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
     MediaQueryData queryData;
     queryData = MediaQuery.of(context);
-    Orientation currentOrientation = MediaQuery.of(context).orientation;
+    //Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
         //drawer: AppDrawer(),
         backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(70.0), // here the desired height
-              child: AppBar(
-                  brightness: Brightness.light,
-                  backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(7.0),
-                    ),
-                    Text(
-                      "Информация",
-                      style: TextStyle(
-                          color: Color.fromRGBO(72, 95, 113, 1.0),
-                          fontSize: 24.0
-                      ),
-                      textScaleFactor: queryData.textScaleFactor,
-                    ),
-
-                    Text(
-                      DateFormat.yMMMMd().format(DateTime.now()),
-                      style: TextStyle(
-                          color: Color.fromRGBO(146, 152, 166, 1.0),
-                          fontSize: 14.0
-                      ),
-                    )
-                  ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0), // here the desired height
+          child: AppBar(
+              brightness: Brightness.light,
+              backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(7.0),
                 ),
-                elevation: 0.0,
-/*            leading: new Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: new CircleAvatar(
-                backgroundImage: new NetworkImage(userPicUrl),
-              ),
-            ),*/
-                actions: <Widget>[
-                  GestureDetector(
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                        child: Icon(
-                          MaterialCommunityIcons.face_agent,
-                          color: Color.fromRGBO(72, 95, 113, 1.0),
-                          size: 32.0,
-                        )
-                    ),
-                    onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
-                  )
-                ],
-              ),
-          ),
-        //),
-        body: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: currentOrientation == Orientation.portrait ? BoxConstraints(maxHeight: MediaQuery.of(context).size.height) : BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-              child: Column(
-                children: [
-                  Container(
-                    child: CarouselSlider(
-                      items: idList(),
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      aspectRatio: 16/10,
-                      viewportFraction: 0.9,
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentGuidIndex = index;
-                          userInfo = users[currentGuidIndex];
-                          _current = index;
-                        });
-                      },
-                    ),
+                Text(
+                  "Информация",
+                  style: TextStyle(
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      fontSize: 24.0
                   ),
+                  textScaleFactor: queryData.textScaleFactor,
+                ),
 
-                  Container(
-                    //padding: EdgeInsets.all(5.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: idListPoints()
-                    ),
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: TextStyle(
+                      color: Color.fromRGBO(146, 152, 166, 1.0),
+                      fontSize: 14.0
                   ),
+                )
+              ],
+            ),
+            elevation: 0.0,
+            actions: <Widget>[
+              GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(10.0),
+                    child: Icon(
+                      MaterialCommunityIcons.face_agent,
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      size: 32.0,
+                    )
+                ),
+                onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
+              )
+            ],
+          ),
+        ),
+        //),
+        body: Column(
+          children: [
+            // каруселька
+            Container(
+              child: CarouselSlider(
+                items: idList(),
+                autoPlay: false,
+                enlargeCenterPage: true,
+                aspectRatio: 16/10,
+                viewportFraction: 0.9,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentGuidIndex = index;
+                    userInfo = users[currentGuidIndex];
+                    _current = index;
+                  });
+                },
+              ),
+            ),
+            // навигационные точечки
+            Container(
+              //padding: EdgeInsets.all(5.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: idListPoints()
+              ),
+            ),
+            // секция с картами деталей учетной записи
+            Expanded(
+              child: ListView(
+                physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+                padding: EdgeInsets.only(
+                  top: 0.0,
+                  left: 30.0,
+                  right: 30.0
+                ),
+                children: <Widget> [
+                  // текст - Детали учетной записи
                   Container(
                     padding: EdgeInsets.only(
                       left: 40.0,
@@ -434,76 +436,65 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   ),
                   Container(
                     padding: EdgeInsets.only(
-                      top: 10.0,
-                      left: 30.0,
-                      right: 30.0
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('Тарифный план'),
+                                subtitle: Text(
+                                    userInfo["tarif_name"] + " (" + userInfo["tarif_sum"].toString() + " р.)"
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                     ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: 5.0),
-                          child: Card(
-                              child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: Icon(Icons.album, size: 40),
-                                      title: Text('Тарифный план'),
-                                      subtitle: Text(
-                                          userInfo["tarif_name"] + " (" + userInfo["tarif_sum"].toString() + " р.)"
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('IP адрес абонента'),
+                                subtitle: Text(userInfo["real_ip"]),
+                              ),
+                            ],
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: 5.0),
-                          child: Card(
-                              child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: Icon(Icons.album, size: 40),
-                                      title: Text('IP адрес абонента'),
-                                      subtitle: Text(userInfo["real_ip"]),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: 5.0),
-                          child: Card(
-                              child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                      leading: Icon(Icons.album, size: 40),
-                                      title: Text('Адрес подключения'),
-                                      subtitle: Text(userInfo["street"] + ", д. " + userInfo["house"] + ", кв. " + userInfo["flat"]),
-                                    ),
-                                  ],
-                                ),
-                              )
-                          ),
-                        ),
-                      ],
+                        )
                     ),
-                  )
-
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('Адрес подключения'),
+                                subtitle: Text(userInfo["street"] + ", д. " + userInfo["house"] + ", кв. " + userInfo["flat"]),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
                 ],
               ),
-            ),
-        ),
+            )
+          ]
+        )
     );
   }
 }
