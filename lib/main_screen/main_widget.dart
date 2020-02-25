@@ -254,7 +254,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                           top: 20.0
                                       ),
                                       child: Icon(
-                                        Icons.settings_applications,
+                                        MaterialCommunityIcons.cogs,
                                         color: Colors.white,
                                         size: 40.0,
                                       ),
@@ -433,6 +433,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   right: 30.0
                 ),
                 children: <Widget> [
+                  // виджет отображения долга
                   Container(
                       child: Column(
                         children: <Widget>[
@@ -457,7 +458,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                         ],
                       )
                   ),
-
                   // текст - Детали учетной записи
                   Container(
                     padding: EdgeInsets.only(
