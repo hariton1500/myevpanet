@@ -245,7 +245,23 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(" "),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 20.0
+                                      ),
+                                      child: Icon(
+                                        Icons.settings_applications,
+                                        color: Colors.white,
+                                        size: 40.0,
+                                      ),
+                                    )
+                                  ],
+                                )
+
                               ),
                             ],
                           ),
@@ -417,6 +433,31 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   right: 30.0
                 ),
                 children: <Widget> [
+                  Container(
+                      child: Column(
+                        children: <Widget>[
+                          double.parse(userInfo["debt"]) > 0
+                              ?
+                              Card(
+                                  color: Colors.red,
+                                  child: new ListTile(
+                                        title: Text(
+                                          "За Вашей учётной записью числится задолженость " + userInfo["debt"]?.toString() + " р.",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        //subtitle: Text(userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
+                                  )
+                              )
+                              :
+                          Container(),
+                        ],
+                      )
+                  ),
+
                   // текст - Детали учетной записи
                   Container(
                     padding: EdgeInsets.only(
