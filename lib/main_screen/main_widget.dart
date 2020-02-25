@@ -244,7 +244,23 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Text(" "),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 20.0
+                                      ),
+                                      child: Icon(
+                                        MaterialCommunityIcons.cogs,
+                                        color: Colors.white,
+                                        size: 40.0,
+                                      ),
+                                    )
+                                  ],
+                                )
+
                               ),
                             ],
                           ),
@@ -477,6 +493,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           ),
         ),
         //),
+<<<<<<< HEAD
         body: OrientationBuilder(
           builder: (context, orientation) {
             return GridView.count(
@@ -488,6 +505,148 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             );
           }
         ) //bodyContent()
+=======
+        body: Column(
+          children: [
+            // каруселька
+            Container(
+              child: CarouselSlider(
+                items: idList(),
+                autoPlay: false,
+                enlargeCenterPage: true,
+                aspectRatio: 16/10,
+                viewportFraction: 0.9,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentGuidIndex = index;
+                    userInfo = users[currentGuidIndex];
+                    _current = index;
+                  });
+                },
+              ),
+            ),
+            // навигационные точечки
+            Container(
+              //padding: EdgeInsets.all(5.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: idListPoints()
+              ),
+            ),
+            // секция с картами деталей учетной записи
+            Expanded(
+              child: ListView(
+                physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+                padding: EdgeInsets.only(
+                  top: 0.0,
+                  left: 30.0,
+                  right: 30.0
+                ),
+                children: <Widget> [
+                  // виджет отображения долга
+                  Container(
+                      child: Column(
+                        children: <Widget>[
+                          double.parse(userInfo["debt"]) > 0
+                              ?
+                              Card(
+                                  color: Colors.red,
+                                  child: new ListTile(
+                                        title: Text(
+                                          "За Вашей учётной записью числится задолженость " + userInfo["debt"]?.toString() + " р.",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        //subtitle: Text(userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
+                                  )
+                              )
+                              :
+                          Container(),
+                        ],
+                      )
+                  ),
+                  // текст - Детали учетной записи
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 40.0,
+                      top: 10.0,
+                      bottom: 10.0
+                    ),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Детали учётной записи',
+                      style: TextStyle(
+                        fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
+                        color: Color.fromRGBO(72, 95, 113, 1.0),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('Тарифный план'),
+                                subtitle: Text(
+                                    userInfo["tarif_name"] + " (" + userInfo["tarif_sum"].toString() + " р.)"
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('IP адрес абонента'),
+                                subtitle: Text(userInfo["real_ip"]),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                        top: 5.0),
+                    child: Card(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              ListTile(
+                                leading: Icon(Icons.album, size: 40),
+                                title: Text('Адрес подключения'),
+                                subtitle: Text(userInfo["street"] + ", д. " + userInfo["house"] + ", кв. " + userInfo["flat"]),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ]
+        )
+>>>>>>> 0566b74fdc66aedb9ee57c43bbf382bc933c9c4a
     );
   }
 }
