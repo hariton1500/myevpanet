@@ -39,8 +39,10 @@ class RadioGroupWidget extends State {
       //if (double.tryParse(userInfo['extra_account']) >= item['sum']) {
         tList.add(
           RadioListTile(
+            activeColor: Colors.green,
             dense: true,
             title: Text('${item['name']} (${item['sum']} руб.)'),
+            subtitle: item['sum'] == userInfo['tarif_sum'] ? Text("(текущий тариф)") : null,
             value: item['id'],
             groupValue: id,
             onChanged: double.tryParse(userInfo['extra_account']) >= item['sum'] ? (val) => onRadioChange(val) : null,
@@ -48,7 +50,7 @@ class RadioGroupWidget extends State {
           )
         );
         _availableTarifChoice = true;
-      //}
+     //}
     }
     tList.add(
       _availableTarifChoice ?
@@ -56,7 +58,7 @@ class RadioGroupWidget extends State {
           onPressed: onTarifButtonPressed,
           child: Text('Изменить тариф'),)
         :
-        Text('Доступных тарифов нет. На балансе недостаточно средств.')
+        Text('На балансе недостаточно средств для активации тарифного плана.')
     );
     return tList;
   }

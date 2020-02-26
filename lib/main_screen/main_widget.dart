@@ -194,7 +194,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                       ],
                                     ),
-                                    textScaleFactor: MediaQuery.of(context).textScaleFactor,
                                   ),
                               )
                             ],
