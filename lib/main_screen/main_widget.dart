@@ -49,6 +49,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
  // список тёмных плашек
   List<Widget> idList() {
     List<Widget> _list = [];
+
     for (var item in users.keys) {
         _list.add(
           GestureDetector(
@@ -272,127 +273,29 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             )
           )
         );
+/*          Column(
+            children: <Widget>[
+              ListTile(
+                  title: Text('${users[item]['name']}'),
+                  subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.blue,
+                    child: Text(
+                      '${users[item]['name'].substring(0,1)}',
+                      style: TextStyle(fontSize: 18.0, color: Colors.white),
+                    ),
+                  ),
+                  isThreeLine: true,
+                  onTap: () {
+                    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+                  }
+              ),
+            ],
+          ),*/
+
     }
     return _list;
-  }
-  Widget bodyContentCourusel() {
-    return Column(
-      children: [
-        // каруселька
-        Container(
-          child: CarouselSlider(
-            items: idList(),
-            autoPlay: false,
-            enlargeCenterPage: true,
-            aspectRatio: 16/10,
-            viewportFraction: 0.9,
-            onPageChanged: (index) {
-              setState(() {
-                currentGuidIndex = index;
-                userInfo = users[currentGuidIndex];
-                _current = index;
-              });
-            },
-          ),
-        ),
-        // навигационные точечки
-        Container(
-          //padding: EdgeInsets.all(5.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: idListPoints()
-          ),
-        ),
-      ]
-    );
-  }
-  Widget bodyContentCards() {
-    // секция с картами деталей учетной записи
-    return Expanded(
-      child: ListView(
-        physics: ScrollPhysics(parent: BouncingScrollPhysics()),
-        padding: EdgeInsets.only(
-          top: 0.0,
-          left: 30.0,
-          right: 30.0
-        ),
-        children: <Widget> [
-          // текст - Детали учетной записи
-          Container(
-            padding: EdgeInsets.only(
-              left: 40.0,
-              top: 10.0,
-              bottom: 10.0
-            ),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Детали учётной записи',
-              style: TextStyle(
-                fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
-                color: Color.fromRGBO(72, 95, 113, 1.0),
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: 5.0),
-            child: Card(
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.album, size: 40),
-                        title: Text('Тарифный план'),
-                        subtitle: Text(
-                            userInfo["tarif_name"] + " (" + userInfo["tarif_sum"].toString() + " р.)"
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: 5.0),
-            child: Card(
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.album, size: 40),
-                        title: Text('IP адрес абонента'),
-                        subtitle: Text(userInfo["real_ip"]),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-                top: 5.0),
-            child: Card(
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.album, size: 40),
-                        title: Text('Адрес подключения'),
-                        subtitle: Text(userInfo["street"] + ", д. " + userInfo["house"] + ", кв. " + userInfo["flat"]),
-                      ),
-                    ],
-                  ),
-                )
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   DateFormat dateFormat;
@@ -492,19 +395,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           ),
         ),
         //),
-<<<<<<< HEAD
-        body: OrientationBuilder(
-          builder: (context, orientation) {
-            return GridView.count(
-              crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
-              children: <Widget>[
-                bodyContentCourusel(),
-                bodyContentCards()
-              ],  
-            );
-          }
-        ) //bodyContent()
-=======
         body: Column(
           children: [
             // каруселька
@@ -645,7 +535,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             )
           ]
         )
->>>>>>> 0566b74fdc66aedb9ee57c43bbf382bc933c9c4a
     );
   }
 }
