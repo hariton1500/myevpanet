@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:myevpanet/helpers/DesignHelper.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +122,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                           ],
                                         ),
                                       ),
-                                    )
+                                    ),
+                                    CircleButton(
+                                        onTap: () => print("Cool"), // Харитон, тут надо тапнуть на новый скрин пополнения баланса
+                                        iconData: MaterialCommunityIcons.wallet_plus_outline
+                                    ),
                                   ],
                                 ),
                               ),
