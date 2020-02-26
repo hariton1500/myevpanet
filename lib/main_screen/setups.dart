@@ -353,8 +353,6 @@ class SetupGroupWidget extends State {
                                                   ],
                                                 )
                                             ),
-
-
                                           ],
                                         ),
                                       ),
