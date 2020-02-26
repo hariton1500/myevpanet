@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/support_screen/support.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:myevpanet/api/api.dart';
@@ -27,7 +29,7 @@ class SetupGroupWidget extends State {
       systemNavigationBarColor: Colors.transparent, // navigation bar color
       statusBarColor: Colors.transparent, // status bar color
       statusBarIconBrightness: Brightness.dark, // status bar icons' color
-      systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icons' color
+      systemNavigationBarIconBrightness: Brightness.light, //navigation bar icons' color
     ));
 
   }
@@ -142,20 +144,22 @@ class SetupGroupWidget extends State {
                         ),
                       ),
                     ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                      GestureDetector(
+                        child: Container(
+                            padding: EdgeInsets.all(10.0),
                             child: Icon(
-                              FontAwesome.user_circle, color: Colors.white,
-                            ),
-                          ),
+                              MaterialCommunityIcons.face_agent,
+                              color: Colors.white,
+                              size: 32.0,
+                            )
                         ),
+                        onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
+                      )
                     ],
                   ),
                 ),
                 pinned: true,
-                expandedHeight: 310,
+                expandedHeight: 330,
                 flexibleSpace:
                   Container(
                     decoration: BoxDecoration(
@@ -186,7 +190,7 @@ class SetupGroupWidget extends State {
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            bottom: 3.0,
+                                            bottom: 7.0,
                                             right: 4.0
                                         ),
                                         child: Center(
@@ -199,22 +203,37 @@ class SetupGroupWidget extends State {
                                         ),
                                       ),
                                       Center(
-                                        child: Text(
-                                          NumberFormat('#,##0.00##', 'ru_RU').format(double.parse(userInfo["extra_account"])) + " р.",
-                                          //userInfo["extra_account"],
-                                          style: TextStyle(
-                                            color: double.parse(userInfo["extra_account"]) < 0 ? Color.fromRGBO(255, 81, 105, 1) : Color.fromRGBO(217, 234, 244, 1),
-                                            fontSize: ResponsiveFlutter.of(context).fontSize(3.7),
-                                            fontWeight: FontWeight.bold,
-                                            shadows: [
-                                              Shadow(
-                                                blurRadius: 1.0,
-                                                color: Colors.black,
-                                                offset: Offset(1.0, 1.0),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  right: 5.0
                                               ),
-                                            ],
-                                          ),
-                                        ),
+                                              child: CircleButton(
+                                                  onTap: () => print("Cool"), // Харитон, тут надо тапнуть на новый скрин пополнения баланса
+                                                  iconData: MaterialCommunityIcons.wallet_plus_outline
+                                              ),
+                                            ),
+                                           Text(
+                                             NumberFormat('#,##0.00##', 'ru_RU').format(double.parse(userInfo["extra_account"])) + " р.",
+                                             //userInfo["extra_account"],
+                                             style: TextStyle(
+                                               color: double.parse(userInfo["extra_account"]) < 0 ? Color.fromRGBO(255, 81, 105, 1) : Color.fromRGBO(217, 234, 244, 1),
+                                               fontSize: ResponsiveFlutter.of(context).fontSize(3.7),
+                                               fontWeight: FontWeight.bold,
+                                               shadows: [
+                                                 Shadow(
+                                                   blurRadius: 1.0,
+                                                   color: Colors.black,
+                                                   offset: Offset(1.0, 1.0),
+                                                 ),
+                                               ],
+                                             ),
+                                           ),
+                                         ],
+                                        )
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
