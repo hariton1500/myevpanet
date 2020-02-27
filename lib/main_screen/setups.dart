@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/helpers/DesignHelper.dart';
-//import 'package:myevpanet/support_screen/support.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:myevpanet/api/api.dart';
@@ -42,7 +41,11 @@ class SetupGroupWidget extends State {
     print('$answer');
     setState(
       () {
-        autoState = value;
+        if (answer.toString().contains('00000000-0000-0000-C000-000000000046')) autoState = !value;
+        else {
+          autoState = value;
+          userInfo['auto_activation'] = value ? 1 : 0;
+        }
       }
     );
   }
@@ -55,7 +58,11 @@ class SetupGroupWidget extends State {
     print('$answer');
     setState(
       () {
-        parentState = value;
+        if (answer.toString().contains('00000000-0000-0000-C000-000000000046')) parentState = !value;
+        else {
+          parentState = value;
+          userInfo['flag_parent_control'] = value ? 1 : 0;
+        }
       }
     );
   }
@@ -69,7 +76,6 @@ class SetupGroupWidget extends State {
         barrierColor: Colors.black45,
         transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
-
           return Dialog(
             backgroundColor: Colors.transparent,
               child: Container(
@@ -97,9 +103,6 @@ class SetupGroupWidget extends State {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-/*                          SizedBox(
-                            height: 20.0,
-                          ),*/
                           Container(
                             padding: EdgeInsets.only(
                                 left: 16.0,
@@ -193,11 +196,7 @@ class SetupGroupWidget extends State {
   final double appBarHeight = 66.0;
 
   List<Widget> _list1() {
-
     List<Widget> tList = [];
-    //tList.add(Text('Текущий тариф: ${initialTarif['name']} (${initialTarif['sum']} руб.)'));
-    //tList.add(Text('Сделайте выбор из доступных тарифов:'));
-
     tList.add(
       SwitchListTile(
         activeColor: Color(0xff3e6282),
@@ -217,9 +216,7 @@ class SetupGroupWidget extends State {
         onChanged: (bool state) {onSetupParentChange(state);},
       )
     );
-
     return tList;
-
   }
 
   List<Widget> _list() {
@@ -227,23 +224,8 @@ class SetupGroupWidget extends State {
     tList.add(
         RadioGroup()
     );
-
     return tList;
-
   }
-
-/*  List _buildList(int count) {
-    List<Widget> listItems = List();
-    for (int i = 0; i < count; i++) {
-      listItems.add(new Padding(padding: new EdgeInsets.all(20.0),
-          child: new Text(
-              'Item ${i.toString()}',
-              style: new TextStyle(fontSize: 25.0)
-          )
-      ));
-    }
-    return listItems;
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -523,16 +505,6 @@ class SetupGroupWidget extends State {
                          children: _list1(),
                      ),
                    ),
-/*                   Container(
-                     child: Text(
-                       'Тарифные планы',
-                       style: TextStyle(
-                           fontSize: ResponsiveFlutter.of(context).fontSize(1.7),
-                           color: Color.fromRGBO(72, 95, 113, 1.0),
-                           fontWeight: FontWeight.bold
-                       ),
-                     ),
-                   ),*/
                    Divider(
                      indent: 20.0,
                      endIndent: 20.0,

@@ -27,39 +27,37 @@ class RadioGroupWidget extends State {
         id = value.toString();
       }
     );
-    //id = value.toString();
   }
 
   List<Widget> _list() {
     List<Widget> tList = [];
     bool _availableTarifChoice = false;
-    //tList.add(Text('Текущий тариф: ${initialTarif['name']} (${initialTarif['sum']} руб.)'));
-    //tList.add(Text('Сделайте выбор из доступных тарифов:'));
     for (var item in _tarifs) {
-      //if (double.tryParse(userInfo['extra_account']) >= item['sum']) {
-        tList.add(
-          RadioListTile(
-            activeColor: Colors.green,
-            dense: true,
-            title: Text('${item['name']} (${item['sum']} руб.)'),
-            subtitle: item['sum'] == userInfo['tarif_sum'] ? Text("(текущий тариф)") : null,
-            value: item['id'],
-            groupValue: id,
-            onChanged: double.tryParse(userInfo['extra_account']) >= item['sum'] ? (val) => onRadioChange(val) : null,
-            selected: item['sum'] == userInfo['tarif_sum'] ? true : false,
-          )
-        );
-        _availableTarifChoice = true;
-     //}
+      tList.add(
+        RadioListTile(
+          activeColor: Colors.green,
+          dense: true,
+          title: Text('${item['name']} (${item['sum']} руб.)'),
+          subtitle: item['sum'] == userInfo['tarif_sum'] ? Text("(текущий тариф)") : null,
+          value: item['id'],
+          groupValue: id,
+          onChanged: double.tryParse(userInfo['extra_account']) >= item['sum'] ? (val) => onRadioChange(val) : null,
+          selected: item['sum'] == userInfo['tarif_sum'] ? true : false,
+        )
+      );
+      if (double.tryParse(userInfo['extra_account']) >= item['sum']) _availableTarifChoice = true;
     }
     tList.add(
       _availableTarifChoice ?
         RaisedButton(
-          onPressed: onTarifButtonPressed,
+          onPressed: userInfo['auto_activation'] == 0 ? onTarifButtonPressed : null,
           child: Text('Изменить тариф'),)
         :
         Text('На балансе недостаточно средств для активации тарифного плана.')
     );
+    if (userInfo['auto_activation'] == 1) {
+      tList.add(Text('Чтобы изменить тариф нужно сначала отключить автоактивацию.'));
+    }
     return tList;
   }
 
