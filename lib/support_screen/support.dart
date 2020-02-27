@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:intl/intl.dart';
-import 'package:myevpanet/helpers/DesignHelper.dart';
+/*import 'package:flutter_icons/flutter_icons.dart';
+//import 'package:intl/intl.dart';
+//import 'package:myevpanet/helpers/DesignHelper.dart';*/
 import 'package:responsive_flutter/responsive_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 //import 'package:flutter/semantics.dart';
@@ -26,24 +26,24 @@ class _SupportScreenState extends State<SupportScreen> {
     super.initState();
   }
 
-  _launchURL(url) async {
+/*  _launchURL(url) async {
     //const url = 'https://flutter.dev';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-
+//    final _formKey = GlobalKey<FormState>();
     final double appBarHeight = 66.0;
 
-    final double statusBarHeight = MediaQuery
+/*    final double statusBarHeight = MediaQuery
         .of(context)
         .padding
-        .top;
+        .top;*/
 
     return Container(
       child: Scaffold(
@@ -202,12 +202,35 @@ class _SupportScreenState extends State<SupportScreen> {
                                 child: Column(
                                   children: <Widget>[
                                     Text("Вы так же можете связаться со службой поддержки одним из следующих способов:"),
-                                    RaisedButton.icon(
-                                        elevation: 2.0,
-                                        onPressed: _launchURL("tel://+79787173865"),
-                                        icon: null,
-                                        label: Text("+79787173865")
+                                    RaisedButton(
+                                      child: Text(
+                                        "phone",
+                                      ),
+                                      onPressed: () {
+
+
+                                      },
+
                                     ),
+                                    SizedBox.fromSize(
+                                      size: Size(56, 56), // button width and height
+                                      child: ClipOval(
+                                        child: Material(
+                                          color: Colors.orange, // button color
+                                          child: InkWell(
+                                            splashColor: Colors.green, // splash color
+                                            onTap: () {}, // button pressed
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(Icons.call), // icon
+                                                Text("Call"), // text
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 )
                             ),

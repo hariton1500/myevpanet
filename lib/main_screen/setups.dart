@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/helpers/DesignHelper.dart';
-import 'package:myevpanet/support_screen/support.dart';
+//import 'package:myevpanet/support_screen/support.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:myevpanet/api/api.dart';
@@ -59,6 +59,136 @@ class SetupGroupWidget extends State {
       }
     );
   }
+// это можно вынести в отдельный файл
+  void showModalSupport() async{
+
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black45,
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+
+          return Dialog(
+            backgroundColor: Colors.transparent,
+              child: Container(
+                margin: EdgeInsets.only(left: 0.0,right: 0.0),
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 18.0,
+                      ),
+                      margin: EdgeInsets.only(top: 13.0,right: 8.0),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(6.0),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 0.0,
+                              offset: Offset(0.0, 0.0),
+                            ),
+                          ]
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+/*                          SizedBox(
+                            height: 20.0,
+                          ),*/
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                                bottom: 20.0
+                            ),
+                            alignment: Alignment.topCenter,
+                            child: Center(
+                              child: Text(
+                                'Отправка сообщения в службу технической поддержки',
+                                style: TextStyle(
+                                    fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                                    color: Color.fromRGBO(72, 95, 113, 1.0),
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                              left: 16.0,
+                              right: 16.0,
+                            ),
+                            child: TextField(
+                              autofocus: true,
+                              maxLines: 3,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                //hintText: "Напишите нам",
+                                labelText: "Ваше сообщение",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.amber,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 24.0),
+                          InkWell(
+                            child: Container(
+                              padding: EdgeInsets.only(top: 15.0,bottom:15.0),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(6.0),
+                                    bottomRight: Radius.circular(6.0)),
+                              ),
+                              child:  Text(
+                                "Отправить сообщение",
+                                style: TextStyle(color: Colors.white,fontSize: 20.0),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onTap:(){
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      right: 0.0,
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).pop();
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 14.0,
+                            backgroundColor: Colors.red,
+                            child: Icon(Icons.close, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+          );
+
+        }
+    );
+  }
+
 
   final double appBarHeight = 66.0;
 
@@ -153,7 +283,10 @@ class SetupGroupWidget extends State {
                               size: 32.0,
                             )
                         ),
-                        onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
+                        onTap: () {
+                          //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                          showModalSupport();
+                          },
                       )
                     ],
                   ),
