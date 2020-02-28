@@ -37,6 +37,9 @@
 *   Method: PUT
 *   Body:
 *     - формат = JSON {"guid":"<GUID>"}
+*   Header:
+*     - key = token
+*     - value = токен от гугла
 *
 *   Response:
 *     - формат: JSON
