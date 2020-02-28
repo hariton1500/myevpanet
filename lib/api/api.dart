@@ -1,4 +1,47 @@
 //все вспомогательные классы с их методами здесь
+
+/*
+* Описание принципов работы нового API.
+*
+* Основной адрес нового API: https://evpanet.com/api/apk/
+*
+* Авторизация:
+*   URL: https://evpanet.com/api/apk/login/user
+*   Method: POST
+*   Body:
+*     - number = номер телефона в формате +7....
+*     - uid = ID абонента
+*     - token = токен сгенерённый гуглом
+*
+*   Response:
+*     - формат: JSON
+*     - данные: массив GUID
+*
+* Получение данных абонента:
+*   URL: https://evpanet.com/api/apk/user/info/<GUID>
+*   Method: GET
+*   Header:
+*     - key = token
+*     - value = токен от гугла
+*
+*   Response:
+*     - формат: JSON
+*     - данные: данные об абоненте, и доступные тарифные планы
+*
+* Изменение флагов автоактивации и родительского контроля:
+*   URLS:
+*     - https://evpanet.com/api/apk/user/parent_control/  для родительского контроля
+*     - https://evpanet.com/api/apk/user/auto_activation/ для автоактивации
+*   Method: PUT
+*   Body:
+*     - формат = JSON {"guid":"<GUID>"}
+*
+*   Response:
+*     - формат: JSON
+*     - данные: текущее состояние флага (1 или 0)
+*
+* */
+
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
