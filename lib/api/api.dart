@@ -4,46 +4,58 @@
 * Описание принципов работы нового API.
 *
 * Основной адрес нового API: https://evpanet.com/api/apk/
-*
+* ***************************************************************
 * Авторизация:
 *   URL: https://evpanet.com/api/apk/login/user
 *   Method: POST
-*   Body:
-*     - number = номер телефона в формате +7....
-*     - uid = ID абонента
 *   Header:
 *     - key = token
 *     - value = токен от гугла
-*
+*   Body:
+*     - number = номер телефона в формате +7....
+*     - uid = ID абонента
 *   Response:
 *     - формат: JSON
 *     - данные: массив GUID
-*
+* ***************************************************************
 * Получение данных абонента:
 *   URL: https://evpanet.com/api/apk/user/info/<GUID>
 *   Method: GET
 *   Header:
 *     - key = token
 *     - value = токен от гугла
-*
 *   Response:
 *     - формат: JSON
 *     - данные: данные об абоненте, и доступные тарифные планы
-*
+* ***************************************************************
 * Изменение флагов автоактивации и родительского контроля:
 *   URLS:
 *     - https://evpanet.com/api/apk/user/parent_control/  для родительского контроля
 *     - https://evpanet.com/api/apk/user/auto_activation/ для автоактивации
 *   Method: PUT
-*   Body:
-*     - формат = JSON {"guid":"<GUID>"}
 *   Header:
 *     - key = token
 *     - value = токен от гугла
-*
+*   Body:
+*     - формат = JSON {"guid":"<GUID>"}
 *   Response:
 *     - формат: JSON
 *     - данные: текущее состояние флага (1 или 0)
+*
+* ***************************************************************
+* Добавление ремонта или коментария к ремонту
+*   URL: https://evpanet.com/api/apk/support/request
+*   Method: POST
+*   Header:
+*     - key = token
+*     - value = токен от гугла
+*   Body:
+*     - message = сообщение от абонента
+*     - guid
+*   Response:
+*     - формат: JSON
+*     - ответ: есть ли ошибка и текст, или сообщения или ошибки
+*
 *
 * */
 
