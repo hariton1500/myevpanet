@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/splash_screen/splash_widget.dart';
 
-int verbose = 2;
+int verbose = 1;
 List guids;
 String devKey;
 int currentGuidIndex = 0;
 Map userInfo;
+bool useNewApiVersion = true;
 var users = Map();
 FirebaseHelper fbHelper;
+
 void main() {
   runApp(App());
 }

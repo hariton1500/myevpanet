@@ -127,17 +127,14 @@ class FileStorage {
 }
 
 class Network {
-  Future getData(String url) async {
+  bool isError = false;
+  String error = '';
+  Response response;
+  Future<Response> getData(String url) async {
     if (verbose == 1) print('Calling uri: $url');
     // 4
     try {
-      Response response = await get(url);
-      if (response.statusCode == 200) {
-        // 6
-        return response.body;
-      } else {
-        if (verbose == 1) print(response.statusCode);
-      }
+      return await get(url);
     } on SocketException catch (e) {
       Fluttertoast.showToast(
         msg: "Нет подключения к сети",
@@ -148,7 +145,8 @@ class Network {
         textColor: Colors.white,
         fontSize: 16.0
       );
-      return e.toString();
+      this.isError = true;
+      this.error = e.toString();
     } on HandshakeException catch (e) {
       Fluttertoast.showToast(
         msg: "Нет подключения к сети",
@@ -159,53 +157,107 @@ class Network {
         textColor: Colors.white,
         fontSize: 16.0
       );
-      return e.toString();
+      this.isError = true;
+      this.error = e.toString();
     }
-      // 5
+    return response;
   }
-
-  Future postData(String url, int number, int uid, int devid) async {
-    var _body = {'number': '+79780481885', 'uid': '20', 'devid': '234234'};
-    if (verbose == 1) print('Calling uri: $url body: $_body');
-    // 4
-    Response response = await post(url, body: _body);
-    // 5
-    if (response.statusCode == 200) {
-      // 6
-      return response.body;
-    } else {
-      if (verbose == 1) print('Error. Status is: ${response.statusCode}');
-    }
-  }
-
 }
 
 class RestAPI {
-  Future<dynamic> getData(String url) async {
+  Future<Response> getData(String url) async {
     Network network = Network();
-    var gData = await network.getData(url);
-    return gData;
+    return await network.getData(url);
   }
 
-  Future<dynamic> postData(String url, int number, int uid, int devid) async {
-    Network network = Network();
-    var gData = await network.postData(url, number, uid, devid);
-    return gData;
+  /*
+  * Авторизация:
+  *   URL: https://evpanet.com/api/apk/login/user
+  *   Method: POST
+  *   Body:
+  *     - number = номер телефона в формате +7....
+  *     - uid = ID абонента
+  *   Header:
+  *     - key = token
+  *     - value = токен от гугла
+  *
+  *   Response:
+  *     - формат: JSON
+  *     - данные: массив GUID
+  */
+  Future<Map<String, String>> authorizeUserPOST(String number, int uid, String token) async {
+    Response response;
+    Map<String, String> answer = {'answer' : 'isEmpty', 'body' : ''};
+    Map<String, String> headers = {'token' : '$token'};
+    Map _body = {'number' : '$number', 'uid' : '$uid'};
+    String url = 'https://evpanet.com/api/apk/login/user';
+    if (verbose >= 1) print('Requesting by POST: url = $url; headers = $headers; body = $_body');
+    try {
+      response = await post(url, headers: headers, body: _body);
+      if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
+    } on SocketException catch (error) {
+      if (verbose >=1) print(error.message);
+      return answer;
+    } on HandshakeException catch (error) {
+      if (verbose >=1) print(error.message);
+      return answer;
+    }
+    if (verbose >= 1) {
+      print('Response statusCode: ${response.statusCode}');
+      print('Response reasonPhrase: ${response.reasonPhrase}');
+      if (response.statusCode == 201 && response.reasonPhrase == 'Created') print('Response body: ${json.decode(response.body)['message']['guids']}');
+    }
+    return answer;
   }
 
+  /* Получение данных абонента:
+  *   URL: https://evpanet.com/api/apk/user/info/<GUID>
+  *   Method: GET
+  *   Header:
+  *     - key = token
+  *     - value = токен от гугла
+  *
+  *   Response:
+  *     - формат: JSON
+  *     - данные: данные об абоненте, и доступные тарифные планы
+  */
+  Future<Map<String, String>> userDataGet(String guid, String token) async {
+    Response response;
+    Map<String, String> answer = {'answer' : 'isEmpty', 'body' : ''};
+    Map<String, String> headers = {'token' : '$token'};
+    String url = 'https://evpanet.com/api/apk/user/info/$guid';
+    if (verbose >= 1) print('Requesting by GET: url = $url; headers = $headers');
+    try {
+      response = await get(url, headers: headers);
+      if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
+    } on SocketException catch (error) {
+      if (verbose >=1) print(error.message);
+      return answer;
+    } on HandshakeException catch (error) {
+      if (verbose >=1) print(error.message);
+      return answer;
+    }
+    if (verbose >= 1) {
+      print('Response statusCode: ${response.statusCode}');
+      print('Response reasonPhrase: ${response.reasonPhrase}');
+      if (response.statusCode == 201) print('Response body: ${json.decode(response.body)['message']}');
+    }
+    return answer;
+  }
 }
+
 class UserInfo {
   void f(k, v) {
-    if (verbose == 1) print('$k, $v');
+    if (verbose >= 1) print('$k, $v');
   }
   Future<bool> readFromFile() async {
-    if (verbose == 1) print('Check existing of file ${guids[currentGuidIndex]}.dat');
+    if (verbose >= 1) print('Check existing of file ${guids[currentGuidIndex]}.dat');
     final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
     if (_file.existsSync()) {
-      if (verbose == 1) print('file is exists. Start reading.');
+      if (verbose >= 1) print('file is exists. Start reading.');
       var res = _file.readAsStringSync(encoding: utf8);
-      if (verbose == 1) print('Show what readed:\n$res');
-      if (verbose == 1) print('Start json parsing');
+      if (verbose >= 1) print('Show what readed:\n$res');
+      if (verbose >= 1) print('Start json parsing');
       var parsed = json.decode(res);
       //print('Type of parsing result variable is: ${parsed.runtimeType}');
       if (parsed.runtimeType.toString().contains('List')) {
@@ -217,19 +269,19 @@ class UserInfo {
         return false;
       }
     } else {
-      if (verbose == 1) print('file is not exists!');
+      if (verbose >= 1) print('file is not exists!');
       return false;
     }
   }
 
   Future<bool> getUserInfoFromServer() async {
-    if (verbose == 1) print('Start request from Server.');
+    if (verbose >= 1) print('Start request from Server.');
     String _url = 'https://app.evpanet.com/?get=userinfo';
     _url += '&guid=${guids[currentGuidIndex]}&devid=$devKey';
-    if (verbose == 1) print('Requesting uri: $_url');
+    if (verbose >= 1) print('Requesting uri: $_url');
     var result = await RestAPI().getData(_url);
-    if (verbose == 1) print('Got from server: $result');
-    if (verbose == 1) print('Checking if Answer is String and >38 symbols and no Exceptions meet');
+    if (verbose >= 1) print('Got from server: $result');
+    if (verbose >= 1) print('Checking if Answer is String and >38 symbols and no Exceptions meet');
     bool _checked = true;
     if (result.toString().contains('Exception')) {
       _checked = false;
@@ -241,19 +293,19 @@ class UserInfo {
       _checked = false;
     }
     if (_checked) {
-      if (verbose == 1) print('Yes. Start parsing.');
-      var parsed = json.decode(result);
-      if (verbose == 1) print('Parsing result is: $parsed');
-      if (verbose == 1) print('Type os result variable is: ${parsed.runtimeType}');
+      if (verbose >= 1) print('Yes. Start parsing.');
+      var parsed = json.decode(result.body);
+      if (verbose >= 1) print('Parsing result is: $parsed');
+      if (verbose >= 1) print('Type os result variable is: ${parsed.runtimeType}');
       if (parsed.runtimeType.toString().contains('List')) {
         userInfo = parsed[0];
         users[currentGuidIndex] = userInfo;
         userInfo.forEach(f);
-        if (verbose == 1) print('Type is List. Saving to file');
+        if (verbose >= 1) print('Type is List. Saving to file');
         final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
-        _file.writeAsString(result);
+        _file.writeAsString(result.body);
         for (var item in parsed) {
-          if (verbose == 1) print('$item\n${item.runtimeType}');
+          if (verbose >= 1) print('$item\n${item.runtimeType}');
         }
       }
       return true;

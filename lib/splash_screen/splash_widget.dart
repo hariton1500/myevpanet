@@ -147,8 +147,9 @@ class _SplashWidgetState extends State<SplashWidget> {
       } else {
         print('Key File has wrong key. Creating new one...');
         String _token = await FirebaseHelper().getAppToken();
+        devKey = _token;
         print(_token);
-        file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
+        if (_token != null) file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
         //file.writeAsStringSync(getRandom().toString(), mode: FileMode.write, encoding: utf8);
         print('New Key File created and saved');
         print('Go to Login Screen');
