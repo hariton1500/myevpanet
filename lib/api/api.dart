@@ -55,7 +55,23 @@
 *   Response:
 *     - формат: JSON
 *     - ответ: есть ли ошибка и текст, или сообщения или ошибки
-*
+**
+* ***************************************************************
+* Изменение пакета или активация нового
+*   URL: https://evpanet.com/api/apk/user/tarif/
+*   Method: PATCH
+*   Header:
+*     - key = token
+*     - value = токен от гугла
+*   Body:
+*     - формат = JSON {"tarif":"<tarifid>","guid":"<GUID>"}
+*   Response:
+*     - формат: JSON
+*     - данные:
+*         "packet_secs",
+*         "tarif_id",
+*         "tarif_sum",
+*         "tarif_name"
 *
 * */
 
