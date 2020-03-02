@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/splash_screen/splash_widget.dart';
 
-int verbose = 1;
+int verbose = 0;
 List guids;
 String devKey;
 int currentGuidIndex = 0;

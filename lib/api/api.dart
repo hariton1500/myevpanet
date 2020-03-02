@@ -63,6 +63,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:math';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:myevpanet/main.dart';
@@ -205,28 +206,41 @@ class RestAPI {
   *     - формат: JSON
   *     - данные: данные об абоненте, и доступные тарифные планы
   */
-  Future<Map<String, String>> userDataGet(String guid, String token) async {
+  Future<String> userDataGet(String guid, String token) async {
     Response response;
     Map<String, String> answer = {'answer' : 'isEmpty', 'body' : ''};
     Map<String, String> headers = {'token' : '$token'};
     String url = 'https://evpanet.com/api/apk/user/info/$guid';
     if (verbose >= 1) print('Requesting by GET: url = $url; headers = $headers');
     try {
-      response = await get(url, headers: headers);
+      response = await get(url, headers: headers).timeout(Duration(seconds: 5), onTimeout: (){
+        answer = {'answer' : 'isTimeout', 'body' : ''};
+        return response;
+        });
       if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
     } on SocketException catch (error) {
       if (verbose >=1) print(error.message);
-      return answer;
+      return 'SocketException';
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
-      return answer;
+      return 'HandshakeException';
     }
     if (verbose >= 1) {
       print('Response statusCode: ${response.statusCode}');
       print('Response reasonPhrase: ${response.reasonPhrase}');
-      if (response.statusCode == 201) print('Response body: ${json.decode(response.body)['message']}');
+      if (response.statusCode == 201 && response.reasonPhrase == 'Created') print('Response body: ${json.decode(response.body)['message']}');
     }
-    return answer;
+    if (answer['answer'] == 'isFull') {
+      //получили какой-то ответ, который можно декодировать
+      var decoded = json.decode(answer['body']);
+      if (!decoded['error']) {
+        //ответ был хороший, можно записать в глобальную переменную и сохранять в файл
+        users[currentGuidIndex] = decoded['message']['userinfo'];
+        final File _file = await FileStorage('$guid.dat').localFile;
+        _file.writeAsString(response.body);
+        return 'Ok';
+      } else return 'NotOk';
+    } else return answer['answer'];
   }
 }
 
@@ -234,6 +248,20 @@ class UserInfo {
   void f(k, v) {
     if (verbose >= 1) print('$k, $v');
   }
+  int getRandom() {
+    Random rnd = new Random();
+    int c7 = rnd.nextInt(10);
+    int c6 = rnd.nextInt(10);
+    int c5 = rnd.nextInt(10);
+    int c4 = rnd.nextInt(10);
+    int c3 = rnd.nextInt(10);
+    int c2 = rnd.nextInt(10);
+    int c1 = rnd.nextInt(9) + 1;
+    int content = c1 * 1000000 + c2 * 100000 + c3 * 10000 + c4 * 1000;
+    content += c5 * 100 + c6 * 10 + c7;
+    return content;
+  }
+
   Future<bool> readFromFile() async {
     if (verbose >= 1) print('Check existing of file ${guids[currentGuidIndex]}.dat');
     final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
@@ -244,14 +272,10 @@ class UserInfo {
       if (verbose >= 1) print('Start json parsing');
       var parsed = json.decode(res);
       //print('Type of parsing result variable is: ${parsed.runtimeType}');
-      if (parsed.runtimeType.toString().contains('List')) {
-        userInfo = parsed[0];
-        users[currentGuidIndex] = userInfo;
-        userInfo.forEach(f);
-        return true;
-      } else {
-        return false;
-      }
+      userInfo = parsed['message']['userinfo'];
+      users[currentGuidIndex] = userInfo;
+      if (verbose >= 1) userInfo.forEach(f);
+      return true;
     } else {
       if (verbose >= 1) print('file is not exists!');
       return false;
@@ -300,9 +324,13 @@ class UserInfo {
 
   Future<Void> getUserData() async {
     bool result;
+    if (verbose >=1) print('First try read from file');
     result = await readFromFile();
+    if (verbose >=1) print('result is: $result');
     if (!result) {
-      result = await getUserInfoFromServer();
+      if (verbose >=1) print('Second try get from server');
+      String res = await RestAPI().userDataGet(guids[currentGuidIndex], devKey);
+      if (verbose >=1) print(res);
     }
     return null;
   }

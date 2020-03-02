@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
@@ -19,11 +18,11 @@ class _SplashWidgetState extends State<SplashWidget> {
 
   @override
   initState() {
-    print('SplashScreen initState');
+    if (verbose >=1) print('SplashScreen initState');
     super.initState();
     fbHelper = FirebaseHelper();
     Future<int> goto = whereToGo();
-    Timer(Duration(seconds: 5), (){goGo(goto);});
+    Timer(Duration(seconds: 4), (){goGo(goto);});
   }
   Future<void> goGo(Future<int> index) async {
     if (await index == 1) {
@@ -95,45 +94,33 @@ class _SplashWidgetState extends State<SplashWidget> {
     );
   }
 
-  int getRandom() {
-    Random rnd = new Random();
-    int c7 = rnd.nextInt(10);
-    int c6 = rnd.nextInt(10);
-    int c5 = rnd.nextInt(10);
-    int c4 = rnd.nextInt(10);
-    int c3 = rnd.nextInt(10);
-    int c2 = rnd.nextInt(10);
-    int c1 = rnd.nextInt(9) + 1;
-    int content = c1 * 1000000 + c2 * 100000 + c3 * 10000 + c4 * 1000;
-    content += c5 * 100 + c6 * 10 + c7;
-    return content;
-  }
-
   Future<int> whereToGo() async {
     final file = await FileStorage('key.dat').localFile;
     if (file.existsSync()) {
-      print('Key file is exists');
+      if (verbose >=1) print('Key file is exists');
       devKey = file.readAsStringSync(encoding: utf8);
       if (devKey.toString().length > 7) {
-        print('Device key is: $devKey');
+        if (verbose >=1) print('Device key is: $devKey');
         //guidlist.dat file check
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
         if (_guidsfile.existsSync()) {
-          print('GUIDs file exists');
+          if (verbose >=1) print('GUIDs file exists');
           var _readResult = _guidsfile.readAsStringSync(encoding: utf8);
           final parsed = json.decode(_readResult);
-          print(parsed);
-          guids = parsed;
-          print('List of GUIDS readed. Updating UserInfo from Server');
+          if (verbose >=1) print(parsed);
+          guids = parsed['message']['guids'];
+          if (verbose >=1) print('List of GUIDS readed. Updating UserInfo from Server');
           currentGuidIndex = 0;
+          //есть список гуидов и есть токен.
+          //можно обновить данные с сервера или если не получится считать из файлов
           for (var guid in guids) {
-            print('Updating from Server for guid $guid');
-            var result = await UserInfo().getUserInfoFromServer();
-            if (result) {
-              print('Ok');
+            if (verbose >=1) print('Updating from Server for guid $guid');
+            var result = await RestAPI().userDataGet(guid, devKey);
+            if (result == 'Ok') {
+              if (verbose >=1) print('Ok. File $guid.dat updated');
             } else {
-              print('Not ok!');
-              print('Trying to read from file instead');
+              if (verbose >=1) print('Not ok!');
+              if (verbose >=1) print('Trying to read from file instead');
               await UserInfo().readFromFile();
             }
             currentGuidIndex++;
@@ -141,30 +128,26 @@ class _SplashWidgetState extends State<SplashWidget> {
           currentGuidIndex = 0;
           return 1;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
         } else {
-          print('GUIDS file not exists. Got to Login Screen');
+          if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');
           return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
         }
       } else {
-        print('Key File has wrong key. Creating new one...');
+        if (verbose >=1) print('Key File has wrong key. Creating new one...');
         String _token = await FirebaseHelper().getAppToken();
         devKey = _token;
-        print(_token);
+        if (verbose >=1) print(_token);
         if (_token != null) file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
-        //file.writeAsStringSync(getRandom().toString(), mode: FileMode.write, encoding: utf8);
-        print('New Key File created and saved');
-        print('Go to Login Screen');
+        if (verbose >=1) print('New Key File created and saved');
+        if (verbose >=1) print('Go to Login Screen');
         return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
       }
     } else {
-      print('Key file is not exists');
-      //devKey = getRandom().toString();
-      //print('New Key is: $devKey');
+      if (verbose >=1) print('Key file is not exists');
       String _token = await FirebaseHelper().getAppToken();
-      print(_token == null ? '' : _token);
-      //file.writeAsStringSync(devKey, mode: FileMode.write, encoding: utf8);
+      if (verbose >=1) print(_token == null ? '' : _token);
       file.writeAsStringSync(_token == null ? '' : _token, mode: FileMode.write, encoding: utf8);
-      print('Key File created and saved');
-      print('Go to Login Screen');
+      if (verbose >=1) print('Key File created and saved');
+      if (verbose >=1) print('Go to Login Screen');
       return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
     }
   }

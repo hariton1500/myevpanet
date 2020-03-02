@@ -239,8 +239,9 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         //save guids to file
         if (verbose >=1) print(guids);
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
-        _guidsfile.writeAsString(result.toString(), mode: FileMode.write, encoding: utf8);
+        _guidsfile.writeAsString(result['body'], mode: FileMode.write, encoding: utf8);
         currentGuidIndex = 0;
+        //запрашиваем сервер данные всех пользователей и сохраняем (обновляем) файлы
         for (var guid in guids) {
           var usersRequest = await RestAPI().userDataGet(guid, devKey);
           if (verbose >=1) print('$guid: $usersRequest');
