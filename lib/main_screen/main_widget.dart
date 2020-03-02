@@ -55,6 +55,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         _list.add(
           GestureDetector(
             onTap: () {
+              print('!!!!!!!!! current index is: $currentGuidIndex');
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SetupGroup()));
             },
             child: Container(

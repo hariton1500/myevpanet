@@ -33,42 +33,34 @@ class SetupGroupWidget extends State {
 
   }
   void onSetupAutoChange(value) async{
-    String _url = 'https://app.evpanet.com/?set=auto_activation';
-    _url += '&guid=${guids[currentGuidIndex]}';
-    _url += '&devid=$devKey';
-    print('Sending autoactivation [$value] to URL: $_url');
-    dynamic answer = await RestAPI().getData(_url);
-    print('$answer');
+    String answer = await RestAPI().switchChangePUT('activation', guids[currentGuidIndex], devKey);
     setState(
       () {
-        if (answer.toString().contains('00000000-0000-0000-C000-000000000046')) autoState = !value;
-        else {
+        if (answer == 'isEmpty' || answer == 'Exception') {
+          autoState = !value;
+        } else {
           autoState = value;
-          userInfo['auto_activation'] = value ? 1 : 0;
+          userInfo['auto_activation'] = autoState ? 1 : 0;
         }
       }
     );
   }
-  void onSetupParentChange(value) async{
-    String _url = 'https://app.evpanet.com/?set=parent_control';
-    _url += '&guid=${guids[currentGuidIndex]}';
-    _url += '&devid=$devKey';
-    print('Sending parent control [$value] to URL: $_url');
-    dynamic answer = await RestAPI().getData(_url);
-    print('$answer');
+  void onSetupParentChange(bool value) async{
+    String answer = await RestAPI().switchChangePUT('parent', guids[currentGuidIndex], devKey);
     setState(
       () {
-        if (answer.toString().contains('00000000-0000-0000-C000-000000000046')) parentState = !value;
-        else {
+        if (answer == 'isEmpty' || answer == 'Exception') {
+          parentState = !value;
+        } else {
           parentState = value;
-          userInfo['flag_parent_control'] = value ? 1 : 0;
+          userInfo['auto_activation'] = parentState ? 1 : 0;
         }
       }
     );
   }
-// это можно вынести в отдельный файл
-  void showModalSupport() async{
 
+  // это можно вынести в отдельный файл
+  void showModalSupport() async{
     return showGeneralDialog(
         context: context,
         barrierDismissible: true,

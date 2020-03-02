@@ -171,44 +171,95 @@ class RestAPI {
     return await network.getData(url);
   }
 
-  /*
-  * Авторизация:
-  *   URL: https://evpanet.com/api/apk/login/user
-  *   Method: POST
-  *   Body:
-  *     - number = номер телефона в формате +7....
-  *     - uid = ID абонента
+  /*   URL: https://evpanet.com/api/apk/user/tarif/
+  *   Method: PATCH
   *   Header:
   *     - key = token
   *     - value = токен от гугла
-  *
+  *   Body:
+  *     - формат = JSON {"tarif":"<tarifid>","guid":"<GUID>"}
   *   Response:
   *     - формат: JSON
-  *     - данные: массив GUID
+  *     - данные:
+  *         "packet_secs",
+  *         "tarif_id",
+  *         "tarif_sum",
+  *         "tarif_name"
   */
-  Future<Map<String, String>> authorizeUserPOST(String number, int uid, String token) async {
-    Response response;
-    Map<String, String> answer = {'answer' : 'isEmpty', 'body' : ''};
-    Map<String, String> headers = {'token' : '$token'};
-    Map _body = {'number' : '$number', 'uid' : '$uid'};
-    String url = 'https://evpanet.com/api/apk/login/user';
-    if (verbose >= 1) print('Requesting by POST: url = $url; headers = $headers; body = $_body');
+  Future<String> tarifChangePATCH(String tarifId, String guid, String token) async{
+    Response _response;
+    String _answer = 'isEmpty';
+    Map<String, String> _headers = {'token' : '$token'};
+    Map _body = {'tarif' : tarifId, 'guid' : guid};
+    String _url = 'https://evpanet.com/api/apk/user/tarif/';
+    if (verbose >= 1) print('Changing tarif by PATCH: url = $_url; headers = $_headers; body = $_body');
     try {
-      response = await post(url, headers: headers, body: _body);
-      if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
+      _response = await put(_url, headers: _headers, body: _body);
+      _response.statusCode == 201 ?
+        _answer = json.decode(_response.body)['message']['tarif_id'].toString()
+        :
+        _answer = 'isError';
     } on SocketException catch (error) {
       if (verbose >=1) print(error.message);
-      return answer;
+      return 'isException';
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
-      return answer;
+      return 'isException';
+    }
+    if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
+    return _answer;
+  }
+
+
+  Future<String> switchChangePUT(String switchType, String guid, String token) async{
+    Response _response;
+    String _answer = 'isEmpty';
+    Map<String, String> _headers = {'token' : '$token'};
+    Map _body = {'guid' : guid};
+    String _url = switchType == 'activation' ?
+      'https://evpanet.com/api/apk/user/auto_activation/' :
+      'https://evpanet.com/api/apk/user/parent_control/';
+    if (verbose >= 1) print('Changing auto_actiovation flag by PUT: url = $_url; headers = $_headers; body = $_body');
+    try {
+      _response = await put(_url, headers: _headers, body: _body);
+      _response.statusCode == 201 ?
+        _answer = json.decode(_response.body)['message']['value'].toString()
+        :
+        _answer = 'isError';
+    } on SocketException catch (error) {
+      if (verbose >=1) print(error.message);
+      return 'isException';
+    } on HandshakeException catch (error) {
+      if (verbose >=1) print(error.message);
+      return 'isException';
+    }
+    if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
+    return _answer;
+  }
+
+  Future<Map<String, String>> authorizeUserPOST(String number, int uid, String token) async {
+    Response _response;
+    Map<String, String> _answer = {'answer' : 'isEmpty', 'body' : ''};
+    Map<String, String> _headers = {'token' : '$token'};
+    Map _body = {'number' : '$number', 'uid' : '$uid'};
+    String _url = 'https://evpanet.com/api/apk/login/user';
+    if (verbose >= 1) print('Requesting by POST: url = $_url; headers = $_headers; body = $_body');
+    try {
+      _response = await post(_url, headers: _headers, body: _body);
+      if (_response.statusCode == 201 || _response.statusCode == 401) _answer = {'answer' : 'isFull', 'body' : _response.body};
+    } on SocketException catch (error) {
+      if (verbose >=1) print(error.message);
+      return _answer;
+    } on HandshakeException catch (error) {
+      if (verbose >=1) print(error.message);
+      return _answer;
     }
     if (verbose >= 1) {
-      print('Response statusCode: ${response.statusCode}');
-      print('Response reasonPhrase: ${response.reasonPhrase}');
-      if (response.statusCode == 201 && response.reasonPhrase == 'Created') print('Response body: ${json.decode(response.body)['message']['guids']}');
+      print('Response statusCode: ${_response.statusCode}');
+      print('Response reasonPhrase: ${_response.reasonPhrase}');
+      if (_response.statusCode == 201 && _response.reasonPhrase == 'Created') print('Response body: ${json.decode(_response.body)['message']['guids']}');
     }
-    return answer;
+    return _answer;
   }
 
   /* Получение данных абонента:

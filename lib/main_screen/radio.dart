@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
@@ -7,12 +8,13 @@ class RadioGroup extends StatefulWidget {
   RadioGroupWidget createState() => RadioGroupWidget();
 }
 var _tarifs = userInfo["allowed_tarifs"];
-Map initialTarif;
+Map initialTarif = {};
 class RadioGroupWidget extends State {
-  String id;
+  String id = '';
   @override
   void initState() {
     for (var item in _tarifs) {
+      if (verbose >= 1) print(item);
       if (item['sum'] == userInfo['tarif_sum']) {
         id = item['id'];
         initialTarif = item;
@@ -20,19 +22,42 @@ class RadioGroupWidget extends State {
     }
     super.initState();
   }
-  void onRadioChange(value) {
-    print(value);
-    setState(
-      () {
-        id = value.toString();
-      }
+  Future<void> myDialog(BuildContext context, dynamic value) async{
+    var dialog = CupertinoAlertDialog (
+      title: Text('Изменение тарифа...'),
+      content: Text('Согласны?'),
+      actions: [
+        CupertinoDialogAction(
+          child: Text('Нет'),
+          onPressed: () {Navigator.pop(context, false);},
+        ),
+        CupertinoDialogAction(
+          child: Text('Да'),
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+        ),
+      ],
     );
+    bool _answer = await showDialog<bool>(
+      context: context,
+      builder: (_) => dialog,
+      barrierDismissible: false,
+    );
+    if (verbose >= 1) print('Dialog result is: $_answer');
+    if (_answer) {
+      String answerOfTarifChange = await RestAPI().tarifChangePATCH(value, guids[currentGuidIndex], devKey);
+      setState(() {
+        if (!answerOfTarifChange.startsWith('is')) id = answerOfTarifChange;//value.toString();
+      });
+    }
   }
 
   List<Widget> _list() {
     List<Widget> tList = [];
     bool _availableTarifChoice = false;
     for (var item in _tarifs) {
+      bool canChange = double.parse(userInfo['extra_account']) >= double.parse(item['sum']);
       tList.add(
         RadioListTile(
           activeColor: Colors.green,
@@ -41,23 +66,14 @@ class RadioGroupWidget extends State {
           subtitle: item['sum'] == userInfo['tarif_sum'] ? Text("(текущий тариф)") : null,
           value: item['id'],
           groupValue: id,
-          onChanged: double.tryParse(userInfo['extra_account']) >= item['sum'] ? (val) => onRadioChange(val) : null,
+          onChanged: canChange ? (val) => myDialog(context, val) : null,
           selected: item['sum'] == userInfo['tarif_sum'] ? true : false,
         )
       );
-      if (double.tryParse(userInfo['extra_account']) >= item['sum']) _availableTarifChoice = true;
+      if (canChange) _availableTarifChoice = true;
     }
-    tList.add(
-      _availableTarifChoice ?
-        RaisedButton(
-          onPressed: userInfo['auto_activation'] == 0 ? onTarifButtonPressed : null,
-          child: Text('Изменить тариф'),)
-        :
-        Text('На балансе недостаточно средств для активации тарифного плана.')
-    );
-    if (userInfo['auto_activation'] == 1) {
-      tList.add(Text('Чтобы изменить тариф нужно сначала отключить автоактивацию.'));
-    }
+    if (!_availableTarifChoice) tList.add(Text('На балансе недостаточно средств для активации тарифного плана.'));
+    if (userInfo['auto_activation'] == 1) tList.add(Text('Чтобы изменить тариф нужно сначала отключить автоактивацию.'));
     return tList;
   }
 
