@@ -58,7 +58,7 @@
 **
 * ***************************************************************
 * Изменение пакета или активация нового
-*   URL: https://evpanet.com/api/apk/user/tarif/
+*   URL: https://evpanet.com/api/apk/user/tarif
 *   Method: PATCH
 *   Header:
 *     - key = token
@@ -171,7 +171,7 @@ class RestAPI {
     return await network.getData(url);
   }
 
-  /*   URL: https://evpanet.com/api/apk/user/tarif/
+  /*   URL: https://evpanet.com/api/apk/user/tarif
   *   Method: PATCH
   *   Header:
   *     - key = token
@@ -191,10 +191,10 @@ class RestAPI {
     String _answer = 'isEmpty';
     Map<String, String> _headers = {'token' : '$token'};
     Map _body = {'tarif' : tarifId, 'guid' : guid};
-    String _url = 'https://evpanet.com/api/apk/user/tarif/';
+    String _url = 'https://evpanet.com/api/apk/user/tarif';
     if (verbose >= 1) print('Changing tarif by PATCH: url = $_url; headers = $_headers; body = $_body');
     try {
-      _response = await put(_url, headers: _headers, body: _body);
+      _response = await patch(_url, headers: _headers, body: _body);
       _response.statusCode == 201 ?
         _answer = json.decode(_response.body)['message']['tarif_id'].toString()
         :
