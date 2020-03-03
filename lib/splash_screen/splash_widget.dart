@@ -22,7 +22,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     super.initState();
     fbHelper = FirebaseHelper();
     Future<int> goto = whereToGo();
-    Timer(Duration(seconds: 4), (){goGo(goto);});
+    Timer(Duration(seconds: 5), (){goGo(goto);});
   }
   Future<void> goGo(Future<int> index) async {
     if (await index == 1) {

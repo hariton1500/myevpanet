@@ -154,10 +154,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                       ),
                                     ),
                                     Text(
-                                      NumberFormat('#,##0.00##', 'ru_RU').format(double.parse(userInfo["extra_account"])) + " р.",
+                                      NumberFormat('#,##0.00##', 'ru_RU').format(double.parse(users[item]["extra_account"])) + " р.",
                                       //userInfo["extra_account"],
                                       style: TextStyle(
-                                        color: double.parse(userInfo["extra_account"]) < 0 ? Color.fromRGBO(255, 81, 105, 1) : Colors.white,
+                                        color: double.parse(users[item]["extra_account"]) < 0 ? Color.fromRGBO(255, 81, 105, 1) : Colors.white,
                                         fontSize: ResponsiveFlutter.of(context).fontSize(3.2),
                                         fontWeight: FontWeight.bold,
                                         shadows: [
@@ -230,7 +230,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                        userInfo["packet_end"],
+                                        users[item]["packet_end"],
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
@@ -279,27 +279,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             )
           )
         );
-/*          Column(
-            children: <Widget>[
-              ListTile(
-                  title: Text('${users[item]['name']}'),
-                  subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      '${users[item]['name'].substring(0,1)}',
-                      style: TextStyle(fontSize: 18.0, color: Colors.white),
-                    ),
-                  ),
-                  isThreeLine: true,
-                  onTap: () {
-                    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
-                  }
-              ),
-            ],
-          ),*/
-
     }
     return _list;
   }
@@ -316,7 +295,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     if (verbose >= 1) print('End getData');
     Intl.defaultLocale = 'ru_RU';
     initializeDateFormatting();
-    //dateFormat = new DateFormat.yMMMMd('cs');
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent, // navigation bar color
