@@ -195,7 +195,7 @@ class RestAPI {
     if (verbose >= 1) print('Changing tarif by PATCH: url = $_url; headers = $_headers; body = $_body');
     try {
       _response = await patch(_url, headers: _headers, body: _body);
-      _response.statusCode == 201 ?
+      _response.statusCode == 200 ?
         _answer = json.decode(_response.body)['message']['tarif_id'].toString()
         :
         _answer = 'isError';
@@ -282,7 +282,7 @@ class RestAPI {
     try {
       response = await get(url, headers: headers).timeout(Duration(seconds: 5), onTimeout: (){
         answer = {'answer' : 'isTimeout', 'body' : ''};
-        return response;
+        //return response;
         });
       if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
     } on SocketException catch (error) {
@@ -301,8 +301,10 @@ class RestAPI {
       //получили какой-то ответ, который можно декодировать
       var decoded = json.decode(answer['body']);
       if (!decoded['error']) {
-        //ответ был хороший, можно записать в глобальную переменную и сохранять в файл
+        print('ответ был хороший, записываем в глобальную переменную и сохраняем в файл');
         users[currentGuidIndex] = decoded['message']['userinfo'];
+        userInfo = users[currentGuidIndex];
+        if (verbose >= 2) userInfo.forEach((k, v) {print('$k, $v');});
         final File _file = await FileStorage('$guid.dat').localFile;
         _file.writeAsString(response.body);
         return 'Ok';
@@ -312,9 +314,6 @@ class RestAPI {
 }
 
 class UserInfo {
-  void f(k, v) {
-    if (verbose >= 1) print('$k, $v');
-  }
   int getRandom() {
     Random rnd = new Random();
     int c7 = rnd.nextInt(10);
@@ -339,9 +338,10 @@ class UserInfo {
       if (verbose >= 1) print('Start json parsing');
       var parsed = json.decode(res);
       //print('Type of parsing result variable is: ${parsed.runtimeType}');
-      userInfo = parsed['message']['userinfo'];
-      users[currentGuidIndex] = userInfo;
-      if (verbose >= 1) userInfo.forEach(f);
+      //userInfo = parsed['message']['userinfo'];
+      users[currentGuidIndex] = parsed['message']['userinfo'];
+      userInfo = users[currentGuidIndex];
+      if (verbose >= 2) userInfo.forEach((k, v) {print('$k, $v');});
       return true;
     } else {
       if (verbose >= 1) print('file is not exists!');
@@ -349,7 +349,7 @@ class UserInfo {
     }
   }
 
-  Future<bool> getUserInfoFromServer() async {
+  /*Future<bool> getUserInfoFromServer() async {
     if (verbose >= 1) print('Start request from Server.');
     String _url = 'https://app.evpanet.com/?get=userinfo';
     _url += '&guid=${guids[currentGuidIndex]}&devid=$devKey';
@@ -375,7 +375,7 @@ class UserInfo {
       if (parsed.runtimeType.toString().contains('List')) {
         userInfo = parsed[0];
         users[currentGuidIndex] = userInfo;
-        userInfo.forEach(f);
+        //userInfo.forEach(f);
         if (verbose >= 1) print('Type is List. Saving to file');
         final File _file = await FileStorage('${guids[currentGuidIndex]}.dat').localFile;
         _file.writeAsString(result.body);
@@ -387,13 +387,13 @@ class UserInfo {
     } else {
       return false;
     }
-  }
+  }*/
 
   Future<Void> getUserData() async {
     bool result;
     if (verbose >=1) print('First try read from file');
     result = await readFromFile();
-    if (verbose >=1) print('result is: $result');
+    if (verbose >=1) print('result of file reading? $result');
     if (!result) {
       if (verbose >=1) print('Second try get from server');
       String res = await RestAPI().userDataGet(guids[currentGuidIndex], devKey);

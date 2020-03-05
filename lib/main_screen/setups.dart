@@ -17,21 +17,20 @@ Map initialTarif;
 class SetupGroupWidget extends State {
   bool autoState;
   bool parentState;
+
   @override
   void initState() {
-    autoState = userInfo['auto_activation'] == 1 ? true : false;
-    parentState = userInfo['flag_parent_control'] == 1 ? true : false;
+    autoState = users[currentGuidIndex]['auto_activation'] == 1 ? true : false;
+    parentState = users[currentGuidIndex]['flag_parent_control'] == 1 ? true : false;
     super.initState();
-
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent, // navigation bar color
       statusBarColor: Colors.transparent, // status bar color
       statusBarIconBrightness: Brightness.dark, // status bar icons' color
       systemNavigationBarIconBrightness: Brightness.light, //navigation bar icons' color
     ));
-
   }
+
   void onSetupAutoChange(value) async{
     String answer = await RestAPI().switchChangePUT('activation', guids[currentGuidIndex], devKey);
     setState(
@@ -177,13 +176,10 @@ class SetupGroupWidget extends State {
                   ],
                 ),
               ),
-
           );
-
         }
     );
   }
-
 
   final double appBarHeight = 66.0;
 
@@ -198,7 +194,6 @@ class SetupGroupWidget extends State {
         onChanged: (bool state) {onSetupAutoChange(state);},
       )
     );
-
     tList.add(
       SwitchListTile(
         activeColor: Color(0xff3e6282),

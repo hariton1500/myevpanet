@@ -2,22 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
+import 'package:myevpanet/main_screen/setups.dart';
 
 class RadioGroup extends StatefulWidget {
   @override
   RadioGroupWidget createState() => RadioGroupWidget();
 }
+//userInfo = users[currentGuidIndex];
+
+String initialTarif = '';
 var _tarifs = userInfo["allowed_tarifs"];
-Map initialTarif = {};
 class RadioGroupWidget extends State {
   String id = '';
   @override
   void initState() {
+    _tarifs = userInfo["allowed_tarifs"];
+    //print(userInfo['id']);
+    //print(userInfo['allowed_tarifs']);
     for (var item in _tarifs) {
       if (verbose >= 1) print(item);
-      if (item['sum'] == userInfo['tarif_sum']) {
-        id = item['id'];
-        initialTarif = item;
+      if (item['sum'].toString() == userInfo['tarif_sum'].toString()) {
+        id = item['id'].toString();
+        initialTarif = id;
       }
     }
     super.initState();
@@ -47,9 +53,11 @@ class RadioGroupWidget extends State {
     if (verbose >= 1) print('Dialog result is: $_answer');
     if (_answer) {
       String answerOfTarifChange = await RestAPI().tarifChangePATCH(value, guids[currentGuidIndex], devKey);
-      setState(() {
-        if (!answerOfTarifChange.startsWith('is')) id = answerOfTarifChange;//value.toString();
-      });
+      if (!answerOfTarifChange.startsWith('is')) id = answerOfTarifChange;
+      setState(() {});
+      await RestAPI().userDataGet(guids[currentGuidIndex], devKey);
+      Navigator.pop(context);
+      //SetupGroupWidget().setState(() { });
     }
   }
 
@@ -57,17 +65,28 @@ class RadioGroupWidget extends State {
     List<Widget> tList = [];
     bool _availableTarifChoice = false;
     for (var item in _tarifs) {
-      bool canChange = double.parse(userInfo['extra_account']) >= double.parse(item['sum']);
+      //print(userInfo['extra_account'].runtimeType);
+      //print(userInfo['extra_account']);
+      //print(userInfo['tarif_sum'].runtimeType);
+      //print(userInfo['tarif_sum']);
+      //print(item['sum'].runtimeType);
+      //print(item['sum']);
+      double userBalance = double.parse(userInfo['extra_account']);
+      int userTarifSum = userInfo['tarif_sum'].runtimeType.toString() == 'int' ? userInfo['tarif_sum'] : int.parse(userInfo['tarif_sum']);
+      int tarifSum = item['sum'].runtimeType.toString() == 'int' ? item['sum'] : int.parse(item['sum']);
+      String tarifId = item['id'].toString();
+      String tarifName = item['name'].toString();
+      bool canChange = userBalance >= tarifSum;
       tList.add(
         RadioListTile(
           activeColor: Colors.green,
           dense: true,
-          title: Text('${item['name']} (${item['sum']} руб.)'),
-          subtitle: item['sum'] == userInfo['tarif_sum'] ? Text("(текущий тариф)") : null,
-          value: item['id'],
+          title: Text('$tarifName ($tarifSum руб.)'),
+          subtitle: tarifSum == userTarifSum ? Text("(текущий тариф)") : null,
+          value: tarifId,
           groupValue: id,
           onChanged: canChange ? (val) => myDialog(context, val) : null,
-          selected: item['sum'] == userInfo['tarif_sum'] ? true : false,
+          selected: tarifSum == userTarifSum ? true : false,
         )
       );
       if (canChange) _availableTarifChoice = true;
@@ -77,8 +96,8 @@ class RadioGroupWidget extends State {
     return tList;
   }
 
-  Future<void> onTarifButtonPressed() async{
-    print('Tarif changing from ${initialTarif['id']} to $id');
+  /*Future<void> onTarifButtonPressed() async{
+    print('Tarif changing from $initialTarif to $id');
     String _url = 'https://app.evpanet.com/?set=new_tarif';
     _url += '&tid=$id';
     _url += '&guid=${guids[currentGuidIndex]}';
@@ -86,7 +105,7 @@ class RadioGroupWidget extends State {
     print('Sending url: $_url');
     dynamic answer = await RestAPI().getData(_url);
     print('$answer');
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return

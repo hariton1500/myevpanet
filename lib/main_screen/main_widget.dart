@@ -311,14 +311,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   }
 
   ///////////////////////////////////
-  List<T> map<T>(List list, Function handler) {
+  /*List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
       result.add(handler(i, list[i]));
     }
 
     return result;
-  }
+  }*/
 
   int _current = 0;
 
@@ -373,7 +373,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                       size: 32.0,
                     )
                 ),
-                onTap: () {Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                  setState(() {});
+                },
               )
             ],
           ),
@@ -390,11 +393,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 aspectRatio: 16/10,
                 viewportFraction: 0.9,
                 onPageChanged: (index) {
-                  setState(() {
-                    currentGuidIndex = index;
-                    userInfo = users[currentGuidIndex];
-                    _current = index;
-                  });
+                  currentGuidIndex = index;
+                  userInfo = users[currentGuidIndex];
+                  _current = index;
+                  setState(() {});
                 },
               ),
             ),
@@ -420,20 +422,19 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   Container(
                       child: Column(
                         children: <Widget>[
-                          double.parse(userInfo["debt"]) > 0
+                          double.parse(users[currentGuidIndex]["debt"]) > 0
                               ?
                               Card(
                                   color: Colors.red,
                                   child: new ListTile(
                                         title: Text(
-                                          "За Вашей учётной записью числится задолженость " + userInfo["debt"]?.toString() + " р.",
+                                          "За Вашей учётной записью числится задолженость ${users[currentGuidIndex]["debt"].toString()} р.",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                             color: Colors.white,
                                           ),
                                         ),
-                                        //subtitle: Text(userInfo["tarif_name"] + " (" + userInfo["tarif_sum"]?.toString() + "р.)" ),
                                   )
                               )
                               :
@@ -470,7 +471,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                 leading: Icon(Icons.album, size: 40),
                                 title: Text('Тарифный план'),
                                 subtitle: Text(
-                                    userInfo["tarif_name"] + " (" + userInfo["tarif_sum"].toString() + " р.)"
+                                    '${users[currentGuidIndex]["tarif_name"]} (${users[currentGuidIndex]["tarif_sum"].toString()} р.)'
                                 ),
                               ),
                             ],
@@ -489,7 +490,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                               ListTile(
                                 leading: Icon(Icons.album, size: 40),
                                 title: Text('IP адрес абонента'),
-                                subtitle: Text(userInfo["real_ip"]),
+                                subtitle: Text(users[currentGuidIndex]["real_ip"]),
                               ),
                             ],
                           ),
@@ -507,7 +508,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                               ListTile(
                                 leading: Icon(Icons.album, size: 40),
                                 title: Text('Адрес подключения'),
-                                subtitle: Text(userInfo["street"] + ", д. " + userInfo["house"] + ", кв. " + userInfo["flat"]),
+                                subtitle: Text(users[currentGuidIndex]["street"] + ", д. " + users[currentGuidIndex]["house"] + ", кв. " + users[currentGuidIndex]["flat"]),
                               ),
                             ],
                           ),

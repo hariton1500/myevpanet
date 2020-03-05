@@ -117,7 +117,7 @@ class _SplashWidgetState extends State<SplashWidget> {
             if (verbose >=1) print('Updating from Server for guid $guid');
             var result = await RestAPI().userDataGet(guid, devKey);
             if (result == 'Ok') {
-              if (verbose >=1) print('Ok. File $guid.dat updated');
+              if (verbose >=1) print('Ok. File $guid.dat and users[$currentGuidIndex] updated');
             } else {
               if (verbose >=1) print('Not ok!');
               if (verbose >=1) print('Trying to read from file instead');
@@ -129,7 +129,8 @@ class _SplashWidgetState extends State<SplashWidget> {
           return 1;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
         } else {
           if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');
-          return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+          return 0;
+          //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
         }
       } else {
         if (verbose >=1) print('Key File has wrong key. Creating new one...');
@@ -139,7 +140,8 @@ class _SplashWidgetState extends State<SplashWidget> {
         if (_token != null) file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
         if (verbose >=1) print('New Key File created and saved');
         if (verbose >=1) print('Go to Login Screen');
-        return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+        return 0;
+        //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
       }
     } else {
       if (verbose >=1) print('Key file is not exists');
