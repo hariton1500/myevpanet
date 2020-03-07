@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
-import 'package:myevpanet/main_screen/setups.dart';
+//import 'package:myevpanet/main_screen/setups.dart';
 
 class RadioGroup extends StatefulWidget {
   @override
@@ -95,17 +95,6 @@ class RadioGroupWidget extends State {
     if (userInfo['auto_activation'] == 1) tList.add(Text('Чтобы изменить тариф нужно сначала отключить автоактивацию.'));
     return tList;
   }
-
-  /*Future<void> onTarifButtonPressed() async{
-    print('Tarif changing from $initialTarif to $id');
-    String _url = 'https://app.evpanet.com/?set=new_tarif';
-    _url += '&tid=$id';
-    _url += '&guid=${guids[currentGuidIndex]}';
-    _url += '&devid=$devKey';
-    print('Sending url: $_url');
-    dynamic answer = await RestAPI().getData(_url);
-    print('$answer');
-  }*/
 
   Widget build(BuildContext context) {
     return
