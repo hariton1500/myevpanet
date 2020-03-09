@@ -282,7 +282,7 @@ class RestAPI {
     try {
       response = await get(url, headers: headers).timeout(Duration(seconds: 5), onTimeout: (){
         answer = {'answer' : 'isTimeout', 'body' : ''};
-        //return response;
+        return response;
         });
       if (response.statusCode == 201 || response.statusCode == 401) answer = {'answer' : 'isFull', 'body' : response.body};
     } on SocketException catch (error) {
