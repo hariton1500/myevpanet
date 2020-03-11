@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:myevpanet/login_screen/order_screen.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:myevpanet/webview_screens/order_widget.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -179,7 +179,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
       floatingActionButton: FloatingActionButton.extended(
         onPressed: devKey != null ? () {
           // Тут колбасим открытие новой страницы с возможностью оставить заявку на подключение (Используем новый API).
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MakeOrder()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => OrderView()));
         } : null,
         label: Text('Оставить заявку'),
         icon: Icon(Icons.person_add),

@@ -25,7 +25,6 @@ dependencies:
   flutter_svg:
   mask_text_input_formatter:
   http:
-  webview_flutter:
   flutter_spinkit:
   fluttertoast:
   flutter_icons:
@@ -36,7 +35,7 @@ dependencies:
   intl: ^0.16.1
   responsive_flutter:
   url_launcher:
-
+  flutter_webview_plugin: ^0.3.10+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

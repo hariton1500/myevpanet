@@ -1,6 +1,6 @@
 import 'dart:ui';
-
 import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +125,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                       ),
                                     ),
                                     CircleButton(
-                                        onTap: () => print("Cool"), // Харитон, тут надо тапнуть на новый скрин пополнения баланса
+                                        onTap: () {
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView()));
+                                        }, // Харитон, тут надо тапнуть на новый скрин пополнения баланса
                                         iconData: MaterialCommunityIcons.wallet_plus_outline
                                     ),
                                   ],
