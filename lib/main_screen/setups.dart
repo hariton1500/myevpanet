@@ -12,11 +12,11 @@ class SetupGroup extends StatefulWidget {
   @override
   SetupGroupWidget createState() => SetupGroupWidget();
 }
-//var _tarifs = userInfo["allowed_tarifs"];
 Map initialTarif;
 class SetupGroupWidget extends State {
   bool autoState;
   bool parentState;
+  String text = '';
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class SetupGroupWidget extends State {
   }
 
   // это можно вынести в отдельный файл
-  void showModalSupport() async{
+  void _showModalSupport() async{
     return showGeneralDialog(
         context: context,
         barrierDismissible: true,
@@ -118,6 +118,9 @@ class SetupGroupWidget extends State {
                               right: 16.0,
                             ),
                             child: TextField(
+                              onChanged: (_text) {
+                                text = _text;
+                              },
                               autofocus: true,
                               maxLines: 3,
                               keyboardType: TextInputType.multiline,
@@ -151,7 +154,7 @@ class SetupGroupWidget extends State {
                               ),
                             ),
                             onTap:(){
-                              Navigator.pop(context);
+                              _sendMessagePressed();
                             },
                           )
                         ],
@@ -179,6 +182,11 @@ class SetupGroupWidget extends State {
           );
         }
     );
+  }
+  void _sendMessagePressed() async{
+    String answer = await RestAPI().remontAddPOST(text, guids[currentGuidIndex], devKey);
+    print(answer);
+    Navigator.pop(context);
   }
 
   final double appBarHeight = 66.0;
@@ -254,7 +262,7 @@ class SetupGroupWidget extends State {
                         ),
                         onTap: () {
                           //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                          showModalSupport();
+                          _showModalSupport();
                           },
                       )
                     ],
@@ -479,59 +487,58 @@ class SetupGroupWidget extends State {
                     ),
                   )
                 ),
-               new SliverList(
-                 delegate: new SliverChildListDelegate([
-                   Container(
-                     padding: EdgeInsets.only(
-                      top: 16.0,
-                      left: 16.0,
-                      right: 16.0,
-                      bottom: 10.0
-                     ),
-                       child: Column(
-                         children: _list1(),
-                     ),
-                   ),
-                   Divider(
-                     indent: 20.0,
-                     endIndent: 20.0,
-                     color: Color(0xff3e6282),
-                   ),
-                   Container(
-                     padding: EdgeInsets.only(
-                         top: 16.0,
-                         left: 16.0,
-                         right: 16.0,
-                     ),
-                     child: Text(
-                       'Доступные тарифные планы',
-                       textAlign: TextAlign.center,
-                       style: TextStyle(
-                           fontSize: ResponsiveFlutter.of(context).fontSize(2.0),
-                           color: Color.fromRGBO(72, 95, 113, 1.0),
-                           fontWeight: FontWeight.bold
-                       ),
-                     ),
-                   ),
-                   Container(
-                     padding: EdgeInsets.only(
-                        top: 10.0,
-                         right: 16.0,
-                         left: 16.0
-                       ),
-                       child: Container(
-                         padding: EdgeInsets.only(
-                           bottom: 16.0
-                         ),
-                         child: Column(
-                           children: _list(),
-                         ),
-                     ),
-                   ),
-/*                   Container(color: Colors.indigo, height: 150.0),
-                   Container(color: Colors.blue, height: 150.0),*/
-                 ],)
-               ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 16.0,
+                        left: 16.0,
+                        right: 16.0,
+                        bottom: 10.0
+                      ),
+                        child: Column(
+                          children: _list1(),
+                      ),
+                    ),
+                    Divider(
+                      indent: 20.0,
+                      endIndent: 20.0,
+                      color: Color(0xff3e6282),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 16.0,
+                          left: 16.0,
+                          right: 16.0,
+                      ),
+                      child: Text(
+                        'Доступные тарифные планы',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: ResponsiveFlutter.of(context).fontSize(2.0),
+                            color: Color.fromRGBO(72, 95, 113, 1.0),
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 10.0,
+                          right: 16.0,
+                          left: 16.0
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: 16.0
+                        ),
+                        child: Column(
+                          children: _list(),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ),
         ],
       ),
      ),

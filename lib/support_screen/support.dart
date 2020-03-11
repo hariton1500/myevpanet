@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:myevpanet/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportScreen extends StatefulWidget {
 
@@ -15,30 +16,15 @@ class SupportScreen extends StatefulWidget {
 
 class _SupportScreenState extends State<SupportScreen> {
   String text = '';
+  String phoneToCall = '+79780489664';
   @override
   void initState() {
     super.initState();
   }
 
-/*  _launchURL(url) async {
-    //const url = 'https://flutter.dev';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
-//    final _formKey = GlobalKey<FormState>();
     final double appBarHeight = 66.0;
-
-/*    final double statusBarHeight = MediaQuery
-        .of(context)
-        .padding
-        .top;*/
-
     return Container(
       child: Scaffold(
         body: CustomScrollView(
@@ -167,8 +153,7 @@ class _SupportScreenState extends State<SupportScreen> {
                             Center(
                               child: TextField(
                                 onChanged: (_text) {text = _text;},
-                                autofocus: true,
-                                maxLines: 4,
+                                maxLines: 3,
                                 //inputFormatters: [phone],
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
@@ -197,12 +182,27 @@ class _SupportScreenState extends State<SupportScreen> {
                                 child: Column(
                                   children: <Widget>[
                                     Text("Вы так же можете связаться со службой поддержки одним из следующих способов:"),
-                                    RaisedButton(
-                                      child: Text(
-                                        "phone",
-                                      ),
-                                      onPressed: () {
+                                    DropdownButton<String>(
+                                      value: phoneToCall,
+                                      autofocus: true,
+                                      icon: Icon(Icons.arrow_drop_down),
+                                      iconSize: 24,
+                                      elevation: 16,
+                                      onChanged: (String newValue) {
+                                        setState(() {
+                                          phoneToCall = newValue;
+                                        });
                                       },
+                                      items: [
+                                        DropdownMenuItem(
+                                          value: '+79780489664',
+                                          child: Text('+7(978)048-96-64')
+                                        ),
+                                        DropdownMenuItem(
+                                          value: '+79780755900',
+                                          child: Text('+7(978)075-59-00')
+                                        ),
+                                      ]
                                     ),
                                     SizedBox.fromSize(
                                       size: Size(56, 56), // button width and height
@@ -211,7 +211,9 @@ class _SupportScreenState extends State<SupportScreen> {
                                           color: Colors.orange, // button color
                                           child: InkWell(
                                             splashColor: Colors.green, // splash color
-                                            onTap: () {}, // button pressed
+                                            onTap: () async{
+                                              if (await canLaunch('tel://$phoneToCall')) launch('tel://$phoneToCall');
+                                            }, // button pressed
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[

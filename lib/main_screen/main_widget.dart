@@ -27,7 +27,7 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
 
- // генерируем точки
+  // генерируем точки
   List<Widget> idListPoints() {
     List<Widget> _list = [];
     for (var item in users.keys) {
@@ -47,10 +47,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     }
     return _list;
   }
- // список тёмных плашек
+  // список тёмных плашек
   List<Widget> idList() {
     List<Widget> _list = [];
-
     for (var item in users.keys) {
         _list.add(
           GestureDetector(
@@ -124,12 +123,13 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                       ),
                                     ),
+                                    _current == item ?
                                     CircleButton(
-                                        onTap: () {
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView()));
-                                        }, // Харитон, тут надо тапнуть на новый скрин пополнения баланса
-                                        iconData: MaterialCommunityIcons.wallet_plus_outline
-                                    ),
+                                      onTap: () {
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView()));
+                                      },
+                                      iconData: MaterialCommunityIcons.wallet_plus_outline
+                                    ): Text(''),
                                   ],
                                 ),
                               ),
@@ -312,16 +312,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     if (verbose >= 5) print('Main Screen: Show UserInfo:\n$userInfo');
   }
 
-  ///////////////////////////////////
-  /*List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-
-    return result;
-  }*/
-
   int _current = 0;
 
   @override
@@ -332,196 +322,195 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     //Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-        //drawer: AppDrawer(),
-        backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0), // here the desired height
-          child: AppBar(
-              brightness: Brightness.light,
-              backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(7.0),
+      backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0), // here the desired height
+        child: AppBar(
+            brightness: Brightness.light,
+            backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(7.0),
+              ),
+              Text(
+                "Информация",
+                style: TextStyle(
+                    color: Color.fromRGBO(72, 95, 113, 1.0),
+                    fontSize: 24.0
                 ),
-                Text(
-                  "Информация",
-                  style: TextStyle(
-                      color: Color.fromRGBO(72, 95, 113, 1.0),
-                      fontSize: 24.0
-                  ),
-                  textScaleFactor: queryData.textScaleFactor,
-                ),
+                textScaleFactor: queryData.textScaleFactor,
+              ),
 
-                Text(
-                  DateFormat.yMMMMd().format(DateTime.now()),
-                  style: TextStyle(
-                      color: Color.fromRGBO(146, 152, 166, 1.0),
-                      fontSize: 14.0
-                  ),
-                )
-              ],
-            ),
-            elevation: 0.0,
-            actions: <Widget>[
-              GestureDetector(
-                child: Container(
-                  padding: EdgeInsets.all(10.0),
-                    child: Icon(
-                      MaterialCommunityIcons.face_agent,
-                      color: Color.fromRGBO(72, 95, 113, 1.0),
-                      size: 32.0,
-                    )
+              Text(
+                DateFormat.yMMMMd().format(DateTime.now()),
+                style: TextStyle(
+                    color: Color.fromRGBO(146, 152, 166, 1.0),
+                    fontSize: 14.0
                 ),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                  setState(() {});
-                },
               )
             ],
           ),
+          elevation: 0.0,
+          actions: <Widget>[
+            GestureDetector(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    MaterialCommunityIcons.face_agent,
+                    color: Color.fromRGBO(72, 95, 113, 1.0),
+                    size: 32.0,
+                  )
+              ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                setState(() {});
+              },
+            )
+          ],
         ),
-        //),
-        body: Column(
-          children: [
-            // каруселька
-            Container(
-              child: CarouselSlider(
-                items: idList(),
-                autoPlay: false,
-                enlargeCenterPage: true,
-                aspectRatio: 16/10,
-                viewportFraction: 0.9,
-                onPageChanged: (index) {
-                  currentGuidIndex = index;
-                  userInfo = users[currentGuidIndex];
-                  _current = index;
-                  setState(() {});
-                },
-              ),
+      ),
+      //),
+      body: Column(
+        children: [
+          // каруселька
+          Container(
+            child: CarouselSlider(
+              items: idList(),
+              autoPlay: false,
+              enlargeCenterPage: true,
+              aspectRatio: 16/10,
+              viewportFraction: 0.9,
+              onPageChanged: (index) {
+                currentGuidIndex = index;
+                userInfo = users[currentGuidIndex];
+                _current = index;
+                setState(() {});
+              },
             ),
-            // навигационные точечки
-            Container(
-              //padding: EdgeInsets.all(5.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: idListPoints()
-              ),
+          ),
+          // навигационные точечки
+          Container(
+            //padding: EdgeInsets.all(5.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: idListPoints()
             ),
-            // секция с картами деталей учетной записи
-            Expanded(
-              child: ListView(
-                physics: ScrollPhysics(parent: BouncingScrollPhysics()),
-                padding: EdgeInsets.only(
-                  top: 0.0,
-                  left: 30.0,
-                  right: 30.0
-                ),
-                children: <Widget> [
-                  // виджет отображения долга
-                  Container(
-                      child: Column(
-                        children: <Widget>[
-                          double.parse(users[currentGuidIndex]["debt"]) > 0
-                              ?
-                              Card(
-                                  color: Colors.red,
-                                  child: new ListTile(
-                                        title: Text(
-                                          "За Вашей учётной записью числится задолженость ${users[currentGuidIndex]["debt"].toString()} р.",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
+          ),
+          // секция с картами деталей учетной записи
+          Expanded(
+            child: ListView(
+              physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+              padding: EdgeInsets.only(
+                top: 0.0,
+                left: 30.0,
+                right: 30.0
+              ),
+              children: <Widget> [
+                // виджет отображения долга
+                Container(
+                    child: Column(
+                      children: <Widget>[
+                        double.parse(users[currentGuidIndex]["debt"]) > 0
+                            ?
+                            Card(
+                                color: Colors.red,
+                                child: new ListTile(
+                                      title: Text(
+                                        "За Вашей учётной записью числится задолженость ${users[currentGuidIndex]["debt"].toString()} р.",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white,
                                         ),
-                                  )
-                              )
-                              :
-                          Container(),
-                        ],
+                                      ),
+                                )
+                            )
+                            :
+                        Container(),
+                      ],
+                    )
+                ),
+                // текст - Детали учетной записи
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 40.0,
+                    top: 10.0,
+                    bottom: 10.0
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Детали учётной записи',
+                    style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('Тарифный план'),
+                              subtitle: Text(
+                                  '${users[currentGuidIndex]["tarif_name"]} (${users[currentGuidIndex]["tarif_sum"].toString()} р.)'
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                   ),
-                  // текст - Детали учетной записи
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: 40.0,
-                      top: 10.0,
-                      bottom: 10.0
-                    ),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Детали учётной записи',
-                      style: TextStyle(
-                        fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
-                        color: Color.fromRGBO(72, 95, 113, 1.0),
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('IP адрес абонента'),
+                              subtitle: Text(users[currentGuidIndex]["real_ip"]),
+                            ),
+                          ],
+                        ),
+                      )
                   ),
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: 5.0),
-                    child: Card(
-                        child: Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.album, size: 40),
-                                title: Text('Тарифный план'),
-                                subtitle: Text(
-                                    '${users[currentGuidIndex]["tarif_name"]} (${users[currentGuidIndex]["tarif_sum"].toString()} р.)'
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                    ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('Адрес подключения'),
+                              subtitle: Text(users[currentGuidIndex]["street"] + ", д. " + users[currentGuidIndex]["house"] + ", кв. " + users[currentGuidIndex]["flat"]),
+                            ),
+                          ],
+                        ),
+                      )
                   ),
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: 5.0),
-                    child: Card(
-                        child: Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.album, size: 40),
-                                title: Text('IP адрес абонента'),
-                                subtitle: Text(users[currentGuidIndex]["real_ip"]),
-                              ),
-                            ],
-                          ),
-                        )
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: 5.0),
-                    child: Card(
-                        child: Container(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              ListTile(
-                                leading: Icon(Icons.album, size: 40),
-                                title: Text('Адрес подключения'),
-                                subtitle: Text(users[currentGuidIndex]["street"] + ", д. " + users[currentGuidIndex]["house"] + ", кв. " + users[currentGuidIndex]["flat"]),
-                              ),
-                            ],
-                          ),
-                        )
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ]
-        )
+                ),
+              ],
+            ),
+          )
+        ]
+      )
     );
   }
 }
