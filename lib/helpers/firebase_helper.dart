@@ -3,6 +3,7 @@ import 'dart:io';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:myevpanet/api/api.dart';
 
 class FirebaseHelper{
 
@@ -34,6 +35,8 @@ class FirebaseHelper{
         // );
 
         // Scaffold.of(context).showSnackBar(snackbar);
+        //сохраняем полученную пушку в файл
+        savePushToFile(message);
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -53,10 +56,12 @@ class FirebaseHelper{
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        savePushToFile(message);
         // optional
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        savePushToFile(message);
         // optional
       },
     );
@@ -66,6 +71,10 @@ class FirebaseHelper{
     return await _fcm.getToken();
   }
 
+  Future<void> savePushToFile(Map<String, dynamic> message) async{
+    final _file = await FileStorage('pushes.dat').localFile;
+    _file.writeAsString('${message.toString()}', mode: FileMode.append);
+  }
   /*Future saveDeviceToken(String json) async{
     //String uid = 'jeff1e7t';
     // FirebaseUser user = await _auth.currentUser();

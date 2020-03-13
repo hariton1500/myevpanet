@@ -14,11 +14,14 @@ FirebaseHelper fbHelper;
 void main() {
   runApp(App());
 }
-
+//
 class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //моя проба с пушем
+    fbHelper = FirebaseHelper();
+    fbHelper.configure(context);
     return MaterialApp(
       theme: ThemeData (
           primaryColorDark: Color(0xFF1976d2),

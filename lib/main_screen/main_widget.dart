@@ -293,7 +293,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     if (verbose >= 1) print('Start getData');
     getData();
     super.initState();
-    fbHelper.configure(this.context);
+    //fbHelper.configure(this.context);
     if (verbose >= 1) print('End getData');
     Intl.defaultLocale = 'ru_RU';
     initializeDateFormatting();

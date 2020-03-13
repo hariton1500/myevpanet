@@ -17,6 +17,8 @@ class SetupGroupWidget extends State {
   bool autoState;
   bool parentState;
   String text = '';
+  double _currentDays = 1;
+  String daysText = 'день';
 
   @override
   void initState() {
@@ -533,6 +535,59 @@ class SetupGroupWidget extends State {
                         ),
                         child: Column(
                           children: _list(),
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      indent: 20.0,
+                      endIndent: 20.0,
+                      color: Color(0xff3e6282),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 10.0,
+                          right: 16.0,
+                          left: 16.0
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          bottom: 16.0
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Добавление дней к текущему пакету',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: ResponsiveFlutter.of(context).fontSize(2.0),
+                                color: Color.fromRGBO(72, 95, 113, 1.0),
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text('Стоимость одного дня - ${users[currentGuidIndex]['days_price']} руб.'),
+                            Slider(
+                              value: _currentDays.roundToDouble(),
+                              onChanged: (double days) => setState(() {
+                                _currentDays = days;
+                                if ((days % 10).round() == 0) daysText = 'дней';
+                                if ((days % 10).round() == 1) daysText = 'день';
+                                if ((days % 10).round() >= 2) daysText = 'дня';
+                                if ((days % 10).round() >= 5) daysText = 'дней';
+                                if (days.round() >= 11 && days.round() <= 14) daysText = 'дней';
+                              }),
+                              min: 1,
+                              max: users[currentGuidIndex]['max_days'] >= 1 ? users[currentGuidIndex]['max_days'].toDouble() : 1,
+                              divisions: users[currentGuidIndex]['max_days'] > 0 ? users[currentGuidIndex]['max_days'] - 1 : null,
+                              label: _currentDays.round().toString(),
+                            ),
+                            users[currentGuidIndex]['max_days'] > 0 ?
+                            RaisedButton(
+                              onPressed: null,
+                              elevation: 15,
+                              child: Text('Добавить ${_currentDays.round()} $daysText'),
+                            ) :
+                            Text('Недостаточно средств для добавления дней'),
+                          ],
                         ),
                       ),
                     ),

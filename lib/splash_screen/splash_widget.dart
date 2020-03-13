@@ -20,7 +20,7 @@ class _SplashWidgetState extends State<SplashWidget> {
   initState() {
     if (verbose >=1) print('SplashScreen initState');
     super.initState();
-    fbHelper = FirebaseHelper();
+    //fbHelper = FirebaseHelper();
     Future<int> goto = whereToGo();
     Timer(Duration(seconds: 5), (){goGo(goto);});
   }
@@ -133,7 +133,7 @@ class _SplashWidgetState extends State<SplashWidget> {
           //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
         }
       } else {
-        if (verbose >=1) print('Key File has wrong key. Creating new one...');
+        if (verbose >=1) print('Key File has wrong key. Trying to get new one from FireBase...');
         String _token = await FirebaseHelper().getAppToken();
         devKey = _token;
         if (verbose >=1) print(_token);
@@ -146,6 +146,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     } else {
       if (verbose >=1) print('Key file is not exists');
       String _token = await FirebaseHelper().getAppToken();
+      devKey = _token;
       if (verbose >=1) print(_token == null ? '' : _token);
       file.writeAsStringSync(_token == null ? '' : _token, mode: FileMode.write, encoding: utf8);
       if (verbose >=1) print('Key File created and saved');
