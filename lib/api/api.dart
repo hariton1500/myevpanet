@@ -359,5 +359,21 @@ class UserInfo {
 *         "tarif_id",
 *         "tarif_sum",
 *         "tarif_name"
+* ***************************************************************
+* Добавление дней
+*   URL: https://evpanet.com/api/apk/user/days/
+*   Method: PUT
+*   Header:
+*     - key = token
+*     - value = токен от гугла
+*   Body:
+*     - формат = JSON {"guid":"<GUID>","days":<DAYS>}
+*   Response:
+*     - формат: JSON
+*     - данные:
+*         "days": <days>,
+*         "packet_secs": <packet_secs>,
+*         "extra_account": <extra_account>
 *
+* ***************************************************************
 * */
