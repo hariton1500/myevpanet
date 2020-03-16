@@ -92,21 +92,6 @@ class RestAPI {
     return await network.getData(url);
   }
 
-  /* ***************************************************************
-  * Добавление ремонта или коментария к ремонту
-  *   URL: https://evpanet.com/api/apk/support/request
-  *   Method: POST
-  *   Header:
-  *     - key = token
-  *     - value = токен от гугла
-  *   Body:
-  *     - message = сообщение от абонента
-  *     - guid
-  *   Response:
-  *     - формат: JSON
-  *     - ответ: есть ли ошибка и текст, или сообщения или ошибки
-  **
-  * ***************************************************************/
   Future<String> remontAddPOST(String comment, String guid, String token) async {
     Response _response;
     String _answer = '';
@@ -157,6 +142,31 @@ class RestAPI {
     return _answer;
   }
 
+  //добавление дней к пакету
+  Future<String> addDaysPUT(int daysToAdd, String guid, String token) async{
+    Response _response;
+    String _answer = 'isEmpty';
+    Map<String, String> _headers = {'token' : '$token'};
+    Map _body = {'days' : daysToAdd, 'guid' : guid};
+    String _url = 'https://evpanet.com/api/apk/user/days/';
+    if (verbose >= 1) print('Adding days by PUT: url = $_url; headers = $_headers; body = $_body');
+    try {
+      _response = await put(_url, headers: _headers, body: _body);
+      _response.statusCode == 201 ?
+        _answer = _response.body
+        :
+        _answer = 'isError';
+    } on SocketException catch (error) {
+      if (verbose >=1) print(error.message);
+      return 'isException';
+    } on HandshakeException catch (error) {
+      if (verbose >=1) print(error.message);
+      return 'isException';
+    }
+    if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
+    return _answer;
+  }
+
   //смена переключателей автоактивации или род. контроля
   Future<String> switchChangePUT(String switchType, String guid, String token) async{
     Response _response;
@@ -166,7 +176,7 @@ class RestAPI {
     String _url = switchType == 'activation' ?
       'https://evpanet.com/api/apk/user/auto_activation/' :
       'https://evpanet.com/api/apk/user/parent_control/';
-    if (verbose >= 1) print('Changing auto_actiovation flag by PUT: url = $_url; headers = $_headers; body = $_body');
+    if (verbose >= 1) print('Changing auto_activation flag by PUT: url = $_url; headers = $_headers; body = $_body');
     try {
       _response = await put(_url, headers: _headers, body: _body);
       _response.statusCode == 201 ?

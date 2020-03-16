@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -189,6 +191,17 @@ class SetupGroupWidget extends State {
     String answer = await RestAPI().remontAddPOST(text, guids[currentGuidIndex], devKey);
     print(answer);
     Navigator.pop(context);
+  }
+
+  void onAddDaysButtonPressed() async {
+    String answer = await RestAPI().addDaysPUT(_currentDays.round(), guids[currentGuidIndex], devKey);
+    if (!answer.startsWith('is')) {
+      var decode = json.decode(answer);
+      users[currentGuidIndex]['extra_account'] = decode['extra_account'];
+      users[currentGuidIndex]['packet_secs'] = decode['packet_secs'];
+      userInfo = users[currentGuidIndex];
+      setState(() {});
+    }
   }
 
   final double appBarHeight = 66.0;
@@ -582,7 +595,7 @@ class SetupGroupWidget extends State {
                             ),
                             users[currentGuidIndex]['max_days'] > 0 ?
                             RaisedButton(
-                              onPressed: null,
+                              onPressed: onAddDaysButtonPressed,
                               elevation: 15,
                               child: Text('Добавить ${_currentDays.round()} $daysText'),
                             ) :
