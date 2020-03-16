@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
 import 'package:myevpanet/login_screen/login_widget.dart';
+import 'package:flutter/services.dart';
 
 class SplashWidget extends StatefulWidget {
   @override
@@ -23,6 +24,10 @@ class _SplashWidgetState extends State<SplashWidget> {
     //fbHelper = FirebaseHelper();
     Future<int> goto = whereToGo();
     Timer(Duration(seconds: 5), (){goGo(goto);});
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
   Future<void> goGo(Future<int> index) async {
     if (await index == 1) {
@@ -38,7 +43,16 @@ class _SplashWidgetState extends State<SplashWidget> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xff11273c),
+                      Color(0xff3c5d7c)
+                    ]
+                )
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

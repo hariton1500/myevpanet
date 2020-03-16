@@ -13,7 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:myevpanet/main_screen/setups.dart';
-import 'package:myevpanet/support_screen/support.dart';
+//import 'package:myevpanet/support_screen/support.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class MainScreenWidget extends StatefulWidget {
@@ -26,6 +27,9 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
+
+  String text = '';
+  String phoneToCall = '+79780489664';
 
   // генерируем точки
   List<Widget> idListPoints() {
@@ -287,6 +291,387 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   DateFormat dateFormat;
 
+  // это можно вынести в отдельный файл
+  /*
+  * Вызов модального окна с сообщением в ремонты
+  * */
+  void _showModalSupport() async{
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Color(0xff2c4860),
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              margin: EdgeInsets.only(left: 0.0,right: 0.0),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 18.0,
+                    ),
+                    margin: EdgeInsets.only(top: 13.0,right: 8.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(6.0),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 0.0,
+                            offset: Offset(0.0, 0.0),
+                          ),
+                        ]
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                              left: 16.0,
+                              right: 16.0,
+                              bottom: 20.0
+                          ),
+                          alignment: Alignment.topCenter,
+                          child: Center(
+                            child: Text(
+                              'Отправка сообщения в службу технической поддержки',
+                              style: TextStyle(
+                                  fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                                  color: Color.fromRGBO(72, 95, 113, 1.0),
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                          ),
+                          child: TextField(
+                            onChanged: (_text) {
+                              text = _text;
+                            },
+                            autofocus: true,
+                            maxLines: 3,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              //hintText: "Напишите нам",
+                              labelText: "Ваше сообщение",
+                              labelStyle: TextStyle(
+                                color: Color(0xff374b5d),
+                                letterSpacing: 1,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                  color: Color(0xff374b5d),
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                  color: Colors.amber,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 24.0),
+                        InkWell(
+                          child: Container(
+                            padding: EdgeInsets.only(top: 15.0,bottom:15.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xff374b5d),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(6.0),
+                                  bottomRight: Radius.circular(6.0)),
+                            ),
+                            child:  Text(
+                              "Отправить сообщение",
+                              style: TextStyle(color: Colors.white,fontSize: 20.0),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          onTap:(){
+                            _sendMessagePressed();
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: 0.0,
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 14.0,
+                          backgroundColor: Colors.red,
+                          child: Icon(Icons.close, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+  void _sendMessagePressed() async{
+    String answer = await RestAPI().remontAddPOST(text, guids[currentGuidIndex], devKey);
+    print(answer);
+    Navigator.pop(context);
+  }
+/*
+ *  Вызов модального окна для совершения звонка
+ * */
+  void _showModalCallSupport() async{
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Color(0xff2c4860),
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              margin: EdgeInsets.only(left: 0.0,right: 0.0),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 18.0,
+                    ),
+                    margin: EdgeInsets.only(top: 13.0,right: 8.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(6.0),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 0.0,
+                            offset: Offset(0.0, 0.0),
+                          ),
+                        ]
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.all(
+                                16.0
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Text("Пожалуйста выберите один из номеров технической поддержки."),
+                                DropdownButton<String>(
+                                    value: phoneToCall,
+                                    autofocus: true,
+                                    icon: Icon(Icons.arrow_drop_down),
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        phoneToCall = newValue;
+                                      });
+                                    },
+                                    items: [
+                                      DropdownMenuItem(
+                                          value: '+79780489664',
+                                          child: Text('+7 (978) 048-96-64')
+                                      ),
+                                      DropdownMenuItem(
+                                          value: '+79780755900',
+                                          child: Text('+7 (978) 075-59-00')
+                                      ),
+                                    ]
+                                ),
+                              ],
+                            )
+                        ),
+                        SizedBox(height: 24.0),
+                        InkWell(
+                          child: Container(
+                            padding: EdgeInsets.only(top: 15.0,bottom:15.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xff374b5d),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(6.0),
+                                  bottomRight: Radius.circular(6.0)),
+                            ),
+                            child:  Text(
+                              "Совершить звонок",
+                              style: TextStyle(color: Colors.white,fontSize: 20.0),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          onTap: () async{
+                            if (await canLaunch('tel://$phoneToCall')) launch('tel://$phoneToCall');
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: 0.0,
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 14.0,
+                          backgroundColor: Colors.red,
+                          child: Icon(Icons.close, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+
+  }
+
+  /*
+  * Вызов модального окна для отправки СМС
+  * */
+
+  void _showModalSMSSupport() async{
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Color(0xff2c4860),
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              margin: EdgeInsets.only(left: 0.0,right: 0.0),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 18.0,
+                    ),
+                    margin: EdgeInsets.only(top: 13.0,right: 8.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(6.0),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 0.0,
+                            offset: Offset(0.0, 0.0),
+                          ),
+                        ]
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.all(
+                                16.0
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Text("Пожалуйста выберите один из номеров технической поддержки."),
+                                DropdownButton<String>(
+                                    value: phoneToCall,
+                                    autofocus: true,
+                                    icon: Icon(Icons.arrow_drop_down),
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        phoneToCall = newValue;
+                                      });
+                                    },
+                                    items: [
+                                      DropdownMenuItem(
+                                          value: '+79780489664',
+                                          child: Text('+7 (978) 048-96-64')
+                                      ),
+                                      DropdownMenuItem(
+                                          value: '+79780755900',
+                                          child: Text('+7 (978) 075-59-00')
+                                      ),
+                                    ]
+                                ),
+                              ],
+                            )
+                        ),
+                        SizedBox(height: 24.0),
+                        InkWell(
+                          child: Container(
+                            padding: EdgeInsets.only(top: 15.0,bottom:15.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xff374b5d),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(6.0),
+                                  bottomRight: Radius.circular(6.0)),
+                            ),
+                            child:  Text(
+                              "Отправить СМС",
+                              style: TextStyle(color: Colors.white,fontSize: 20.0),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          onTap: () async{
+                            if (await canLaunch('sms://$phoneToCall')) launch('sms://$phoneToCall');
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    right: 0.0,
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 14.0,
+                          backgroundColor: Colors.red,
+                          child: Icon(Icons.close, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+
+  }
+
   @override
   void initState() {
     if (verbose >= 1) print('MainScreen initState()');
@@ -322,6 +707,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     //Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0), // here the desired height
@@ -357,22 +743,62 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           actions: <Widget>[
             GestureDetector(
               child: Container(
-                padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0
+                  ),
                   child: Icon(
-                    MaterialCommunityIcons.face_agent,
+                    MaterialCommunityIcons.phone,
                     color: Color.fromRGBO(72, 95, 113, 1.0),
-                    size: 32.0,
+                    size: 24.0,
                   )
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                setState(() {});
+                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                _showModalCallSupport();
+              },
+            ),
+            GestureDetector(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 10.0
+                  ),
+                  child: Icon(
+                    MaterialCommunityIcons.email,
+                    color: Color.fromRGBO(72, 95, 113, 1.0),
+                    size: 24.0,
+                  )
+              ),
+              onTap: () {
+                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                _showModalSMSSupport();
+              },
+            ),
+            GestureDetector(
+              child: Container(
+                  padding: EdgeInsets.only(
+                    top: 10.0,
+                    bottom: 10.0,
+                    right: 16.0
+                  ),
+                  child: Icon(
+                    MaterialCommunityIcons.face_agent,
+                    color: Color.fromRGBO(72, 95, 113, 1.0),
+                    size: 24.0,
+                  )
+              ),
+              onTap: () {
+                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
+                _showModalSupport();
               },
             )
           ],
         ),
       ),
-      //),
+      //),color: Color.fromRGBO(72, 95, 113, 1.0),
       body: Column(
         children: [
           // каруселька
@@ -514,5 +940,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     );
   }
 }
+
+
 
 
