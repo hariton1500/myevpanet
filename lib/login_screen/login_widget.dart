@@ -192,13 +192,13 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
                     color: Colors.white,
                   ),
                 ),
-
               ],
             ),
           ),
         ),
       );
   }
+
 
   @override
   Widget build(BuildContext context) {

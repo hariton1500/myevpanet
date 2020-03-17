@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/push_screen/pushList.dart';
 import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -328,125 +329,6 @@ class SetupGroupWidget extends State {
 
   }
 
-  /*
-  * Вызов модального окна для отправки СМС
-  * */
-
-  void _showModalSMSSupport() async{
-    return showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: Color(0xff2c4860),
-        transitionDuration: const Duration(milliseconds: 200),
-        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              margin: EdgeInsets.only(left: 0.0,right: 0.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(
-                      top: 18.0,
-                    ),
-                    margin: EdgeInsets.only(top: 13.0,right: 8.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(6.0),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 0.0,
-                            offset: Offset(0.0, 0.0),
-                          ),
-                        ]
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                            padding: EdgeInsets.all(
-                                16.0
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Text("Пожалуйста выберите один из номеров технической поддержки."),
-                                DropdownButton<String>(
-                                    value: phoneToCall,
-                                    autofocus: true,
-                                    icon: Icon(Icons.arrow_drop_down),
-                                    iconSize: 24,
-                                    elevation: 16,
-                                    onChanged: (String newValue) {
-                                      setState(() {
-                                        phoneToCall = newValue;
-                                      });
-                                    },
-                                    items: [
-                                      DropdownMenuItem(
-                                          value: '+79780489664',
-                                          child: Text('+7 (978) 048-96-64')
-                                      ),
-                                      DropdownMenuItem(
-                                          value: '+79780755900',
-                                          child: Text('+7 (978) 075-59-00')
-                                      ),
-                                    ]
-                                ),
-                              ],
-                            )
-                        ),
-                        SizedBox(height: 24.0),
-                        InkWell(
-                          child: Container(
-                            padding: EdgeInsets.only(top: 15.0,bottom:15.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xff374b5d),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(6.0),
-                                  bottomRight: Radius.circular(6.0)),
-                            ),
-                            child:  Text(
-                              "Отправить СМС",
-                              style: TextStyle(color: Colors.white,fontSize: 20.0),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          onTap: () async{
-                            if (await canLaunch('sms://$phoneToCall')) launch('sms://$phoneToCall');
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    right: 0.0,
-                    child: GestureDetector(
-                      onTap: (){
-                        Navigator.of(context).pop();
-                      },
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 14.0,
-                          backgroundColor: Colors.red,
-                          child: Icon(Icons.close, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-    );
-
-  }
-
   void onAddDaysButtonPressed() async {
     String answer = await RestAPI().addDaysPUT(_currentDays.round(), guids[currentGuidIndex], devKey);
     if (!answer.startsWith('is')) {
@@ -548,24 +430,6 @@ class SetupGroupWidget extends State {
                                 padding: EdgeInsets.only(
                                   top: 10.0,
                                   bottom: 10.0,
-                                  right: 10.0
-                                ),
-                                child: Icon(
-                                  MaterialCommunityIcons.email,
-                                  color: Colors.white,
-                                  size: 24.0,
-                                )
-                            ),
-                            onTap: () {
-                              //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                              _showModalSMSSupport();
-                            },
-                          ),
-                          GestureDetector(
-                            child: Container(
-                                padding: EdgeInsets.only(
-                                  top: 10.0,
-                                  bottom: 10.0,
                                 ),
                                 child: Icon(
                                   MaterialCommunityIcons.face_agent,
@@ -577,7 +441,26 @@ class SetupGroupWidget extends State {
                               //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
                               _showModalSupport();
                             },
-                          )
+                          ),
+                          GestureDetector(
+                            child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 10.0,
+                                    bottom: 10.0,
+                                    right: 0.0,
+                                    left: 32.0
+                                ),
+                                child: Icon(
+                                  MaterialCommunityIcons.bell,
+                                  color: Colors.white,
+                                  size: 24.0,
+                                )
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PushScreen()));
+                              //_showModalSMSSupport();
+                            },
+                          ),
                         ],
                       )
                     ],
