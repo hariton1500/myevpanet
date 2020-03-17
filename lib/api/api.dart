@@ -147,7 +147,7 @@ class RestAPI {
     Response _response;
     String _answer = 'isEmpty';
     Map<String, String> _headers = {'token' : '$token'};
-    Map _body = {'days' : daysToAdd, 'guid' : guid};
+    Map _body = {'days' : daysToAdd.toString(), 'guid' : guid};
     String _url = 'https://evpanet.com/api/apk/user/days/';
     if (verbose >= 1) print('Adding days by PUT: url = $_url; headers = $_headers; body = $_body');
     try {

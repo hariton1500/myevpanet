@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:myevpanet/api/api.dart';
@@ -17,8 +18,8 @@ class SetupGroup extends StatefulWidget {
 }
 Map initialTarif;
 class SetupGroupWidget extends State {
-  bool autoState;
-  bool parentState;
+  bool autoState = users[currentGuidIndex]['auto_activation'] == 1 ? true : false;
+  bool parentState = users[currentGuidIndex]['flag_parent_control'] == 1 ? true : false;
   String text = '';
   double _currentDays = 1;
   String daysText = 'день';
@@ -27,8 +28,6 @@ class SetupGroupWidget extends State {
 
   @override
   void initState() {
-    autoState = users[currentGuidIndex]['auto_activation'] == 1 ? true : false;
-    parentState = users[currentGuidIndex]['flag_parent_control'] == 1 ? true : false;
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent, // navigation bar color
@@ -46,7 +45,8 @@ class SetupGroupWidget extends State {
           autoState = !value;
         } else {
           autoState = value;
-          userInfo['auto_activation'] = autoState ? 1 : 0;
+          users[currentGuidIndex]['auto_activation'] = autoState ? 1 : 0;
+          userInfo = users[currentGuidIndex];
         }
       }
     );
@@ -59,7 +59,8 @@ class SetupGroupWidget extends State {
           parentState = !value;
         } else {
           parentState = value;
-          userInfo['auto_activation'] = parentState ? 1 : 0;
+          users[currentGuidIndex]['flag_parent_control'] = parentState ? 1 : 0;
+          userInfo = users[currentGuidIndex];
         }
       }
     );
@@ -450,9 +451,10 @@ class SetupGroupWidget extends State {
     String answer = await RestAPI().addDaysPUT(_currentDays.round(), guids[currentGuidIndex], devKey);
     if (!answer.startsWith('is')) {
       var decode = json.decode(answer);
-      users[currentGuidIndex]['extra_account'] = decode['extra_account'];
-      users[currentGuidIndex]['packet_secs'] = decode['packet_secs'];
-      userInfo = users[currentGuidIndex];
+      print(decode);
+      //users[currentGuidIndex]['extra_account'] = decode['extra_account'];
+      //users[currentGuidIndex]['packet_secs'] = decode['packet_secs'];
+      //userInfo = users[currentGuidIndex];
       setState(() {});
     }
   }
@@ -635,7 +637,7 @@ class SetupGroupWidget extends State {
                                                   right: 5.0
                                               ),
                                               child: CircleButton(
-                                                  onTap: () => print("Cool"), // Харитон, тут надо тапнуть на новый скрин пополнения баланса
+                                                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView())), // Харитон, тут надо тапнуть на новый скрин пополнения баланса
                                                   iconData: MaterialCommunityIcons.wallet_plus_outline
                                               ),
                                             ),
