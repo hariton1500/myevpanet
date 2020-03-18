@@ -48,6 +48,21 @@ class FileStorage {
 
 }
 
+class Pushes {
+  Future<List<Map>> loadPushesFromFile(String filename) async{
+    final _file = await FileStorage(filename).localFile;
+    List<Map> _list = [];
+    if (_file.existsSync()) {
+      List<String> _lineList = _file.readAsLinesSync();
+      for (var _line in _lineList) {
+        var _decode = json.decode(_line);
+        _list.add(_decode);
+      }
+    }
+    return _list;
+  }
+}
+
 class Network {
   bool isError = false;
   String error = '';
@@ -292,7 +307,6 @@ class UserInfo {
     return null;
   }
 }
-
 
 
 //все вспомогательные классы с их методами здесь

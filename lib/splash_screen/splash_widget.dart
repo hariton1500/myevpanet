@@ -140,6 +140,7 @@ class _SplashWidgetState extends State<SplashWidget> {
             currentGuidIndex++;
           }
           currentGuidIndex = 0;
+          pushes = await Pushes().loadPushesFromFile('pushes.dat');
           return 1;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
         } else {
           if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');

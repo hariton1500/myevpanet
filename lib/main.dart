@@ -4,6 +4,7 @@ import 'package:myevpanet/splash_screen/splash_widget.dart';
 
 int verbose = 1;
 List guids;
+List pushes;
 String devKey;
 int currentGuidIndex = 0;
 Map userInfo;
