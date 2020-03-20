@@ -251,7 +251,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                     )
                                   ],
                                 )
-
                               ),
                               Expanded(
                                 flex: 1,
@@ -271,7 +270,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                     )
                                   ],
                                 )
-
                               ),
                             ],
                           ),
@@ -279,7 +277,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                       ],
                     ),
                   ),
-
                 )
             )
           )

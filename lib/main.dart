@@ -4,7 +4,7 @@ import 'package:myevpanet/splash_screen/splash_widget.dart';
 
 int verbose = 1;
 List guids;
-List pushes;
+List pushes = [];
 String devKey;
 int currentGuidIndex = 0;
 Map userInfo;
@@ -13,6 +13,7 @@ var users = Map();
 FirebaseHelper fbHelper;
 int messageForId = 0;
 Map<String, dynamic> lastMessage;
+bool lastMessageIsSeen = false;
 
 void main() {
   runApp(App());

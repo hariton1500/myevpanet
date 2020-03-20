@@ -31,7 +31,9 @@ class _PushScreenState extends State<PushScreen> {
 
   List<Widget> listRows() {
     List<Widget> _list = [];
+    //print('Reading content of pushes.dat');
     for (var _push in pushes) {
+      //print(_push);
       _list.add(
         Card(
           child: Column(
@@ -41,17 +43,14 @@ class _PushScreenState extends State<PushScreen> {
                   Icon(Icons.message),
                   Column(
                     children: <Widget>[
-                      Text(_push['notification']['title']),
-                      Text(_push['notification']['body'])
+                      Text(_push['id'].toString()),
+                      Text(_push['title']),
+                      Text(DateTime.tryParse(_push['date']).toString()),
+                      Text(_push['body']),
                     ],
                   ),
                 ]
               ),
-              Row(
-                children: <Widget>[
-                  Text(DateTime.now().toString())
-                ],
-              )
             ],
           )
         )

@@ -56,21 +56,40 @@ class Pushes {
       List<String> _lineList = _file.readAsLinesSync();
       for (var _line in _lineList) {
         var _decode = json.decode(_line);
+        print(_line);
         _list.add(_decode);
       }
     }
     return _list;
   }
-  Future<void> savePushToFile(Map<String, dynamic> message) async{
+  Future<void> savePushToFile(String mode) async{
+    Map _toSave = {};
     print('incoming push notification:');
-    print(message);
+    print(lastMessage);
+    if (Platform.isAndroid) {
+      if (mode == 'onMessage') {
+        _toSave['id'] = parsePushForId(lastMessage['notification']['title'].toString());
+        _toSave['title'] = lastMessage['notification']['title'].toString().substring(lastMessage['notification']['title'].toString().indexOf(')') + 2);
+        _toSave['date'] = DateTime.now().toString();
+        _toSave['body'] = lastMessage['notification']['body'].toString();
+      } else {
+        _toSave['id'] = parsePushForId(lastMessage['data']['title'].toString());
+        _toSave['title'] = lastMessage['data']['title'].toString().substring(lastMessage['data']['title'].toString().indexOf(')'));
+        _toSave['date'] = DateTime.now().toString();
+        _toSave['body'] = lastMessage['data']['message'].toString();
+      }
+    }
     final _file = await FileStorage('pushes.dat').localFile;
-    _file.writeAsString('${json.encode(message)}\n', mode: FileMode.append);
+    _file.writeAsString('${json.encode(_toSave)}\n', mode: FileMode.append);
+    pushes.add(_toSave);
   }
   int parsePushForId(String source) {
-    int _indexOpen = source.indexOf('[');
-    int _indexClose = source.indexOf(']');
-    return int.parse(source.substring(_indexOpen, _indexClose));
+    if (source != 'null') {
+      int _indexOpen = source.indexOf('(');
+      int _indexClose = source.indexOf(')');
+      String _toParse = source.substring(_indexOpen + 1, _indexClose);
+      return int.parse(_toParse);
+    } else return 0;
   }
 }
 

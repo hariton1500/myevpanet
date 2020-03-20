@@ -27,6 +27,8 @@ class FirebaseHelper{
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
         lastMessage = message;
+        await Pushes().savePushToFile('onMessage');
+        lastMessageIsSeen = false;
         messageForId = Pushes().parsePushForId(message['notification']['title'].toString());
         Fluttertoast.showToast(
           msg: '${message['notification']['title']} : ${message['notification']['body']}',
@@ -37,54 +39,19 @@ class FirebaseHelper{
           textColor: Colors.white,
           fontSize: 16.0
         );
-        /*final snackbar = SnackBar(
-          content: Column(
-            children: [
-              Text(message['notification']['title']),
-              Text(message['notification']['body']),
-            ],
-          ),
-          /*action: SnackBarAction(
-            label: 'Go',
-            onPressed: () => null,
-          ),*/
-        );
-        Scaffold.of(context).showSnackBar(snackbar);*/
         //сохраняем полученную пушку в файл
-        Pushes().savePushToFile(message);
-        /*showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                //color: Colors.amber,
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );*/
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        Fluttertoast.showToast(
-          msg: '${message['data']['title']} : ${message['data']['message']}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        Pushes().savePushToFile(message);
+        lastMessage = message;
+        await Pushes().savePushToFile('onLaunch');
+        lastMessageIsSeen = false;
         // optional
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        lastMessage = message;
+        lastMessageIsSeen = false;
         Fluttertoast.showToast(
           msg: '${message['data']['title']} : ${message['data']['message']}',
           toastLength: Toast.LENGTH_SHORT,
@@ -94,7 +61,7 @@ class FirebaseHelper{
           textColor: Colors.white,
           fontSize: 16.0
         );
-        Pushes().savePushToFile(message);
+        Pushes().savePushToFile('onResume');
         // optional
       },
     );
