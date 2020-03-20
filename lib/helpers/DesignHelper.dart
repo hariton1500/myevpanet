@@ -73,7 +73,20 @@ class CallButtonWidget extends State {
                       ),
                       child: Column(
                         children: <Widget>[
-                          Text("Пожалуйста выберите один из номеров технической поддержки."),
+                          Center(
+                           child: Text(
+                             "Пожалуйста выберите один из номеров технической поддержки.",
+                             style: TextStyle(
+                                 fontSize: ResponsiveFlutter.of(context).fontSize(2),
+                                 color: Color.fromRGBO(72, 95, 113, 1.0),
+                                 fontWeight: FontWeight.bold
+                             ),
+                             textAlign: TextAlign.center,
+                           ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(6.0),
+                          ),
                           DropdownButton<String>(
                             value: phoneToCall,
                             autofocus: true,
@@ -88,11 +101,26 @@ class CallButtonWidget extends State {
                             items: [
                               DropdownMenuItem(
                                   value: '+79780489664',
-                                  child: Text('+7 (978) 048-96-64')
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(Icons.phone_iphone),
+                                      SizedBox(width: 20.0),
+                                      Text('+7 (978) 048-96-64')
+                                    ],
+                                  )
+
+
+                                  //child: Text('+7 (978) 048-96-64')
                               ),
                               DropdownMenuItem(
                                   value: '+79780755900',
-                                  child: Text('+7 (978) 075-59-00')
+                                  child: Row(
+                                    children: <Widget>[
+                                      Icon(Icons.phone_iphone),
+                                      SizedBox(width: 20.0),
+                                      Text('+7 (978) 075-59-00')
+                                    ],
+                                  )
                               ),
                             ]
                           ),
