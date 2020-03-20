@@ -11,6 +11,8 @@ Map userInfo;
 bool useNewApiVersion = true;
 var users = Map();
 FirebaseHelper fbHelper;
+int messageForId = 0;
+Map<String, dynamic> lastMessage;
 
 void main() {
   runApp(App());
@@ -22,7 +24,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     //моя проба с пушем
     fbHelper = FirebaseHelper();
-    fbHelper.configure(context);
+    //fbHelper.configure(context);
     return MaterialApp(
       theme: ThemeData (
           primaryColorDark: Color(0xFF1976d2),

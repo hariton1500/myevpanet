@@ -41,15 +41,15 @@ class _PushScreenState extends State<PushScreen> {
                   Icon(Icons.message),
                   Column(
                     children: <Widget>[
-                      Text(_push['time']),
-                      Text(_push['date'])
+                      Text(_push['notification']['title']),
+                      Text(_push['notification']['body'])
                     ],
                   ),
                 ]
               ),
               Row(
                 children: <Widget>[
-                  Text(_push['message'])
+                  Text(DateTime.now().toString())
                 ],
               )
             ],

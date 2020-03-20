@@ -1,9 +1,9 @@
 import 'dart:io';
-
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/api/api.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:myevpanet/main.dart';
 
 class FirebaseHelper{
 
@@ -19,25 +19,40 @@ class FirebaseHelper{
     if(Platform.isIOS){
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
-    //configure();
+    configure();
   }
 
-  void configure(BuildContext context) {
+  void configure() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
-        // final snackbar = SnackBar(
-        //   content: Text(message['notification']['title']),
-        //   action: SnackBarAction(
-        //     label: 'Go',
-        //     onPressed: () => null,
-        //   ),
-        // );
-
-        // Scaffold.of(context).showSnackBar(snackbar);
+        lastMessage = message;
+        messageForId = Pushes().parsePushForId(message['notification']['title'].toString());
+        Fluttertoast.showToast(
+          msg: '${message['notification']['title']} : ${message['notification']['body']}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        /*final snackbar = SnackBar(
+          content: Column(
+            children: [
+              Text(message['notification']['title']),
+              Text(message['notification']['body']),
+            ],
+          ),
+          /*action: SnackBarAction(
+            label: 'Go',
+            onPressed: () => null,
+          ),*/
+        );
+        Scaffold.of(context).showSnackBar(snackbar);*/
         //сохраняем полученную пушку в файл
-        savePushToFile(message);
-        showDialog(
+        Pushes().savePushToFile(message);
+        /*showDialog(
           context: context,
           builder: (context) => AlertDialog(
             content: ListTile(
@@ -52,16 +67,34 @@ class FirebaseHelper{
               ),
             ],
           ),
-        );
+        );*/
       },
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
-        savePushToFile(message);
+        Fluttertoast.showToast(
+          msg: '${message['data']['title']} : ${message['data']['message']}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        Pushes().savePushToFile(message);
         // optional
       },
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
-        savePushToFile(message);
+        Fluttertoast.showToast(
+          msg: '${message['data']['title']} : ${message['data']['message']}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 2,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+        );
+        Pushes().savePushToFile(message);
         // optional
       },
     );
@@ -71,10 +104,6 @@ class FirebaseHelper{
     return await _fcm.getToken();
   }
 
-  Future<void> savePushToFile(Map<String, dynamic> message) async{
-    final _file = await FileStorage('pushes.dat').localFile;
-    _file.writeAsString('${message.toString()}', mode: FileMode.append);
-  }
   /*Future saveDeviceToken(String json) async{
     //String uid = 'jeff1e7t';
     // FirebaseUser user = await _auth.currentUser();

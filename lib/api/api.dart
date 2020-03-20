@@ -61,6 +61,17 @@ class Pushes {
     }
     return _list;
   }
+  Future<void> savePushToFile(Map<String, dynamic> message) async{
+    print('incoming push notification:');
+    print(message);
+    final _file = await FileStorage('pushes.dat').localFile;
+    _file.writeAsString('${json.encode(message)}\n', mode: FileMode.append);
+  }
+  int parsePushForId(String source) {
+    int _indexOpen = source.indexOf('[');
+    int _indexClose = source.indexOf(']');
+    return int.parse(source.substring(_indexOpen, _indexClose));
+  }
 }
 
 class Network {
