@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,9 +30,8 @@ class _SplashWidgetState extends State<SplashWidget> {
       DeviceOrientation.portraitDown,
     ]);
   }
-  goGo(int index) {
-    index == 1 ? Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()))
-    : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+  goGo(int index) async {
+    Timer(Duration(seconds: 5), await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => index == 1 ? MainScreenWidget() : LoginWidget())));
   }
   int guidsNumber = guids.isEmpty ? 1 : guids.length;
   @override
