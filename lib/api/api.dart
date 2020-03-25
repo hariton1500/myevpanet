@@ -74,7 +74,7 @@ class Pushes {
         _toSave['body'] = lastMessage['notification']['body'].toString();
       } else {
         _toSave['id'] = parsePushForId(lastMessage['data']['title'].toString());
-        _toSave['title'] = lastMessage['data']['title'].toString().substring(lastMessage['data']['title'].toString().indexOf(')'));
+        _toSave['title'] = lastMessage['data']['title'].toString().substring(lastMessage['data']['title'].toString().indexOf(')') + 2);
         _toSave['date'] = DateTime.now().toString();
         _toSave['body'] = lastMessage['data']['message'].toString();
       }
