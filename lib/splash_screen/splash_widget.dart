@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/main.dart';
-import 'dart:async';
+//import 'dart:async';
 import 'dart:io';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
@@ -22,20 +22,18 @@ class _SplashWidgetState extends State<SplashWidget> {
     if (verbose >=1) print('SplashScreen initState');
     super.initState();
     //fbHelper = FirebaseHelper();
-    Future<int> goto = whereToGo();
-    Timer(Duration(seconds: 5), (){goGo(goto);});
+    whereToGo();
+    //Timer(Duration(seconds: 5), (){goGo(goto);});
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
   }
-  Future<void> goGo(Future<int> index) async {
-    if (await index == 1) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
-    } else {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
-    }
+  goGo(int index) {
+    index == 1 ? Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()))
+    : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
   }
+  int guidsNumber = guids.isEmpty ? 1 : guids.length;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +95,11 @@ class _SplashWidgetState extends State<SplashWidget> {
                           fontSize: 18.0,
                           color: Colors.white
                       ),
+                    ),
+                    LinearProgressIndicator(
+                      value: currentGuidIndex / guidsNumber,
+                      backgroundColor: Color(0xff3c5d7c),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
                     )
                   ],
                 ),
@@ -108,7 +111,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     );
   }
 
-  Future<int> whereToGo() async {
+  void whereToGo() async {
     final file = await FileStorage('key.dat').localFile;
     if (file.existsSync()) {
       if (verbose >=1) print('Key file is exists');
@@ -127,6 +130,7 @@ class _SplashWidgetState extends State<SplashWidget> {
           currentGuidIndex = 0;
           //есть список гуидов и есть токен.
           //можно обновить данные с сервера или если не получится считать из файлов
+          guidsNumber = guids.length;
           for (var guid in guids) {
             if (verbose >=1) print('Updating from Server for guid $guid');
             var result = await RestAPI().userDataGet(guid, devKey);
@@ -138,13 +142,14 @@ class _SplashWidgetState extends State<SplashWidget> {
               await UserInfo().readFromFile();
             }
             currentGuidIndex++;
+            setState(() {});
           }
           currentGuidIndex = 0;
-          //pushes = await Pushes().loadPushesFromFile('pushes.dat');
-          return 1;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+          pushes = await Pushes().loadPushesFromFile('pushes.dat');
+          goGo(1);//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
         } else {
           if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');
-          return 0;
+          goGo(0);//return 0;
           //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
         }
       } else {
@@ -155,7 +160,7 @@ class _SplashWidgetState extends State<SplashWidget> {
         if (_token != null) file.writeAsStringSync(_token, mode: FileMode.write, encoding: utf8);
         if (verbose >=1) print('New Key File created and saved');
         if (verbose >=1) print('Go to Login Screen');
-        return 0;
+        goGo(0);//return 0;
         //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
       }
     } else {
@@ -166,7 +171,7 @@ class _SplashWidgetState extends State<SplashWidget> {
       file.writeAsStringSync(_token == null ? '' : _token, mode: FileMode.write, encoding: utf8);
       if (verbose >=1) print('Key File created and saved');
       if (verbose >=1) print('Go to Login Screen');
-      return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+      goGo(0);//return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
     }
   }
 }
