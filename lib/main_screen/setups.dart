@@ -50,6 +50,7 @@ class SetupGroupWidget extends State {
       }
     );
   }
+
   void onSetupParentChange(bool value) async{
     String answer = await RestAPI().switchChangePUT('parent', guids[currentGuidIndex], devKey);
     setState(
