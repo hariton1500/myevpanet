@@ -31,7 +31,7 @@ class _SplashWidgetState extends State<SplashWidget> {
     ]);
   }
   goGo(int index) async {
-    Timer(Duration(seconds: 5), await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => index == 1 ? MainScreenWidget() : LoginWidget())));
+    Timer(Duration(seconds: 2), await Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => index == 1 ? MainScreenWidget() : LoginWidget())));
   }
   int guidsNumber = guids.isEmpty ? 1 : guids.length;
   @override
