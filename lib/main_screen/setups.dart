@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -109,9 +108,9 @@ class SetupGroupWidget extends State {
     if (!answer.startsWith('is')) {
       var decode = json.decode(answer);
       print(decode);
-      //users[currentGuidIndex]['extra_account'] = decode['extra_account'];
-      //users[currentGuidIndex]['packet_secs'] = decode['packet_secs'];
-      //userInfo = users[currentGuidIndex];
+      users[currentGuidIndex]['extra_account'] = decode['message']['extra_account'].toString();
+      users[currentGuidIndex]['packet_secs'] = decode['message']['packet_secs'];
+      userInfo = users[currentGuidIndex];
       setState(() {});
     }
   }
