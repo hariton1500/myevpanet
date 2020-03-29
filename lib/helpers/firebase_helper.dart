@@ -34,7 +34,7 @@ class FirebaseHelper{
           msg: '${message['notification']['title']} : ${message['notification']['body']}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
+          timeInSecForIosWeb: 2,
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0
@@ -56,7 +56,7 @@ class FirebaseHelper{
           msg: '${message['data']['title']} : ${message['data']['message']}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 2,
+          timeInSecForIosWeb: 2,
           backgroundColor: Colors.green,
           textColor: Colors.white,
           fontSize: 16.0

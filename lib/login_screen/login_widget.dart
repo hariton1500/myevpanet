@@ -329,7 +329,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
             msg: "Абонент(ов) с такими данными не найдено",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
-            timeInSecForIos: 1,
+            timeInSecForIosWeb: 1,
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0
@@ -364,7 +364,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         msg: "Введены некорректные данные",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0
