@@ -235,7 +235,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                        users[item]["packet_end"],
+                                        DateTime.parse(users[item]["packet_end_utc"]).toString() + " - - " + DateTime.now().toString(),
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,

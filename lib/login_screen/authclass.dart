@@ -16,7 +16,7 @@ class Auth {
       msg: "Такой пользователь не найден",
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
-      timeInSecForIos: 2,
+      timeInSecForIosWeb: 2,
       backgroundColor: Colors.red,
       textColor: Colors.white,
       fontSize: 16.0
