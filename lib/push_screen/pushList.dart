@@ -186,7 +186,7 @@ class _ArticleDescription extends StatelessWidget {
               Text(
                 '$publishDate ★',
                 style: const TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   color: Colors.black54,
                 ),
               ),
