@@ -253,7 +253,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
                       _buildUIDField(),
                       _buildSubmitButton(),
                       LinearProgressIndicator(
-                        value: currentGuidIndex / guids.length,
+                        value: currentGuidIndex / (guids.isNotEmpty ? guids.length : 1),
                         backgroundColor: Color(0xff3c5d7c),
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
                       ),
