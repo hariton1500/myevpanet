@@ -252,6 +252,11 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
                       _buildPhoneField(),
                       _buildUIDField(),
                       _buildSubmitButton(),
+                      LinearProgressIndicator(
+                        value: currentGuidIndex / guids.length,
+                        backgroundColor: Color(0xff3c5d7c),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                      ),
                       Container(
                         padding: EdgeInsets.only(
                           top: ResponsiveFlutter.of(context).moderateScale(8),
@@ -302,6 +307,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
   }
 
   void authButtonPressed() async {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     var _phoneNumber = phone.getUnmaskedText();
     var _userID = 0;
     if (uid.getUnmaskedText() != '') {
@@ -354,7 +360,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         if (verbose >=1) print('network error :(');
       }
       if (_checks) {
-        setState(() => isLoading = true);
+        //setState(() => isLoading = true);
         if (verbose >=1) print('Got good GUID(s)');
         //fbHelper.saveDeviceToken(result);
         //save guids to file
@@ -367,9 +373,10 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
           var usersRequest = await RestAPI().userDataGet(guid, devKey);
           if (verbose >=1) print('$guid: $usersRequest');
           currentGuidIndex++;
+          setState(() {});
         }
         currentGuidIndex = 0;
-        setState(() => isLoading = false);
+        //setState(() => isLoading = false);
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
       }
     } else {

@@ -41,7 +41,7 @@ class AppDrawer extends StatelessWidget {
           FlatButton(
             onPressed: () {
               registrationMode = 'new';
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
             },
             child: Text('Повторная регистрация')
           ),
