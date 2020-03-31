@@ -141,7 +141,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                devKey != null ? 'Войти в кабинет ' : 'Нет доступа к интернету',
+                getAuthButtonPressed(),
                 style: TextStyle(
                   fontSize: ResponsiveFlutter.of(context).fontSize(2),
                   fontWeight: FontWeight.w700,
@@ -157,6 +157,20 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         ),
       ),
       );
+  }
+
+  String getAuthButtonPressed() {
+    if (devKey == null) return 'Нет доступа к интернету ';
+    switch (registrationMode) {
+      case 'new':
+        return 'Войти в кабинет ';
+        break;
+      case 'add':
+        return 'Добавить ';
+        break;
+      default:
+        return 'Войти в кабинет ';
+    }
   }
 
   Widget _buildConnectRequestButton() {
@@ -282,15 +296,6 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         ),
       ],
     ),
-/*      floatingActionButton: FloatingActionButton.extended(
-        onPressed: devKey != null ? () {
-          // Тут колбасим открытие новой страницы с возможностью оставить заявку на подключение (Используем новый API).
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => OrderView()));
-        } : null,
-        label: Text('Оставить заявку'),
-        icon: Icon(Icons.person_add),
-        backgroundColor: Theme.of(context).accentColor,
-      ),*/
     );
 
 
@@ -320,7 +325,15 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
         if (verbose >=1) print(_body);
         if (!_body['error']) {
           //ошибок нет. в ответе лежат гуиды
-          guids = _body['message']['guids'];
+          if (registrationMode == 'new') {
+            guids = _body['message']['guids'];
+          } else {
+            registrationMode = 'new';
+            //здесь надо к списку гуидов добавить еще гуиды без повторений
+            for (var addGuid in _body['message']['guids']) {
+              if (!guids.contains(addGuid)) guids.add(addGuid);
+            }
+          }
         } else {
           //в ответе есть ошибка и ее значение выводим
           _checks = false;

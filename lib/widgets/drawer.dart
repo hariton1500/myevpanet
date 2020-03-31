@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myevpanet/login_screen/login_widget.dart';
 import 'package:myevpanet/main.dart';
-import 'package:myevpanet/main_screen/main_widget.dart';
 
 class AppDrawer extends StatelessWidget {
 
@@ -35,35 +35,27 @@ class AppDrawer extends StatelessWidget {
         ),
       ),
     );
-    for (var item in users.keys) {
-      if (users[item]['id'] != userInfo['id']) {
-        list.add(
-            Column(
-              children: <Widget>[
-                ListTile(
-                    title: Text('${users[item]['name']}'),
-                    subtitle: Text('${users[item]['login']} (${users[item]['id']})'),
-                    trailing: Icon(Icons.keyboard_arrow_right),
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: Text(
-                        '${users[item]['name'].substring(0,1)}',
-                        style: TextStyle(fontSize: 18.0, color: Colors.white),
-                      ),
-                    ),
-                    isThreeLine: true,
-                    onTap: () {
-                      currentGuidIndex = item;
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
-                    }
-
-                ),
-                Divider(),
-              ],
-            ),
-        );
-      }
-    }
+    list.add(
+      Column(
+        children: <Widget>[
+          FlatButton(
+            onPressed: () {
+              registrationMode = 'new';
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+            },
+            child: Text('Повторная регистрация')
+          ),
+          Divider(),
+          FlatButton(
+            onPressed: () {
+              registrationMode = 'add';
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+            },
+            child: Text('Добавить ID')
+          ),
+        ],
+      )
+    );
     return list;
   } 
 }

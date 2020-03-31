@@ -112,6 +112,7 @@ class SetupGroupWidget extends State {
       users[currentGuidIndex]['packet_secs'] = decode['message']['packet_secs'];
       userInfo = users[currentGuidIndex];
       setState(() {});
+      //refreshKey.currentState?.setState(() { });
     }
   }
 

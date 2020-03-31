@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:myevpanet/helpers/DesignHelper.dart';
 import 'package:myevpanet/push_screen/pushList.dart';
 import 'package:myevpanet/webview_screens/pay_widget.dart';
+import 'package:myevpanet/widgets/drawer.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   // генерируем точки
   List<Widget> idListPoints() {
     List<Widget> _list = [];
-    for (var item in users.keys) {
+    for (var item = 0; item < guids.length; item++/*users.keys*/) {
       _list.add(
         Container(
           width: 8.0,
@@ -53,7 +54,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   // список тёмных плашек
   List<Widget> idList() {
     List<Widget> _list = [];
-    for (var item in users.keys) {
+    for (var item = 0; item < guids.length; item++/*users.keys*/) {
         _list.add(
           GestureDetector(
             onTap: () {
@@ -337,6 +338,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     if (verbose >= 1) print('End getData');
     Intl.defaultLocale = 'ru_RU';
     initializeDateFormatting();
+    //refreshKey = GlobalKey<_MainScreenWidgetState>();
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent, // navigation bar color
@@ -362,6 +364,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     //Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
+      //key: refreshKey,
+      drawer: AppDrawer(),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
       appBar: PreferredSize(
@@ -380,7 +384,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 "Информация",
                 style: TextStyle(
                     color: Color.fromRGBO(72, 95, 113, 1.0),
-                    fontSize: 24.0
+                    fontSize: 20.0
                 ),
                 textScaleFactor: queryData.textScaleFactor,
               ),

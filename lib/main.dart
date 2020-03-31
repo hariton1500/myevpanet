@@ -14,6 +14,8 @@ FirebaseHelper fbHelper;
 int messageForId = 0;
 Map<String, dynamic> lastMessage;
 bool lastMessageIsSeen = false;
+//GlobalKey refreshKey;
+String registrationMode = 'new';
 
 void main() {
   runApp(App());
