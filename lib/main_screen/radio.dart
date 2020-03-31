@@ -91,8 +91,52 @@ class RadioGroupWidget extends State {
       );
       if (canChange) _availableTarifChoice = true;
     }
-    if (!_availableTarifChoice) tList.add(Text('На балансе недостаточно средств для активации тарифного плана.'));
-    if (userInfo['auto_activation'] == 1) tList.add(Text('Чтобы изменить тариф нужно сначала отключить автоактивацию.'));
+    if (!_availableTarifChoice) {
+      tList.clear();
+      tList.add(
+          Card(
+              color: Colors.cyan,
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+              child: ListTile(
+                leading: Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'На Вашем счету недостаточно средств для активации тарифного плана.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              )
+          ),
+
+      );
+    }
+    if (userInfo['auto_activation'] == "1")
+    {
+      tList.clear();
+      tList.add(
+          Card(
+              color: Colors.cyan,
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+              child: ListTile(
+                leading: Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Чтобы изменить тарифный план, необходимо отключить автоактивацию.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              )
+          ),
+      );
+    }
     return tList;
   }
 

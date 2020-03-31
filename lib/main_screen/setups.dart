@@ -141,13 +141,15 @@ class SetupGroupWidget extends State {
     return tList;
   }
 
+  // доступные тарифные планы
   List<Widget> _list() {
     List<Widget> tList = [];
-    tList.add(
-        RadioGroup()
-    );
+      tList.add(
+          RadioGroup()
+      );
     return tList;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -527,37 +529,83 @@ class SetupGroupWidget extends State {
                         child: Column(
                           children: [
                             Text(
-                              'Добавление дней к текущему пакету',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: ResponsiveFlutter.of(context).fontSize(2.0),
-                                color: Color.fromRGBO(72, 95, 113, 1.0),
-                                fontWeight: FontWeight.bold
+                                'Добавление дней к текущему пакету',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: ResponsiveFlutter.of(context).fontSize(2.0),
+                                  color: Color.fromRGBO(72, 95, 113, 1.0),
+                                  fontWeight: FontWeight.bold
+                                ),
                               ),
-                            ),
-                            Text('Стоимость одного дня - ${users[currentGuidIndex]['days_price']} руб.'),
-                            Slider(
-                              value: _currentDays.roundToDouble(),
-                              onChanged: (double days) => setState(() {
-                                _currentDays = days;
-                                if ((days % 10).round() == 0) daysText = 'дней';
-                                if ((days % 10).round() == 1) daysText = 'день';
-                                if ((days % 10).round() >= 2) daysText = 'дня';
-                                if ((days % 10).round() >= 5) daysText = 'дней';
-                                if (days.round() >= 11 && days.round() <= 14) daysText = 'дней';
-                              }),
-                              min: 1,
-                              max: users[currentGuidIndex]['max_days'] >= 1 ? users[currentGuidIndex]['max_days'].toDouble() : 1,
-                              divisions: users[currentGuidIndex]['max_days'] > 0 ? users[currentGuidIndex]['max_days'] - 1 : null,
-                              label: _currentDays.round().toString(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 10.0,
+                                vertical: 16.0
+                              ),
+                              child: Text('Стоимость одного дня - ${users[currentGuidIndex]['days_price']} руб.'),
                             ),
                             users[currentGuidIndex]['max_days'] > 0 ?
-                            RaisedButton(
-                              onPressed: onAddDaysButtonPressed,
-                              elevation: 15,
-                              child: Text('Добавить ${_currentDays.round()} $daysText'),
-                            ) :
-                            Text('Недостаточно средств для добавления дней'),
+                                Column(
+                                  children: <Widget>[
+                                    Slider(
+                                      value: _currentDays.roundToDouble(),
+                                      onChanged: (double days) => setState(() {
+                                        _currentDays = days;
+                                        if ((days % 10).round() == 0) daysText = 'дней';
+                                        if ((days % 10).round() == 1) daysText = 'день';
+                                        if ((days % 10).round() >= 2) daysText = 'дня';
+                                        if ((days % 10).round() >= 5) daysText = 'дней';
+                                        if (days.round() >= 11 && days.round() <= 14) daysText = 'дней';
+                                      }),
+                                      min: 1,
+                                      max: users[currentGuidIndex]['max_days'] >= 1 ? users[currentGuidIndex]['max_days'].toDouble() : 1,
+                                      divisions: users[currentGuidIndex]['max_days'],
+                                      label: _currentDays.round().toString(),
+                                      activeColor: Color(0xff3e6282),
+                                      inactiveColor: Color(0xff939faa),
+                                    ),
+                                    RaisedButton(
+                                      onPressed: onAddDaysButtonPressed,
+                                      textColor: Colors.white,
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: Container(
+                                          decoration: const BoxDecoration(
+                                              gradient: LinearGradient(
+                                                  colors: [Color.fromRGBO(68, 98, 124, 1), Color.fromRGBO(10, 33, 51, 1)]
+                                              )
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 64.0,
+                                              vertical: 16.0
+                                          ),
+                                          child: Text(
+                                            'Добавить ${_currentDays.round()} $daysText',
+                                            style: TextStyle(
+                                                fontSize: 18
+                                            ),
+                                          ),
+                                        )//C
+                                    )
+                                  ],
+                                )
+                            :
+                            Card(
+                                color: Colors.cyan,
+                                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.info_outline,
+                                    color: Colors.white,
+                                  ),
+                                  title: Text(
+                                    'Недостаточно средств для добавления дней.',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                )
+                            ),
                           ],
                         ),
                       ),
