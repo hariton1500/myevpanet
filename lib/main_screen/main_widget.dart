@@ -54,6 +54,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   List<Widget> idList() {
     List<Widget> _list = [];
     for (var item in users.keys) {
+      var now = DateTime.now().toUtc();
+      var packet = DateTime.parse(users[item]["packet_end_utc"]).toUtc();
+      packet.difference(now).inDays;
+
+
         _list.add(
           GestureDetector(
             onTap: () {
@@ -235,7 +240,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                        DateTime.parse(users[item]["packet_end_utc"]).toString() + " - - " + DateTime.now().toString(),
+                                      "",
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
