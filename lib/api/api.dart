@@ -153,6 +153,9 @@ class RestAPI {
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
       return _answer;
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
+      return _answer;
     }
     if (verbose >= 1) {
       print('Response statusCode: ${_response.statusCode}');
@@ -182,6 +185,9 @@ class RestAPI {
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
       return 'isException';
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
+      return _answer;
     }
     if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
     return _answer;
@@ -207,6 +213,9 @@ class RestAPI {
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
       return 'isException';
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
+      return _answer;
     }
     if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
     return _answer;
@@ -234,6 +243,9 @@ class RestAPI {
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
       return 'isException';
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
+      return _answer;
     }
     if (verbose >= 1) print('Response statusCode: ${_response.statusCode}; body: $_answer');
     return _answer;
@@ -254,6 +266,9 @@ class RestAPI {
       return _answer;
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
+      return _answer;
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
       return _answer;
     }
     if (verbose >= 1) {
@@ -282,6 +297,9 @@ class RestAPI {
     } on HandshakeException catch (error) {
       if (verbose >=1) print(error.message);
       return 'HandshakeException';
+    } on NoSuchMethodError catch (error) {
+      if (verbose >=1) print(error.toString());
+      return 'NoSuchMethodException';
     }
     if (verbose >= 1) {
       print('Response statusCode: ${response.statusCode}');
