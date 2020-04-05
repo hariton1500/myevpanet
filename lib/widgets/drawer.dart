@@ -23,14 +23,28 @@ class AppDrawer extends StatelessWidget {
       UserAccountsDrawerHeader(
         accountName: Text('${userInfo['name']}'),
         accountEmail: Text('${userInfo['login']}'),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [
+                  0.2,
+                  1.0,
+                ],
+                colors: [Color.fromRGBO(68, 98, 124, 1), Color.fromRGBO(10, 33, 51, 1)]
+            )
+        ),
         currentAccountPicture: CircleAvatar(
           backgroundColor:
           Theme.of(context).platform == TargetPlatform.iOS
-              ? Colors.blue
+              ? Colors.white
               : Colors.white,
           child: Text(
             '${userInfo['name'].substring(0,1)}',
-            style: TextStyle(fontSize: 40.0),
+            style: TextStyle(
+                fontSize: 40.0,
+                color: Color.fromRGBO(72, 95, 113, 1.0)
+            ),
           ),
         ),
       ),
@@ -43,7 +57,14 @@ class AppDrawer extends StatelessWidget {
               registrationMode = 'new';
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
             },
-            child: Text('Повторная регистрация')
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                  'Повторная регистрация',
+                  textAlign: TextAlign.left
+              ),
+            )
+
           ),
           Divider(),
           FlatButton(
@@ -51,8 +72,15 @@ class AppDrawer extends StatelessWidget {
               registrationMode = 'add';
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
             },
-            child: Text('Добавить ID')
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                    'Добавить ID',
+                    textAlign: TextAlign.left
+                ),
+              )
           ),
+          Divider(),
         ],
       )
     );

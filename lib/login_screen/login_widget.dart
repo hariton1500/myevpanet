@@ -1,6 +1,7 @@
 import 'dart:convert';
 //import 'dart:html';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -252,10 +253,13 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin{
                       _buildPhoneField(),
                       _buildUIDField(),
                       _buildSubmitButton(),
-                      LinearProgressIndicator(
-                        value: currentGuidIndex / (guids.isNotEmpty ? guids.length : 1),
-                        backgroundColor: Color(0xff3c5d7c),
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                        child: LinearProgressIndicator(
+                            value: currentGuidIndex / (guids.isNotEmpty ? guids.length : 1),
+                            backgroundColor: Color(0xff3c5d7c),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.only(

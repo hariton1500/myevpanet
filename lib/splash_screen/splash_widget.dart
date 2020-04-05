@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+//import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/main.dart';
 //import 'dart:async';
@@ -79,12 +79,22 @@ class _SplashWidgetState extends State<SplashWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SpinKitThreeBounce(
+/*                    SpinKitThreeBounce(
                       color: Colors.white,
                       size: 50.0,
-                    ),
+                    ),*/
                     Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(
+                          top: 20.0,
+                          left: 24.0,
+                        right: 24.0,
+                        bottom: 16.0
+                      ),
+                      child: LinearProgressIndicator(
+                          value: currentGuidIndex / guidsNumber,
+                          backgroundColor: Color(0xff3c5d7c),
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
+                      ),
                     ),
                     Text(
                       "Загрузка...",
@@ -92,15 +102,11 @@ class _SplashWidgetState extends State<SplashWidget> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: Colors.white
                       ),
                     ),
-                    LinearProgressIndicator(
-                      value: currentGuidIndex / guidsNumber,
-                      backgroundColor: Color(0xff3c5d7c),
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white)
-                    )
+
                   ],
                 ),
               )

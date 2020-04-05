@@ -57,8 +57,18 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     for (var item = 0; item < guids.length; item++/*users.keys*/) {
       var now = DateTime.now().toUtc();
       var packet = DateTime.parse(users[item]["packet_end_utc"]).toUtc();
-      packet.difference(now).inDays;
+      var days_remain = packet
+          .difference(now)
+          .inDays;
 
+      var packet_end_color = Colors.white;
+
+      if (days_remain > 0 && days_remain < 1) {
+        packet_end_color = Colors.amber;
+      }
+      else if (days_remain <= 0) {
+        packet_end_color = Colors.red;
+      }
 
         _list.add(
           GestureDetector(
@@ -241,11 +251,11 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                      "",
+                                      userInfo["packet_end"],
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                          color: packet_end_color,
                                           shadows: [
                                             Shadow(
                                               blurRadius: 1.0,
@@ -364,8 +374,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   Widget build(BuildContext context) {
 
-    MediaQueryData queryData;
-    queryData = MediaQuery.of(context);
+/*    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);*/
     //Orientation currentOrientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
@@ -376,33 +386,33 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.0), // here the desired height
         child: AppBar(
+            iconTheme: new IconThemeData(
+                color: Color.fromRGBO(72, 95, 113, 1.0)
+            ),
+            titleSpacing: 0.0,
+//            automaticallyImplyLeading: false,
             brightness: Brightness.light,
             backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
           title: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(7.0),
-              ),
-              Text(
-                "Информация",
-                style: TextStyle(
-                    color: Color.fromRGBO(72, 95, 113, 1.0),
-                    fontSize: 24.0
-                ),
-                textScaleFactor: queryData.textScaleFactor,
-              ),
-
-              Text(
-                DateFormat.yMMMMd().format(DateTime.now()),
-                style: TextStyle(
-                    color: Color.fromRGBO(146, 152, 166, 1.0),
-                    fontSize: 14.0
-                ),
-              )
-            ],
-          ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Информация",
+                    style: TextStyle(
+                        color: Color.fromRGBO(72, 95, 113, 1.0),
+                        fontSize: 24.0
+                    ),
+                  ),
+                  Text(
+                    DateFormat.yMMMMd().format(DateTime.now()),
+                    style: TextStyle(
+                        color: Color.fromRGBO(146, 152, 166, 1.0),
+                        fontSize: 14.0
+                    ),
+                  )
+                ],
+              ),              // Your widgets here
           elevation: 0.0,
           actions: <Widget>[
             GestureDetector(
