@@ -252,7 +252,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                      userInfo["packet_end"],
+                                      userInfo["packet_end"] + " (" + days_remain.toString() + " дн.)",
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
