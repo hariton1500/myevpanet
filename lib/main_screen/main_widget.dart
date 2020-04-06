@@ -141,7 +141,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                       ),
                                     ),
-                                    _current == _current /*item*/ ?
+                                    _current == _current/*item*/ ?
                                     CircleButton(
                                       onTap: () {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Paymaster()));
@@ -250,7 +250,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                      userInfo["packet_end"] + " (" + days_remain.toString() + " дн.)",
+                                      userInfo["packet_end"] + " (" + daysRemain.toString() + " дн.)",
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
@@ -264,7 +264,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                           ],
                                         ),
                                     ),
-                                    Text(
+                                    /*Text(
                                       'Осталось: $daysRemain дн.',
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
@@ -278,7 +278,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                             ),
                                           ],
                                         ),
-                                    )
+                                    )*/
                                   ],
                                 )
                               ),
@@ -495,7 +495,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             child: CarouselSlider(
               items: idList(),
               autoPlay: false,
-              enlargeCenterPage: false,
+              enlargeCenterPage: true,
               aspectRatio: 16/10,
               viewportFraction: 0.85,
               onPageChanged: (index) {
