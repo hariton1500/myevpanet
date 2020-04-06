@@ -1,7 +1,8 @@
 import 'dart:ui';
 import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/payment_screen/paymaster.dart';
 import 'package:myevpanet/push_screen/pushList.dart';
-import 'package:myevpanet/webview_screens/pay_widget.dart';
+//import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -143,7 +144,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                     _current == _current /*item*/ ?
                                     CircleButton(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView()));
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Paymaster()));
                                       },
                                       iconData: MaterialCommunityIcons.wallet_plus_outline
                                     ): Text(''),
@@ -249,7 +250,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                      '${userInfo["packet_end"]}',
+                                      userInfo["packet_end"] + " (" + days_remain.toString() + " дн.)",
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
