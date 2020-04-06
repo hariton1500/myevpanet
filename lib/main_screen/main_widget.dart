@@ -57,17 +57,15 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     for (var item = 0; item < guids.length; item++/*users.keys*/) {
       var now = DateTime.now().toUtc();
       var packet = DateTime.parse(users[item]["packet_end_utc"]).toUtc();
-      var days_remain = packet
-          .difference(now)
-          .inDays;
+      var daysRemain = packet.difference(now).inDays;
 
-      var packet_end_color = Colors.white;
+      var packetEndColor = Colors.white;
 
-      if (days_remain > 0 && days_remain < 1) {
-        packet_end_color = Colors.amber;
+      if (daysRemain > 0 && daysRemain < 1) {
+       packetEndColor = Colors.amber;
       }
-      else if (days_remain <= 0) {
-        packet_end_color = Colors.red;
+      else if (daysRemain <= 0) {
+       packetEndColor = Colors.red;
       }
 
         _list.add(
@@ -142,7 +140,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                       ),
                                     ),
-                                    _current == item ?
+                                    _current == _current /*item*/ ?
                                     CircleButton(
                                       onTap: () {
                                         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayView()));
@@ -251,11 +249,26 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                         ),
                                     ),
                                     Text(
-                                      userInfo["packet_end"],
+                                      '${userInfo["packet_end"]}',
                                         style: TextStyle(
                                           fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
                                           fontWeight: FontWeight.bold,
-                                          color: packet_end_color,
+                                          color: packetEndColor,
+                                          shadows: [
+                                            Shadow(
+                                              blurRadius: 1.0,
+                                              color: Colors.black,
+                                              offset: Offset(1.0, 1.0),
+                                            ),
+                                          ],
+                                        ),
+                                    ),
+                                    Text(
+                                      'Осталось: $daysRemain дн.',
+                                        style: TextStyle(
+                                          fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: packetEndColor,
                                           shadows: [
                                             Shadow(
                                               blurRadius: 1.0,
@@ -481,9 +494,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
             child: CarouselSlider(
               items: idList(),
               autoPlay: false,
-              enlargeCenterPage: true,
+              enlargeCenterPage: false,
               aspectRatio: 16/10,
-              viewportFraction: 0.9,
+              viewportFraction: 0.85,
               onPageChanged: (index) {
                 currentGuidIndex = index;
                 userInfo = users[currentGuidIndex];
