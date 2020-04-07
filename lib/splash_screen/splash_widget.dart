@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-//import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
 import 'package:myevpanet/main.dart';
-//import 'dart:async';
 import 'dart:io';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
@@ -24,7 +22,6 @@ class _SplashWidgetState extends State<SplashWidget> {
     super.initState();
     //fbHelper = FirebaseHelper();
     whereToGo();
-    //Timer(Duration(seconds: 5), (){goGo(goto);});
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -59,7 +56,6 @@ class _SplashWidgetState extends State<SplashWidget> {
                 flex: 3,
                 child: Container(
                   child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
                         flex: 1,
@@ -79,10 +75,6 @@ class _SplashWidgetState extends State<SplashWidget> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-/*                    SpinKitThreeBounce(
-                      color: Colors.white,
-                      size: 50.0,
-                    ),*/
                     Padding(
                       padding: EdgeInsets.only(
                           top: 20.0,
@@ -125,13 +117,15 @@ class _SplashWidgetState extends State<SplashWidget> {
       if (devKey.toString().length > 7) {
         if (verbose >=1) print('Device key is: $devKey');
         //guidlist.dat file check
+        //загрузка списка ГУИДОВ из файла
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
         if (_guidsfile.existsSync()) {
           if (verbose >=1) print('GUIDs file exists');
           var _readResult = _guidsfile.readAsStringSync(encoding: utf8);
-          final parsed = json.decode(_readResult);
+          final parsed = jsonDecode(_readResult);
+          //json.decode(_readResult);
           if (verbose >=1) print(parsed);
-          guids = parsed['message']['guids'];
+          guids = parsed;//['message']['guids'];
           if (verbose >=1) print('List of GUIDS readed. Updating UserInfo from Server');
           currentGuidIndex = 0;
           //есть список гуидов и есть токен.
@@ -156,7 +150,6 @@ class _SplashWidgetState extends State<SplashWidget> {
         } else {
           if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');
           goGo(0);//return 0;
-          //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
         }
       } else {
         if (verbose >=1) print('Key File has wrong key. Trying to get new one from FireBase...');
@@ -167,7 +160,6 @@ class _SplashWidgetState extends State<SplashWidget> {
         if (verbose >=1) print('New Key File created and saved');
         if (verbose >=1) print('Go to Login Screen');
         goGo(0);//return 0;
-        //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
       }
     } else {
       if (verbose >=1) print('Key file is not exists');
@@ -177,7 +169,7 @@ class _SplashWidgetState extends State<SplashWidget> {
       file.writeAsStringSync(_token == null ? '' : _token, mode: FileMode.write, encoding: utf8);
       if (verbose >=1) print('Key File created and saved');
       if (verbose >=1) print('Go to Login Screen');
-      goGo(0);//return 0;//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginWidget()));
+      goGo(0);
     }
   }
 }

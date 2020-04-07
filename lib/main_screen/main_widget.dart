@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:myevpanet/helpers/DesignHelper.dart';
 import 'package:myevpanet/payment_screen/paymaster.dart';
 import 'package:myevpanet/push_screen/pushList.dart';
-//import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +30,266 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
   String text = '';
   String phoneToCall = '+79780489664';
+  DateFormat dateFormat;
 
+  @override
+  void initState() {
+    if (verbose >= 1) print('MainScreen initState()');
+    if (verbose >= 1) print('Start getData');
+    getData();
+    super.initState();
+    //fbHelper.configure(this.context);
+    if (verbose >= 1) print('End getData');
+    Intl.defaultLocale = 'ru_RU';
+    initializeDateFormatting();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent, // navigation bar color
+      statusBarColor: Colors.transparent, // status bar color
+      statusBarIconBrightness: Brightness.dark, // status bar icons' color
+      systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icons' color
+    ));
+
+  }
+  void getData() async {
+    await UserInfo().getUserData();
+    setState(() {});
+    if (verbose >= 5) print('Main Screen: Show UserInfo:\n$userInfo');
+  }
+
+  int _current = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: AppDrawer(),
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0), // here the desired height
+        child: AppBar(
+            iconTheme: new IconThemeData(
+                color: Color.fromRGBO(72, 95, 113, 1.0)
+            ),
+            titleSpacing: 0.0,
+            brightness: Brightness.light,
+            backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Информация",
+                  style: TextStyle(
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      fontSize: 24.0
+                  ),
+                ),
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: TextStyle(
+                      color: Color.fromRGBO(146, 152, 166, 1.0),
+                      fontSize: 14.0
+                  ),
+                )
+              ],
+            ),              // Your widgets here
+            elevation: 0.0,
+            actions: <Widget>[
+              GestureDetector(
+                child: Container(
+                    padding: EdgeInsets.only(
+                        top: 10.0,
+                        bottom: 10.0,
+                        right: 10.0
+                    ),
+                    child: Icon(
+                      MaterialCommunityIcons.phone,
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      size: 24.0,
+                    )
+                ),
+                onTap: () {
+                  _showModalCallSupport();
+                },
+              ),
+              GestureDetector(
+                child: Container(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      bottom: 10.0,
+                      right: 16.0
+                    ),
+                    child: Icon(
+                      MaterialCommunityIcons.face_agent,
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      size: 24.0,
+                    )
+                ),
+                onTap: () {
+                  _showModalSupport();
+                },
+              ),
+              GestureDetector(
+                child: Container(
+                    padding: EdgeInsets.only(
+                        top: 10.0,
+                        bottom: 10.0,
+                        right: 16.0,
+                        left: 16.0
+                    ),
+                    child: Icon(
+                      MaterialCommunityIcons.bell,
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      size: 24.0,
+                    )
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PushScreen()));
+                },
+              ),
+            ],
+        ),
+      ),
+      body: Column(
+        children: [
+          // каруселька
+          Container(
+            child: CarouselSlider(
+              items: idList(),
+              autoPlay: false,
+              enlargeCenterPage: true,
+              aspectRatio: 16/10,
+              viewportFraction: 0.85,
+              onPageChanged: (index) {
+                currentGuidIndex = index;
+                userInfo = users[currentGuidIndex];
+                _current = index;
+                setState(() {});
+              },
+            ),
+          ),
+          // навигационные точечки
+          Container(
+            //padding: EdgeInsets.all(5.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: idListPoints()
+            ),
+          ),
+          // секция с картами деталей учетной записи
+          Expanded(
+            child: ListView(
+              physics: ScrollPhysics(parent: BouncingScrollPhysics()),
+              padding: EdgeInsets.only(
+                top: 0.0,
+                left: 30.0,
+                right: 30.0
+              ),
+              children: <Widget> [
+                // виджет отображения долга
+                Container(
+                    child: Column(
+                      children: <Widget>[
+                        double.parse(users[currentGuidIndex]["debt"]) > 0
+                            ?
+                            Card(
+                                color: Colors.red,
+                                child: new ListTile(
+                                      title: Text(
+                                        "За Вашей учётной записью числится задолженость ${users[currentGuidIndex]["debt"].toString()} р.",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                )
+                            )
+                            :
+                        Container(),
+                      ],
+                    )
+                ),
+                // текст - Детали учетной записи
+                Container(
+                  padding: EdgeInsets.only(
+                    left: 40.0,
+                    top: 10.0,
+                    bottom: 10.0
+                  ),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Детали учётной записи',
+                    style: TextStyle(
+                      fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
+                      color: Color.fromRGBO(72, 95, 113, 1.0),
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('Тарифный план'),
+                              subtitle: Text(
+                                  '${users[currentGuidIndex]["tarif_name"]} (${users[currentGuidIndex]["tarif_sum"].toString()} р.)'
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('IP адрес абонента'),
+                              subtitle: Text(users[currentGuidIndex]["real_ip"]),
+                            ),
+                          ],
+                        ),
+                      )
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      top: 5.0),
+                  child: Card(
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(Icons.album, size: 40),
+                              title: Text('Адрес подключения'),
+                              subtitle: Text(users[currentGuidIndex]["street"] + ", д. " + users[currentGuidIndex]["house"] + ", кв. " + users[currentGuidIndex]["flat"]),
+                            ),
+                          ],
+                        ),
+                      )
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]
+      )
+    );
+  }
   // генерируем точки
   List<Widget> idListPoints() {
     List<Widget> _list = [];
@@ -264,21 +522,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                                           ],
                                         ),
                                     ),
-                                    /*Text(
-                                      'Осталось: $daysRemain дн.',
-                                        style: TextStyle(
-                                          fontSize: ResponsiveFlutter.of(context).fontSize(1.8),
-                                          fontWeight: FontWeight.bold,
-                                          color: packetEndColor,
-                                          shadows: [
-                                            Shadow(
-                                              blurRadius: 1.0,
-                                              color: Colors.black,
-                                              offset: Offset(1.0, 1.0),
-                                            ),
-                                          ],
-                                        ),
-                                    )*/
                                   ],
                                 )
                               ),
@@ -315,12 +558,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return _list;
   }
 
-  DateFormat dateFormat;
-
-  // это можно вынести в отдельный файл
-  /*
-  * Вызов модального окна с сообщением в ремонты
-  * */
+  // Вызов модального окна с сообщением в ремонты
   void _showModalSupport() async{
     return showGeneralDialog(
         context: context,
@@ -336,9 +574,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         }
     );
   }
-/*
- *  Вызов модального окна для совершения звонка
- * */
+  //  Вызов модального окна для совершения звонка
   void _showModalCallSupport() async{
     return showGeneralDialog(
         context: context,
@@ -353,281 +589,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           );
         }
     );
-
   }
 
-
-  @override
-  void initState() {
-    if (verbose >= 1) print('MainScreen initState()');
-    if (verbose >= 1) print('Start getData');
-    getData();
-    super.initState();
-    //fbHelper.configure(this.context);
-    if (verbose >= 1) print('End getData');
-    Intl.defaultLocale = 'ru_RU';
-    initializeDateFormatting();
-    //refreshKey = GlobalKey<_MainScreenWidgetState>();
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent, // navigation bar color
-      statusBarColor: Colors.transparent, // status bar color
-      statusBarIconBrightness: Brightness.dark, // status bar icons' color
-      systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icons' color
-    ));
-
-  }
-  void getData() async {
-    await UserInfo().getUserData();
-    setState(() {});
-    if (verbose >= 5) print('Main Screen: Show UserInfo:\n$userInfo');
-  }
-
-  int _current = 0;
-
-  @override
-  Widget build(BuildContext context) {
-
-/*    MediaQueryData queryData;
-    queryData = MediaQuery.of(context);*/
-    //Orientation currentOrientation = MediaQuery.of(context).orientation;
-
-    return Scaffold(
-      //key: refreshKey,
-      drawer: AppDrawer(),
-      resizeToAvoidBottomPadding: false,
-      backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0), // here the desired height
-        child: AppBar(
-            iconTheme: new IconThemeData(
-                color: Color.fromRGBO(72, 95, 113, 1.0)
-            ),
-            titleSpacing: 0.0,
-//            automaticallyImplyLeading: false,
-            brightness: Brightness.light,
-            backgroundColor: Color.fromRGBO(245, 246, 248, 1.0),
-          title: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Информация",
-                    style: TextStyle(
-                        color: Color.fromRGBO(72, 95, 113, 1.0),
-                        fontSize: 24.0
-                    ),
-                  ),
-                  Text(
-                    DateFormat.yMMMMd().format(DateTime.now()),
-                    style: TextStyle(
-                        color: Color.fromRGBO(146, 152, 166, 1.0),
-                        fontSize: 14.0
-                    ),
-                  )
-                ],
-              ),              // Your widgets here
-          elevation: 0.0,
-          actions: <Widget>[
-            GestureDetector(
-              child: Container(
-                  padding: EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                      right: 10.0
-                  ),
-                  child: Icon(
-                    MaterialCommunityIcons.phone,
-                    color: Color.fromRGBO(72, 95, 113, 1.0),
-                    size: 24.0,
-                  )
-              ),
-              onTap: () {
-                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                _showModalCallSupport();
-              },
-            ),
-            GestureDetector(
-              child: Container(
-                  padding: EdgeInsets.only(
-                    top: 10.0,
-                    bottom: 10.0,
-                    right: 16.0
-                  ),
-                  child: Icon(
-                    MaterialCommunityIcons.face_agent,
-                    color: Color.fromRGBO(72, 95, 113, 1.0),
-                    size: 24.0,
-                  )
-              ),
-              onTap: () {
-                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SupportScreen()));
-                _showModalSupport();
-              },
-            ),
-            GestureDetector(
-              child: Container(
-                  padding: EdgeInsets.only(
-                      top: 10.0,
-                      bottom: 10.0,
-                      right: 16.0,
-                      left: 16.0
-                  ),
-                  child: Icon(
-                    MaterialCommunityIcons.bell,
-                    color: Color.fromRGBO(72, 95, 113, 1.0),
-                    size: 24.0,
-                  )
-              ),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PushScreen()));
-                //_showModalSMSSupport();
-              },
-            ),
-          ],
-        ),
-      ),
-      //),color: Color.fromRGBO(72, 95, 113, 1.0),
-      body: Column(
-        children: [
-          // каруселька
-          Container(
-            child: CarouselSlider(
-              items: idList(),
-              autoPlay: false,
-              enlargeCenterPage: true,
-              aspectRatio: 16/10,
-              viewportFraction: 0.85,
-              onPageChanged: (index) {
-                currentGuidIndex = index;
-                userInfo = users[currentGuidIndex];
-                _current = index;
-                setState(() {});
-              },
-            ),
-          ),
-          // навигационные точечки
-          Container(
-            //padding: EdgeInsets.all(5.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: idListPoints()
-            ),
-          ),
-          // секция с картами деталей учетной записи
-          Expanded(
-            child: ListView(
-              physics: ScrollPhysics(parent: BouncingScrollPhysics()),
-              padding: EdgeInsets.only(
-                top: 0.0,
-                left: 30.0,
-                right: 30.0
-              ),
-              children: <Widget> [
-                // виджет отображения долга
-                Container(
-                    child: Column(
-                      children: <Widget>[
-                        double.parse(users[currentGuidIndex]["debt"]) > 0
-                            ?
-                            Card(
-                                color: Colors.red,
-                                child: new ListTile(
-                                      title: Text(
-                                        "За Вашей учётной записью числится задолженость ${users[currentGuidIndex]["debt"].toString()} р.",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                )
-                            )
-                            :
-                        Container(),
-                      ],
-                    )
-                ),
-                // текст - Детали учетной записи
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 40.0,
-                    top: 10.0,
-                    bottom: 10.0
-                  ),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Детали учётной записи',
-                    style: TextStyle(
-                      fontSize: ResponsiveFlutter.of(context).fontSize(2.7),
-                      color: Color.fromRGBO(72, 95, 113, 1.0),
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 5.0),
-                  child: Card(
-                      child: Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(Icons.album, size: 40),
-                              title: Text('Тарифный план'),
-                              subtitle: Text(
-                                  '${users[currentGuidIndex]["tarif_name"]} (${users[currentGuidIndex]["tarif_sum"].toString()} р.)'
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 5.0),
-                  child: Card(
-                      child: Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(Icons.album, size: 40),
-                              title: Text('IP адрес абонента'),
-                              subtitle: Text(users[currentGuidIndex]["real_ip"]),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 5.0),
-                  child: Card(
-                      child: Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(Icons.album, size: 40),
-                              title: Text('Адрес подключения'),
-                              subtitle: Text(users[currentGuidIndex]["street"] + ", д. " + users[currentGuidIndex]["house"] + ", кв. " + users[currentGuidIndex]["flat"]),
-                            ),
-                          ],
-                        ),
-                      )
-                  ),
-                ),
-              ],
-            ),
-          )
-        ]
-      )
-    );
-  }
 }
 
 
