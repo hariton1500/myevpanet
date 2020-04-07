@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../main.dart';
 
 class PushScreen extends StatefulWidget {
@@ -26,6 +27,16 @@ class _PushScreenState extends State<PushScreen> {
       ),
       body: ListView(
         children: listRows()
+      ),
+      bottomSheet: FlatButton(
+        onPressed: () {
+          Clipboard.setData(
+            ClipboardData(
+              text: devKey.toString()
+            )
+          );
+        },
+        child: Text('Скопировать ключ в память'),
       )
     );
   }
