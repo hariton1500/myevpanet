@@ -329,9 +329,10 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 
         _list.add(
           GestureDetector(
-            onTap: () {
+            onTap: () async{
               print('!!!!!!!!! current index is: $currentGuidIndex');
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SetupGroup()));
+              await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SetupGroup()));
+              setState(() {});
             },
             child: Container(
               padding: EdgeInsets.only(
