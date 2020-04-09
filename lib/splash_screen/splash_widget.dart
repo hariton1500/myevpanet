@@ -8,6 +8,7 @@ import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
 import 'package:myevpanet/login_screen/login_widget.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashWidget extends StatefulWidget {
   @override
@@ -145,8 +146,13 @@ class _SplashWidgetState extends State<SplashWidget> {
             setState(() {});
           }
           currentGuidIndex = 0;
-          pushes = await Pushes().loadPushesFromFile('pushes.dat');
-          goGo(1);//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MainScreenWidget()));
+          //загрузка пушей
+          final shared = await SharedPreferences.getInstance();
+          sharedPushes = shared.getStringList('pushes') ?? [];
+          print(sharedPushes);
+          sharedPushes.forEach((element) {pushes.add(jsonDecode(element));});
+          //pushes = await Pushes().loadPushesFromFile('pushes.dat');
+          goGo(1);
         } else {
           if (verbose >=1) print('GUIDS file not exists. Got to Login Screen');
           goGo(0);//return 0;
