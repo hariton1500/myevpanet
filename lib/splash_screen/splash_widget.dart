@@ -116,7 +116,19 @@ class _SplashWidgetState extends State<SplashWidget> {
       if (verbose >=1) print('Key file is exists');
       devKey = file.readAsStringSync(encoding: utf8);
       if (devKey.toString().length > 7) {
-        if (verbose >=1) print('Device key is: $devKey');
+        if (verbose >=1) print('Device key from file is: $devKey');
+        //пробуем обновить токен гугла
+        FirebaseHelper().getAppToken().then((String value) {
+          if (value == null) {
+            print('we got null token from google');
+          } else {
+            print('new token from google is: $value');
+            if (value != devKey) {
+              print('token has changed. we have to go to new registration');
+              goGo(0);
+            }
+          }
+        });
         //guidlist.dat file check
         //загрузка списка ГУИДОВ из файла
         final _guidsfile = await FileStorage('guidlist.dat').localFile;
