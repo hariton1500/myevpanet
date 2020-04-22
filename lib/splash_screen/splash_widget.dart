@@ -125,6 +125,7 @@ class _SplashWidgetState extends State<SplashWidget> {
             print('new token from google is: $value');
             if (value != devKey) {
               print('token has changed. we have to go to new registration');
+              file.writeAsStringSync(value, mode: FileMode.write, encoding: utf8);
               goGo(0);
             }
           }
