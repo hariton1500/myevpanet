@@ -3,21 +3,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:myevpanet/main.dart';
+import 'package:myevpanet/helpers/data.dart';
 
-class FirebaseHelper{
+class FirebaseHelper {
+  FirebaseMessaging _fcm = FirebaseMessaging();
 
-
-  //final Firestore _db = Firestore.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-
-  FirebaseHelper(){
+  FirebaseHelper() {
     _init();
   }
 
-  void _init(){
-    if(Platform.isIOS){
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
+  void _init() {
+    if (Platform.isIOS) {
+      _fcm.requestNotificationPermissions();
     }
     configure();
   }
@@ -25,75 +22,64 @@ class FirebaseHelper{
   void configure() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        lastMessage = message;
-        await Pushes().savePushToFile('onMessage');
-        lastMessageIsSeen = false;
-        messageForId = Pushes().parsePushForId(message['notification']['title'].toString());
+        dprintL("recieved push when app is active: ${message['data']}");
+        //lastMessage = message;
+        dprintL('loading saved pushes, add new, save all');
+        Pushes _pushes = Pushes();
+        await _pushes.loadSavedPushes();
+        OneNotification _push = OneNotification();
+        _push.id = Pushes()
+            .parsePushForId(message['notification']['title'].toString());
+        _push.title = message['notification']['title'].toString();
+        _push.body = message['notification']['body'].toString();
+        _push.date = DateTime.now().toLocal().toString();
+        _push.seen = false;
+        _pushes.pushes.add(_push);
+        _pushes.savePushes();
         Fluttertoast.showToast(
-          msg: '${message['notification']['title']} : ${message['notification']['body']}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        //сохраняем полученную пушку в файл
+            msg:
+                '${message['notification']['title']} : ${message['notification']['body']}',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        lastMessage = message;
-        await Pushes().savePushToFile('onLaunch');
-        lastMessageIsSeen = false;
-        // optional
+        dprintL("onLaunch: $message");
+        dprintL('TRYING');
+        Pushes _pushes = Pushes();
+        await _pushes.loadSavedPushes();
+        OneNotification _push = OneNotification();
+        _push.id = Pushes().parsePushForId(message['data']['title'].toString());
+        _push.title = message['data']['title'].toString();
+        _push.body = message['data']['message'].toString();
+        _push.date = DateTime.now().toLocal().toString();
+        _push.seen = false;
+        if (_pushes.pushes.any((__push) => __push.date == _push.date)) {
+          _pushes.pushes.add(_push);
+          _pushes.savePushes();
+        } else
+          dprintL('found duplicate. push not saved.');
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        lastMessage = message;
-        lastMessageIsSeen = false;
-        Fluttertoast.showToast(
-          msg: '${message['data']['title']} : ${message['data']['message']}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-        Pushes().savePushToFile('onResume');
-        // optional
+        dprintL("onResume: ${message['data']}");
+        Pushes _pushes = Pushes();
+        await _pushes.loadSavedPushes();
+        OneNotification _push = OneNotification();
+        _push.id = Pushes().parsePushForId(message['data']['title'].toString());
+        _push.title = message['data']['title'].toString();
+        _push.body = message['data']['message'].toString();
+        _push.date = DateTime.now().toLocal().toString();
+        _push.seen = false;
+        _pushes.pushes.add(_push);
+        _pushes.savePushes();
       },
     );
   }
 
-  Future<String> getAppToken() async{
+  Future<String> getAppToken() async {
     return await _fcm.getToken();
   }
-
-  /*Future saveDeviceToken(String json) async{
-    //String uid = 'jeff1e7t';
-    // FirebaseUser user = await _auth.currentUser();
-
-    // Get the token for this device
-    String fcmToken = await _fcm.getToken();
-    // Save it to Firestore
-    if (fcmToken != null) {
-      print('fcmToken:');
-      print(fcmToken);
-      var tokens = _db
-          .collection('users')
-      //.document(uid)
-      //.collection('tokens')
-          .document(fcmToken);
-      //print('tokens.get():');
-      //print(await tokens.get());
-      await tokens.setData({
-        'token': fcmToken,
-        //'createdAt': FieldValue.serverTimestamp(), // optional
-        'guids': json // optional
-      });
-    }
-  }*/
-
 }
