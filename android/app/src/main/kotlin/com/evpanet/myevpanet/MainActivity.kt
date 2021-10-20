@@ -1,4 +1,4 @@
-package com.evpanet.myevpanet
+package com.evpanet.myevpanet;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

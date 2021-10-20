@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/api/api.dart';
-//import 'package:myevpanet/main_screen/setups.dart';
 
 class RadioGroup extends StatefulWidget {
   @override
@@ -65,12 +64,6 @@ class RadioGroupWidget extends State {
     List<Widget> tList = [];
     bool _availableTarifChoice = false;
     for (var item in _tarifs) {
-      //print(userInfo['extra_account'].runtimeType);
-      //print(userInfo['extra_account']);
-      //print(userInfo['tarif_sum'].runtimeType);
-      //print(userInfo['tarif_sum']);
-      //print(item['sum'].runtimeType);
-      //print(item['sum']);
       double userBalance = double.parse(userInfo['extra_account']);
       int userTarifSum = userInfo['tarif_sum'].runtimeType.toString() == 'int' ? userInfo['tarif_sum'] : int.parse(userInfo['tarif_sum']);
       int tarifSum = item['sum'].runtimeType.toString() == 'int' ? item['sum'] : int.parse(item['sum']);

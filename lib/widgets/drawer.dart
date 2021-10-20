@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
     list.add(
       UserAccountsDrawerHeader(
         accountName: Text('${userInfo['name']}'),
-        accountEmail: Text('${userInfo['login']}'),
+        accountEmail: Text(''),//Text('${userInfo['login']}'),
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,

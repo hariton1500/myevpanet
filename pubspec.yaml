@@ -22,7 +22,7 @@ dependencies:
   flutter_icons:
   firebase_core: ^0.5.3
   firebase_messaging: ^7.0.3
-  carousel_slider:
+  carousel_slider: ^3.0.0
   date_format:
   intl: ^0.17.0
   responsive_flutter:

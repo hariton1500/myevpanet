@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:myevpanet/helpers/firebase_helper.dart';
+import 'package:myevpanet/login_screen/login_widget2.dart';
 import 'package:myevpanet/main.dart';
 import 'dart:io';
 import 'package:myevpanet/api/api.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
-import 'package:myevpanet/login_screen/login_widget.dart';
+//import 'package:myevpanet/login_screen/login_widget.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +32,7 @@ class _SplashWidgetState extends State<SplashWidget> {
         Duration(seconds: 2),
         await Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) =>
-                index == 1 ? MainScreenWidget() : LoginWidget())));
+                index == 1 ? MainScreenWidget() : LoginWidget2())));
   }
 
   int guidsNumber = guids.isEmpty ? 1 : guids.length;

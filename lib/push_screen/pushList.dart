@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myevpanet/api/api.dart';
-import 'package:myevpanet/main.dart';
 import 'package:myevpanet/push_screen/notif.dart';
 
 class PushScreen extends StatefulWidget {
@@ -17,8 +16,6 @@ class _PushScreenState extends State<PushScreen> {
       pushesList.sort((a, b) => b.date.compareTo(a.date));
       setState(() {});
     });
-    //pushes = Pushes();
-    //setState(() {});
     super.initState();
   }
 
@@ -43,9 +40,9 @@ class _PushScreenState extends State<PushScreen> {
 
   List<Widget> listRows() {
     List<Widget> _list = [];
-    dprintD('forming pushes widgets list...', verbose);
+    //dprintD('forming pushes widgets list...', verbose);
     pushes.pushes.forEach((_push) {
-      dprintD(_push, verbose);
+      //dprintD(_push, verbose);
       _list.add(
         GestureDetector(
           onTap: () async {

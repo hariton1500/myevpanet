@@ -23,21 +23,20 @@ final GlobalKey<NavigatorState> navigatorKey =
 void main() {
   runApp(App());
   FirebaseHelper fbHelper = FirebaseHelper();
-  print(fbHelper);
+  //print(fbHelper);
 }
 
 //
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //моя проба с пушем
-    //fbHelper.configure(context);
     return MaterialApp(
       navigatorKey: navigatorKey,
       theme: ThemeData(
         primaryColorDark: Color(0xFF1976d2),
         primaryColor: Color(0xFF2196f3),
         accentColor: Color(0xFFff5722),
+        //colorScheme: ColorScheme(secondary: Color(0xFFff5722)),
         primaryColorLight: Color(0xFFbbdefb),
       ),
       debugShowCheckedModeBanner: false,

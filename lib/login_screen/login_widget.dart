@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myevpanet/main.dart';
 import 'package:myevpanet/main_screen/main_widget.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:myevpanet/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
-//import 'package:myevpanet/webview_screens/order_widget.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -18,6 +16,9 @@ class LoginWidget extends StatefulWidget {
 }
 
 class LoginWidgetState extends State with SingleTickerProviderStateMixin {
+  
+  bool keyboardIsActive = false;
+
   @override
   void initState() {
     super.initState();
@@ -41,10 +42,11 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin {
           Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-              colors: [Color(0xff11273c), Color(0xff3c5d7c)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            )),
+                  colors: [Color(0xff11273c), Color(0xff3c5d7c)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              ),
             child: Center(
               child: SingleChildScrollView(
                 child: ConstrainedBox(
@@ -209,7 +211,7 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin {
 
   Widget _buildLogoTop() {
     return Center(
-        child: Container(
+        child: keyboardIsActive ? Container() : Container(
             padding: EdgeInsets.only(
               top: ResponsiveFlutter.of(context).moderateScale(20),
               bottom: ResponsiveFlutter.of(context).moderateScale(20),
@@ -239,6 +241,9 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin {
           keyboardType: TextInputType.phone,
           style: TextStyle(color: Color(0xffd3edff), fontSize: 18.0),
           textCapitalization: TextCapitalization.characters,
+          onTap: () {keyboardIsActive = true; setState(() {});},
+          onChanged: (s) {keyboardIsActive = true; setState(() {});},
+          onEditingComplete: () {keyboardIsActive = false; FocusScope.of(context).unfocus(); setState(() {});},
           decoration: InputDecoration(
               labelText: 'Номер телефона',
               labelStyle: TextStyle(
@@ -261,6 +266,9 @@ class LoginWidgetState extends State with SingleTickerProviderStateMixin {
         child: TextField(
           inputFormatters: [uid],
           keyboardType: TextInputType.number,
+          onTap: () {keyboardIsActive = true; setState(() {});},
+          onChanged: (s) {keyboardIsActive = true; setState(() {});},
+          onEditingComplete: () {keyboardIsActive = false; FocusScope.of(context).unfocus(); setState(() {});},
           style: TextStyle(
             color: Color(0xffd3edff),
           ),

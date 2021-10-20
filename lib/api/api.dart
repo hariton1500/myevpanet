@@ -1,5 +1,4 @@
 import 'dart:convert';
-//import 'dart:ffi';
 import 'dart:io';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
@@ -384,11 +383,7 @@ class RestAPI {
     if (verbose >= 1)
       print('Requesting by GET: url = $url; headers = $headers');
     try {
-      response = await get(Uri.parse(url), headers: headers).timeout(Duration(seconds: 5),
-          onTimeout: () {
-        answer = {'answer': 'isTimeout', 'body': ''};
-        return response;
-      });
+      response = await get(Uri.parse(url), headers: headers);//.timeout(Duration(seconds: 5), onTimeout: () {answer = {'answer': 'isTimeout', 'body': ''}; return response;});
       if (response.statusCode == 201 || response.statusCode == 401)
         answer = {'answer': 'isFull', 'body': response.body};
     } on SocketException catch (error) {

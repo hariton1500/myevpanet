@@ -1,9 +1,8 @@
-//import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 import 'package:myevpanet/helpers/DesignHelper.dart';
+import 'package:myevpanet/main_screen/abonent2.dart';
 import 'package:myevpanet/push_screen/pushList.dart';
-import 'package:myevpanet/webview_screens/pay_widget.dart';
 import 'package:myevpanet/widgets/drawer.dart';
 import 'package:responsive_flutter/responsive_flutter.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:myevpanet/main_screen/setups.dart';
+import 'package:myevpanet/main_screen/setup/setups2.dart';
 
 class MainScreenWidget extends StatefulWidget {
   //final Pushes _pushes = Pushes();
@@ -163,15 +162,14 @@ class _MainScreenWidgetState extends State<MainScreenWidget>
                             ..rotateY(pi * animation.value),
                           //animation: animation,
                           child: Icon(Icons.notifications_active, size: 24.0),
-                        ), //MaterialCommunityIcons.bell_ring,
-                  //color: Color.fromRGBO(72, 95, 113, 1.0),
+                        ),
                 ),
                 onTap: () async {
                   //await pushes.loadSavedPushes();
                   await Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => PushScreen()));
                   Pushes pushes = Pushes();
-                  await pushes.loadSavedPushes();
+                  //await pushes.loadSavedPushes();
                   setState(() {
                     isAllPushesSeen = pushes.isAllSeen();
                   });
@@ -186,16 +184,18 @@ class _MainScreenWidgetState extends State<MainScreenWidget>
             child: CarouselSlider(
               items: idList(),
               options: CarouselOptions(
-              autoPlay: false,
-              enlargeCenterPage: false,
-              aspectRatio: 16 / 10,
-              viewportFraction: 0.85,
-              onPageChanged: (index, reason) {
-                currentGuidIndex = index;
-                userInfo = users[currentGuidIndex];
-                _current = index;
-                setState(() {});
-              }),
+                autoPlay: false,
+                enlargeCenterPage: true,
+                height: MediaQuery.of(context).size.width / 1.8,
+                //aspectRatio: 16 / 12,
+                viewportFraction: 0.8,
+                onPageChanged: (index, reason) {
+                  currentGuidIndex = index;
+                  userInfo = users[currentGuidIndex];
+                  _current = index;
+                  setState(() {});
+                }
+              ),
             ),
           ),
           // навигационные точечки
@@ -343,237 +343,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget>
                 builder: (BuildContext context) => SetupGroup()));
             setState(() {});
           },
-          child: Container(
-              padding:
-                  EdgeInsets.only(top: 0.0, left: 5.0, right: 5.0, bottom: 0.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        width: 1.0, color: Color.fromRGBO(52, 79, 100, 1.0)),
-                    borderRadius: BorderRadius.circular(
-                        ResponsiveFlutter.of(context).moderateScale(8)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromRGBO(184, 202, 220, 1.0),
-                        blurRadius: 5.0, // soften the shadow
-                        spreadRadius: 1.0, //extend the shadow
-                        offset: Offset(
-                          1.0, // Move to right 10  horizontally
-                          2.0, // Move to bottom 10 Vertically
-                        ),
-                      )
-                    ],
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [
-                          0.2,
-                          1.0,
-                        ],
-                        colors: [
-                          Color.fromRGBO(68, 98, 124, 1),
-                          Color.fromRGBO(10, 33, 51, 1)
-                        ])),
-                child: Container(
-                  padding: EdgeInsets.all(
-                      ResponsiveFlutter.of(context).moderateScale(20)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              // Левая сторона верхнего блока
-                              flex: 2,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Text(
-                                      'ID: ' + users[item]['id'].toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(2.4),
-                                        fontWeight: FontWeight.bold,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(1.0, 1.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  _current == currentGuidIndex /*item*/ ? CircleButton(
-                                          size: 35.0, //animationSize.value,
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        PayView()));
-                                          },
-                                          iconData: MaterialCommunityIcons.wallet_plus_outline)
-                                      : Text(''),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              // Правая сторона верхнего блока
-                              flex: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 2.0),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: 3.0, right: 4.0),
-                                    child: Text(
-                                      "Доступный баланс",
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(144, 198, 124, 1),
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(1.6),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    NumberFormat('#,##0.00##', 'ru_RU').format(
-                                            double.parse(
-                                                users[item]["extra_account"])) +
-                                        " р.",
-                                    //userInfo["extra_account"],
-                                    style: TextStyle(
-                                      color: double.parse(users[item]
-                                                  ["extra_account"]) <
-                                              0
-                                          ? Color.fromRGBO(255, 81, 105, 1)
-                                          : Colors.white,
-                                      fontSize: ResponsiveFlutter.of(context)
-                                          .fontSize(3.2),
-                                      fontWeight: FontWeight.bold,
-                                      shadows: [
-                                        Shadow(
-                                          blurRadius: 1.0,
-                                          color: Colors.black,
-                                          offset: Offset(1.0, 1.0),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(top: 0.0),
-                              child: Text(
-                                //textScaleFactor1.toString(),
-                                '${users[item]['name']}',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontSize:
-                                      ResponsiveFlutter.of(context).fontSize(3),
-                                  color: Color.fromRGBO(166, 187, 204, 1),
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 1.0,
-                                      color: Colors.black,
-                                      offset: Offset(1.0, 1.0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      'Окончание действия пакета',
-                                      style: TextStyle(
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(1.4),
-                                        color: Colors.white,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(1.0, 1.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Text(
-                                      userInfo["packet_end"] +
-                                          " (" +
-                                          daysRemain.toString() +
-                                          " дн.)",
-                                      style: TextStyle(
-                                        fontSize: ResponsiveFlutter.of(context)
-                                            .fontSize(1.8),
-                                        fontWeight: FontWeight.bold,
-                                        color: packetEndColor,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 1.0,
-                                            color: Colors.black,
-                                            offset: Offset(1.0, 1.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 20.0),
-                                      child: Icon(
-                                        MaterialCommunityIcons.cogs,
-                                        color: Colors.white,
-                                        size: 40.0,
-                                      ),
-                                    )
-                                  ],
-                                )),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ))));
+          child: Abonent2(item, daysRemain, packetEndColor, users[item]['id'], double.parse(users[item]["extra_account"]), users[item]['name'], userInfo["packet_end"])
+      ));
     }
     return _list;
   }
